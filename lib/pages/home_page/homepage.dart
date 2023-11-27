@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/main/widgets/navigationdrawer.dart';
+import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

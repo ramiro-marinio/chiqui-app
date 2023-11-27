@@ -2,16 +2,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/optionsbutton.dart';
 
-class Gym extends StatefulWidget {
+class GymView extends StatefulWidget {
   final String? imageUrl;
   final String name;
-  const Gym({super.key, this.imageUrl, required this.name});
+  const GymView({super.key, this.imageUrl, required this.name});
 
   @override
-  State<Gym> createState() => _GymState();
+  State<GymView> createState() => _GymViewState();
 }
 
-class _GymState extends State<Gym> {
+class _GymViewState extends State<GymView> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -40,7 +40,7 @@ class _GymState extends State<Gym> {
                       ? NetworkImage(
                           widget.imageUrl!,
                         )
-                      : const AssetImage("assets/no_image.jpg")
+                      : const AssetImage("assets/no_image_gym.jpg")
                           as ImageProvider,
                 ),
               ),

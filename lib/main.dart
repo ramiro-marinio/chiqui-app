@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/main/widgets/gorouter.dart';
+import 'package:gymapp/firebase/app_state.dart';
+import 'package:gymapp/navigation/widgets/gorouter.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   runApp(
-    const App(),
+    ChangeNotifierProvider(
+      create: (_) => ApplicationState(),
+      child: const App(),
+    ),
   );
 }
 

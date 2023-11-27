@@ -44,37 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBBadGilmfdH9EeLATkW6_H_EIL9SyCg8o',
-    appId: '1:904615135999:web:194c26efce4fb616135aca',
-    messagingSenderId: '904615135999',
-    projectId: 'app-chiqui',
-    authDomain: 'app-chiqui.firebaseapp.com',
-    storageBucket: 'app-chiqui.appspot.com',
+    apiKey: 'AIzaSyCuIqqonudDkand4SH176pD9Sy98DBPXLw',
+    appId: '1:444146579674:web:af0cb916898e0477b1cde3',
+    messagingSenderId: '444146579674',
+    projectId: 'gym-app-b5c64',
+    authDomain: 'gym-app-b5c64.firebaseapp.com',
+    storageBucket: 'gym-app-b5c64.appspot.com',
+    measurementId: 'G-KBNVEFTC4L',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyByf3vPUBA12qH0b2EcOBoWumhmAXq_4vA',
-    appId: '1:904615135999:android:43967bf332b378d7135aca',
-    messagingSenderId: '904615135999',
-    projectId: 'app-chiqui',
-    storageBucket: 'app-chiqui.appspot.com',
+    apiKey: 'AIzaSyB-RPqGANgKqXfvOJ-0CUhDRWjGHsNZ7eI',
+    appId: '1:444146579674:android:b1a593c7bcfa0434b1cde3',
+    messagingSenderId: '444146579674',
+    projectId: 'gym-app-b5c64',
+    storageBucket: 'gym-app-b5c64.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBlPSvGpSaMAyf8HeVf2FuDBzVsYPN97c8',
-    appId: '1:904615135999:ios:10940a2aed43b13d135aca',
-    messagingSenderId: '904615135999',
-    projectId: 'app-chiqui',
-    storageBucket: 'app-chiqui.appspot.com',
+    apiKey: 'AIzaSyDYNtSuaRX77OUz5WJYntOuGYYDN8WnyLY',
+    appId: '1:444146579674:ios:5ee35f4ea7c70798b1cde3',
+    messagingSenderId: '444146579674',
+    projectId: 'gym-app-b5c64',
+    storageBucket: 'gym-app-b5c64.appspot.com',
     iosBundleId: 'com.example.gymapp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBlPSvGpSaMAyf8HeVf2FuDBzVsYPN97c8',
-    appId: '1:904615135999:ios:e5e6d1deb13a17d5135aca',
-    messagingSenderId: '904615135999',
-    projectId: 'app-chiqui',
-    storageBucket: 'app-chiqui.appspot.com',
+    apiKey: 'AIzaSyDYNtSuaRX77OUz5WJYntOuGYYDN8WnyLY',
+    appId: '1:444146579674:ios:8080c3753097b932b1cde3',
+    messagingSenderId: '444146579674',
+    projectId: 'gym-app-b5c64',
+    storageBucket: 'gym-app-b5c64.appspot.com',
     iosBundleId: 'com.example.gymapp.RunnerTests',
   );
 }
