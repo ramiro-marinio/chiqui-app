@@ -32,6 +32,7 @@ class _AppState extends State<App> {
           ),
         ),
       ),
+      darkTheme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/icontext.dart';
+import 'package:gymapp/firebase/widgets/icontext.dart';
 
 class OptionsButton extends StatelessWidget {
   const OptionsButton({super.key});
