@@ -11,6 +11,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
+import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase_options.dart';
 
 class ApplicationState extends ChangeNotifier {
@@ -23,6 +24,8 @@ class ApplicationState extends ChangeNotifier {
   User? get user => _user;
   UserData? _userData;
   UserData? get userData => _userData;
+  List<GymData>? _gyms;
+  List<GymData>? get gyms => _gyms;
   void init() async {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
     FirebaseAuth.instance.userChanges().listen(
@@ -39,9 +42,26 @@ class ApplicationState extends ChangeNotifier {
             _userData = UserData.fromMap(map);
           }
         }
+        FirebaseFirestore.instance
+            .collection('memberships')
+            .where('userId', isEqualTo: user?.uid)
+            .snapshots()
+            .listen((event) async {
+          List<QueryDocumentSnapshot> newMemberships = event.docs;
+          _gyms = [];
+          print("user is $user");
+          print(newMemberships);
+          for (QueryDocumentSnapshot documentSnapshot in newMemberships) {
+            gyms?.add(await getGymData((documentSnapshot.data()
+                as Map<String, dynamic>)['gymId'] as String));
+          }
+          notifyListeners();
+        });
         notifyListeners();
       },
     );
+    //MEMBERSHIPS LISTENER
+
     FirebaseUIAuth.configureProviders([
       EmailAuthProvider(),
     ]);
@@ -91,20 +111,32 @@ class ApplicationState extends ChangeNotifier {
         .update(userData);
   }
 
-  Future<List<Map<String, dynamic>>> getGyms() async {
-    List<Map<String, dynamic>> result = [];
-    FirebaseFirestore.instance
-        .collection("memberships")
-        .where("userId", isEqualTo: user?.uid)
-        .snapshots()
-        .listen((event) {
-      result =
-          List.generate(event.docs.length, (index) => event.docs[index].data());
-    });
-    return result;
+  Future<DocumentReference> createGym(GymData gymData) async {
+    DocumentReference gymReference = await FirebaseFirestore.instance
+        .collection('gyms')
+        .add(gymData.toJson());
+    return gymReference;
   }
 
-  Future<void> createGym(GymData gymData) async {
-    FirebaseFirestore.instance.collection('gyms').add(gymData.toJson());
+  Future<void> joinGym(DocumentReference documentReference) async {
+    FirebaseFirestore.instance.collection('memberships').add(
+          MembershipData(userId: user!.uid, gymId: documentReference.id)
+              .toJson(),
+        );
+  }
+
+  Future<GymData> getGymData(String gymId) async {
+    return GymData.fromJson(
+        (await FirebaseFirestore.instance.collection('gyms').doc(gymId).get())
+            .data()!);
+  }
+
+  Future<String> createGymPic(String gymId, File file) async {
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference ppFolder = referenceRoot.child('gym-profile-pics');
+    String termination = file.path.split('.').last;
+    Reference pic = ppFolder.child('$gymId.$termination');
+    await pic.putFile(file);
+    return pic.getDownloadURL();
   }
 }

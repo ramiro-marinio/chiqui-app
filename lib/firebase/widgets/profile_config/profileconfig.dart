@@ -8,7 +8,7 @@ import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/birthdayfield.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/field.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/genderfield.dart';
-import 'package:gymapp/firebase/widgets/profile_config/profilepicpicker.dart';
+import 'package:gymapp/firebase/widgets/profile_config/fields/profilepicpicker.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:provider/provider.dart';
 

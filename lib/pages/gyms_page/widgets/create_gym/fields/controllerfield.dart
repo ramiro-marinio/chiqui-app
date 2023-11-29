@@ -1,15 +1,18 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class ControllerField extends StatelessWidget {
   final Widget icon;
   final String title;
   final int? maxLines;
+  final int maxLength;
   final TextEditingController controller;
   const ControllerField({
     super.key,
     required this.controller,
     required this.title,
     required this.icon,
+    required this.maxLength,
     this.maxLines,
   });
 
@@ -24,19 +27,31 @@ class ControllerField extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: icon,
             ),
-            Text(
+            AutoSizeText(
               title,
+              maxLines: 1,
               style: const TextStyle(
                 fontSize: 20,
               ),
             ),
           ],
         ),
-        SizedBox(
-          width: 200,
-          child: TextField(
-            maxLines: maxLines,
-            controller: controller,
+        Padding(
+          padding: EdgeInsets.all(maxLines != null ? 8.0 : 0.0),
+          child: SizedBox(
+            width: maxLines != null ? double.infinity : 200,
+            child: TextField(
+              decoration: InputDecoration(
+                border: maxLines != null
+                    ? OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: const BorderSide(color: Colors.grey))
+                    : null,
+              ),
+              maxLines: maxLines,
+              maxLength: maxLength,
+              controller: controller,
+            ),
           ),
         ),
       ],
