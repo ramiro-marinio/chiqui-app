@@ -32,6 +32,8 @@ class _ProfileConfigState extends State<ProfileConfig> {
       sex: userData?.sex ?? true,
       birthDay: userData?.birthDay ?? DateTime.now(),
       staff: userData?.staff ?? false,
+      displayName: userData?.displayName ?? "",
+      photoURL: userData?.photoURL,
     );
     if (user == null) {
       return const MustBeLoggedIn();
@@ -102,6 +104,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
                 initialText: displayName,
                 onChanged: (value) {
                   displayName = value;
+                  newUserData.displayName = value;
                 },
               ),
               const AdaptiveDivider(),

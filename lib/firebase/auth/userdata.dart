@@ -1,12 +1,16 @@
 class UserData {
   final String userId;
   String info;
+  String displayName;
+  String? photoURL;
   bool sex;
   DateTime birthDay;
   final bool staff;
-  UserData.fromMap(Map<String, dynamic> map)
+  UserData.fromJson(Map<String, dynamic> map)
       : userId = map['userId'] as String,
         info = map['info'] as String,
+        displayName = map['displayName'] as String,
+        photoURL = map['photoURL'] as String?,
         sex = map['sex'] as bool,
         birthDay = DateTime.fromMillisecondsSinceEpoch(
           map['birthDay'] as int,
@@ -18,6 +22,8 @@ class UserData {
     required this.sex,
     required this.birthDay,
     required this.staff,
+    required this.displayName,
+    this.photoURL,
   });
   Map<String, dynamic> toMap() {
     return {
@@ -26,6 +32,8 @@ class UserData {
       'sex': sex,
       'birthDay': birthDay.millisecondsSinceEpoch,
       'staff': staff,
+      'displayName': displayName,
+      'photoUrl': photoURL
     };
   }
 }

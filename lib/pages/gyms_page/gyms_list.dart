@@ -21,7 +21,6 @@ class _MyGymsState extends State<MyGyms> {
     return Consumer<ApplicationState>(
         builder: (context, applicationState, child) {
       List<GymData> gymData = applicationState.gyms!;
-      print("gymdata is $gymData");
       return Scaffold(
           drawer: const NavDrawer(),
           appBar: AppBar(

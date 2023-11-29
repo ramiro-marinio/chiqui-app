@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
+import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/fields/controllerfield.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/fields/gympicpicker.dart';
 import 'package:provider/provider.dart';
@@ -114,20 +115,20 @@ class _CreateGymState extends State<CreateGym> {
               ),
             );
             try {
+              String code = generateRandomString(28);
               GymData startingData = GymData(
                 ownerId: applicationState.user!.uid,
                 name: nameController.text,
                 description: descriptionController.text,
               );
-              DocumentReference gymReference =
-                  await applicationState.createGym(startingData);
-              applicationState.joinGym(gymReference);
               if (photoPath != null) {
-                String picPath = await applicationState.createGymPic(
-                    gymReference.id, File(photoPath!));
+                String picPath =
+                    await applicationState.createGymPic(code, File(photoPath!));
                 startingData.photoURL = picPath;
-                await gymReference.update(startingData.toJson());
               }
+              DocumentReference gymReference =
+                  await applicationState.createGym(startingData, code);
+              applicationState.joinGym(gymReference);
             } catch (e) {
               if (context.mounted) {
                 ScaffoldMessenger.of(context)

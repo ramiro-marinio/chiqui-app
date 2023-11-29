@@ -4,6 +4,7 @@ import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/optionsbutton.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/pages/gymmenu.dart';
 import 'package:provider/provider.dart';
 
 class GymView extends StatefulWidget {
@@ -71,7 +72,15 @@ class _GymViewState extends State<GymView> {
                   Tooltip(
                     message: "Enter to gym's menu",
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GymMenu(
+                                gymData: widget.gymData,
+                              ),
+                            ));
+                      },
                       icon: const Icon(Icons.exit_to_app),
                     ),
                   ),

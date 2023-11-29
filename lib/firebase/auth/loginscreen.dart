@@ -24,15 +24,17 @@ class LoginScreen extends StatelessWidget {
               //TODO: Do something with email verification
             } else if (state.runtimeType == UserCreated) {
               user = (state as UserCreated).credential.user;
-              user!.updateDisplayName("New User");
+              user!.updateDisplayName('New User');
               user.updatePhotoURL(null);
               applicationState.createUserData(
                   UserData(
                     userId: user.uid,
-                    info: "At the gym.",
+                    info: 'At the gym.',
                     sex: true,
                     birthDay: DateTime.now(),
                     staff: false,
+                    displayName: 'New User',
+                    photoURL: null,
                   ).toMap(),
                   context);
               Navigator.pop(context);

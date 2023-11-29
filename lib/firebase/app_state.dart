@@ -39,7 +39,7 @@ class ApplicationState extends ChangeNotifier {
             .data();
         if (map != null) {
           if (map.isNotEmpty) {
-            _userData = UserData.fromMap(map);
+            _userData = UserData.fromJson(map);
           }
         }
         FirebaseFirestore.instance
@@ -49,10 +49,9 @@ class ApplicationState extends ChangeNotifier {
             .listen((event) async {
           List<QueryDocumentSnapshot> newMemberships = event.docs;
           _gyms = [];
-          print("user is $user");
-          print(newMemberships);
+
           for (QueryDocumentSnapshot documentSnapshot in newMemberships) {
-            gyms?.add(await getGymData((documentSnapshot.data()
+            _gyms?.add(await getGymData((documentSnapshot.data()
                 as Map<String, dynamic>)['gymId'] as String));
           }
           notifyListeners();
@@ -78,11 +77,19 @@ class ApplicationState extends ChangeNotifier {
     Reference pic = ppFolder.child(user!.uid);
     if (filePath == null) {
       user!.updatePhotoURL(null);
+      FirebaseFirestore.instance
+          .collection('userData')
+          .doc(user!.uid)
+          .update({'photoURL': null});
       await pic.delete();
       return null;
     }
     await pic.putFile(File(filePath));
     user!.updatePhotoURL(await pic.getDownloadURL());
+    FirebaseFirestore.instance
+        .collection('userData')
+        .doc(user!.uid)
+        .update({'photoURL': pic.getDownloadURL()});
     return pic.getDownloadURL();
   }
 
@@ -111,11 +118,12 @@ class ApplicationState extends ChangeNotifier {
         .update(userData);
   }
 
-  Future<DocumentReference> createGym(GymData gymData) async {
-    DocumentReference gymReference = await FirebaseFirestore.instance
+  Future<DocumentReference> createGym(GymData gymData, String code) async {
+    await FirebaseFirestore.instance
         .collection('gyms')
-        .add(gymData.toJson());
-    return gymReference;
+        .doc(code)
+        .set(gymData.toJson());
+    return FirebaseFirestore.instance.collection('gyms').doc(code);
   }
 
   Future<void> joinGym(DocumentReference documentReference) async {
@@ -138,5 +146,15 @@ class ApplicationState extends ChangeNotifier {
     Reference pic = ppFolder.child('$gymId.$termination');
     await pic.putFile(file);
     return pic.getDownloadURL();
+  }
+
+  Future<UserData?> getUserInfo(String uid) async {
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('userData').doc(uid).get();
+    if (snapshot.data() != null) {
+      return UserData.fromJson(snapshot.data() as Map<String, dynamic>);
+    }
+    return null;
+    // return result;
   }
 }
