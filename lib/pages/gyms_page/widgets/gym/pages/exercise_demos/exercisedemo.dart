@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/firebase/widgets/icontext.dart';
+
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/demo_details.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/demodata.dart';
 
 class ExerciseDemo extends StatelessWidget {
@@ -13,7 +14,14 @@ class ExerciseDemo extends StatelessWidget {
       children: [
         ListTile(
           title: Text(demoData.exerciseName),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      DemoDetails(demonstrationData: demoData),
+                ));
+          },
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

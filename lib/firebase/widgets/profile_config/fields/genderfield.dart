@@ -1,41 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 
-class GenderField extends StatefulWidget {
+class SwitchField extends StatefulWidget {
+  final String? title;
+  final Widget? icon;
+  final String? valA;
+  final String? valB;
   final bool value;
+  final List<Color>? thumbColors;
+  final List<Color>? trackColors;
   final Function(bool value) onChange;
-  const GenderField({super.key, required this.value, required this.onChange});
+  const SwitchField({
+    super.key,
+    required this.value,
+    required this.onChange,
+    this.title,
+    this.icon,
+    this.valA,
+    this.valB,
+    this.thumbColors,
+    this.trackColors,
+  });
 
   @override
-  State<GenderField> createState() => _GenderFieldState();
+  State<SwitchField> createState() => _SwitchFieldState();
 }
 
-class _GenderFieldState extends State<GenderField> {
+class _SwitchFieldState extends State<SwitchField> {
   bool? val;
   @override
   Widget build(BuildContext context) {
     val ??= widget.value;
     return Column(
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Row(
-                children: [Icon(Icons.female), Icon(Icons.male)],
-              ),
+              padding: const EdgeInsets.all(8.0),
+              child: widget.icon ??
+                  const Row(
+                    children: [Icon(Icons.female), Icon(Icons.male)],
+                  ),
             ),
             Text(
-              "Biological Sex",
-              style: TextStyle(fontSize: 20),
-            )
+              widget.title ?? 'Biological Sex',
+              style: const TextStyle(fontSize: 20),
+            ),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Male"),
+            Text(widget.valA ?? 'Male'),
             Switch(
               value: val!,
               onChanged: (value) {
@@ -44,19 +61,20 @@ class _GenderFieldState extends State<GenderField> {
                 });
                 widget.onChange(value);
               },
-              activeColor: adaptiveColor(
-                  const Color.fromARGB(255, 186, 77, 179),
-                  const Color.fromARGB(255, 222, 111, 214),
-                  context),
-              inactiveThumbColor: const Color.fromARGB(255, 17, 74, 121),
+              activeColor: widget.thumbColors?[1] ??
+                  adaptiveColor(const Color.fromARGB(255, 186, 77, 179),
+                      const Color.fromARGB(255, 222, 111, 214), context),
+              inactiveThumbColor: widget.thumbColors?[0] ??
+                  const Color.fromARGB(255, 17, 74, 121),
               trackColor: MaterialStateColor.resolveWith(
                 (states) => !val!
-                    ? Colors.blue
-                    : adaptiveColor(const Color.fromARGB(255, 116, 48, 111),
-                        const Color.fromARGB(255, 103, 52, 100), context),
+                    ? (widget.trackColors?[0] ?? Colors.blue)
+                    : (widget.trackColors?[1] ??
+                        adaptiveColor(const Color.fromARGB(255, 116, 48, 111),
+                            const Color.fromARGB(255, 103, 52, 100), context)),
               ),
             ),
-            const Text("Female"),
+            Text(widget.valB ?? 'Female'),
           ],
         )
       ],

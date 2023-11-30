@@ -117,7 +117,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
                 },
               ),
               const AdaptiveDivider(),
-              GenderField(
+              SwitchField(
                 value: newUserData.sex,
                 onChange: (value) {
                   newUserData.sex = !newUserData.sex;

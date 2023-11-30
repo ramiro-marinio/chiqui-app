@@ -54,8 +54,8 @@ class GymMenuState extends State<GymMenu> {
         body: TabBarView(children: [
           GymInfo(gymData: widget.gymData),
           const Chat(),
-          const ExerciseDemonstrations(
-            gymId: "a",
+          ExerciseDemonstrations(
+            gymId: widget.gymData.id!,
           ),
         ]),
       ),

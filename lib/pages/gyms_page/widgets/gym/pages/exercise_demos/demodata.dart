@@ -1,37 +1,44 @@
 class DemonstrationData {
+  final String? id;
+  final String? gymId;
   final String exerciseName;
   final bool repUnit;
   final String? description;
-  final List<String>? muscles;
-  final List<String>? advice;
+  final List workAreas;
+  final String? advice;
   final String? resourceURL;
   final String? resourceFormat;
   DemonstrationData.fromJson(Map<String, dynamic> json)
-      : exerciseName = json['exerciseName'],
+      : id = json['id'],
+        exerciseName = json['exerciseName'],
         repUnit = json['repUnit'],
         description = json['description'],
-        muscles = json['muscles'],
+        workAreas = json['muscles'],
         advice = json['advice'],
         resourceURL = json['resourceURL'],
-        resourceFormat = json['resourceFormat'];
+        resourceFormat = json['resourceFormat'],
+        gymId = json['gymId'];
   DemonstrationData({
     required this.exerciseName,
     required this.repUnit,
     this.description,
-    this.muscles,
+    required this.workAreas,
     this.advice,
     this.resourceURL,
     this.resourceFormat,
+    this.id,
+    this.gymId,
   });
   Map<String, dynamic> toJson() {
     return {
       'exerciseName': exerciseName,
       'repUnit': repUnit,
       'description': description,
-      'muscles': muscles,
+      'muscles': workAreas,
       'advice': advice,
       'resourceURL': resourceURL,
       'resourceFormat': resourceFormat,
+      'gymId': gymId,
     };
   }
 }

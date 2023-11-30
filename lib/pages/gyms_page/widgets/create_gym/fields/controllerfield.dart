@@ -44,7 +44,7 @@ class ControllerField extends StatelessWidget {
               decoration: InputDecoration(
                 border: maxLines != null
                     ? OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(color: Colors.grey))
                     : null,
               ),

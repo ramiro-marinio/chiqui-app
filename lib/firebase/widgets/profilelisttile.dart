@@ -80,6 +80,7 @@ class _ProfileState extends State<Profile> {
                       icon: Icon(Icons.exit_to_app), text: "Log Out"),
                   onTap: () {
                     applicationState.signOut();
+                    context.push('/sign-in');
                   },
                 ),
               ]);

@@ -119,6 +119,7 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<DocumentReference> createGym(GymData gymData, String code) async {
+    gymData.id = code;
     await FirebaseFirestore.instance
         .collection('gyms')
         .doc(code)
@@ -156,5 +157,21 @@ class ApplicationState extends ChangeNotifier {
     }
     return null;
     // return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getDemoData(String gymId) async {
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs =
+        (await FirebaseFirestore.instance
+                .collection('demonstrations')
+                .where('gymId', isEqualTo: gymId)
+                .get())
+            .docs;
+    return List.generate(docs.length, (index) => docs[index].data());
+  }
+
+  void addDemonstration(String gymId, Map<String, dynamic> demonstrationData) {
+    FirebaseFirestore.instance.collection('demonstrations').add(
+          demonstrationData,
+        );
   }
 }
