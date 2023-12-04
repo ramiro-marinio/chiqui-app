@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/genderfield.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
+import 'package:gymapp/functions/showprogressdialog.dart';
+import 'package:gymapp/navigation/widgets/confirmationdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/fields/controllerfield.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/demodata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/interfaces/extraadvice.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/interfaces/workareasfield.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/videopickfield.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/interfaces/videopickfield.dart';
 import 'package:provider/provider.dart';
 
 class DemoMaker extends StatefulWidget {
@@ -87,32 +91,48 @@ class _DemoMakerState extends State<DemoMaker> {
               },
             ),
             const AdaptiveDivider(),
-            // VideoPickField(
-            //   chooseVideo: (path) {
-            //     videoPath = path;
-            //   },
-            // ),
+            VideoPickField(
+              chooseVideo: (path) {
+                videoPath = path;
+              },
+            ),
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<ApplicationState>().addDemonstration(
-              widget.gymId,
-              DemonstrationData(
-                exerciseName: nameController.text,
-                repUnit: unit,
-                advice: advice,
-                workAreas: workAreas,
-                description: descriptionController.text,
-                gymId: widget.gymId,
-              ).toJson());
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Demonstration Created Successfully!'),
+          showDialog(
+            context: context,
+            builder: (context) => ConfirmationDialog(
+              title: 'Create Exercise?',
+              description: 'Make sure you inserted the correct data!',
+              yes: () async {
+                await showProgressDialog('Saving Demonstration...', context);
+                if (context.mounted) {
+                  context.read<ApplicationState>().addDemonstration(
+                        widget.gymId,
+                        DemonstrationData(
+                          exerciseName: nameController.text,
+                          repUnit: unit,
+                          advice: advice,
+                          workAreas: workAreas,
+                          description: descriptionController.text,
+                          gymId: widget.gymId,
+                        ),
+                        videoPath != null ? File(videoPath!) : null,
+                      );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Demonstration Created Successfully!'),
+                    ),
+                  );
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                }
+              },
             ),
           );
-          Navigator.pop(context);
         },
         child: const Icon(Icons.save),
       ),

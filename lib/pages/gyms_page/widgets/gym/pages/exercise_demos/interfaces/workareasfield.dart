@@ -1,7 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/interfaces/tag.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/interfaces/widgets/tag.dart';
 
 class WorkAreasField extends StatefulWidget {
   final List<String> workAreas;
@@ -29,8 +30,8 @@ class _WorkAreasFieldState extends State<WorkAreasField> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.list),
-              Text(
-                "Muscles Trained in exercise",
+              AutoSizeText(
+                "Work Areas trained in exercise",
                 style: TextStyle(fontSize: 20),
               ),
             ],
@@ -72,7 +73,6 @@ class _WorkAreasFieldState extends State<WorkAreasField> {
               child: IconButton(
                 onPressed: () {
                   setState(() {
-                    print(muscleController.text);
                     widget.addWorkArea(muscleController.text);
                   });
                   muscleController.clear();

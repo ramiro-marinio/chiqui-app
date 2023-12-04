@@ -25,14 +25,22 @@ class _AppState extends State<App> {
     return MaterialApp.router(
       routerConfig: goRouter,
       theme: ThemeData(
-        useMaterial3: true,
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.black,
+          useMaterial3: true,
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.black,
+            ),
           ),
+          sliderTheme: const SliderThemeData(
+            showValueIndicator: ShowValueIndicator.always,
+          )),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        sliderTheme: const SliderThemeData(
+          showValueIndicator: ShowValueIndicator.always,
         ),
       ),
-      darkTheme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
     );
   }
 }

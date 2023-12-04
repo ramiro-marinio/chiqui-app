@@ -2,10 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/demodata.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/interfaces/video_viewer.dart';
 
-class DemoDetails extends StatelessWidget {
+class ViewDemoDetails extends StatelessWidget {
   final DemonstrationData demonstrationData;
-  const DemoDetails({super.key, required this.demonstrationData});
+  const ViewDemoDetails({super.key, required this.demonstrationData});
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +65,13 @@ class DemoDetails extends StatelessWidget {
               ],
             ),
             Text(
-              demonstrationData.advice ?? 'No Information',
+              (demonstrationData.advice?.isNotEmpty ?? false)
+                  ? demonstrationData.advice ?? 'No Information'
+                  : 'No Information',
               style: const TextStyle(fontSize: 20),
             ),
+            const AdaptiveDivider(),
+            VideoViewer(url: demonstrationData.resourceURL),
           ],
         ),
       ),

@@ -13,6 +13,7 @@ import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase_options.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/demodata.dart';
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -169,9 +170,24 @@ class ApplicationState extends ChangeNotifier {
     return List.generate(docs.length, (index) => docs[index].data());
   }
 
-  void addDemonstration(String gymId, Map<String, dynamic> demonstrationData) {
+  Future<String> createDemoVideo(String gymId, File videoFile) async {
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference ppFolder = referenceRoot.child('dem-vids');
+    String termination = videoFile.path.split('.').last;
+    Reference video = ppFolder.child('$gymId.$termination');
+    await video.putFile(videoFile);
+    return await video.getDownloadURL();
+  }
+
+  Future<void> addDemonstration(
+      String gymId, DemonstrationData demonstrationData, File? video) async {
+    if (video != null) {
+      String videoURL = await createDemoVideo(gymId, video);
+      demonstrationData.resourceURL = videoURL;
+      demonstrationData.resourceFormat = video.path.split('.').last;
+    }
     FirebaseFirestore.instance.collection('demonstrations').add(
-          demonstrationData,
+          demonstrationData.toJson(),
         );
   }
 }

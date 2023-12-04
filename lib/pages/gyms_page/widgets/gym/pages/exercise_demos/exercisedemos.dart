@@ -24,7 +24,6 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
       Future<List<Map<String, dynamic>>> data =
           applicationState.getDemoData(widget.gymId);
 
-      print(result);
       return FutureBuilder(
         future: data,
         builder: (context, snapshot) {

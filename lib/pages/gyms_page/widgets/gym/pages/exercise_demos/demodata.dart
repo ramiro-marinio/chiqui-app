@@ -6,8 +6,8 @@ class DemonstrationData {
   final String? description;
   final List workAreas;
   final String? advice;
-  final String? resourceURL;
-  final String? resourceFormat;
+  String? resourceURL;
+  String? resourceFormat;
   DemonstrationData.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         exerciseName = json['exerciseName'],
