@@ -13,6 +13,7 @@ import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase_options.dart';
+import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/demodata.dart';
 
 class ApplicationState extends ChangeNotifier {
@@ -172,7 +173,7 @@ class ApplicationState extends ChangeNotifier {
 
   Future<String> createDemoVideo(String gymId, File videoFile) async {
     Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference ppFolder = referenceRoot.child('dem-vids');
+    Reference ppFolder = referenceRoot.child('demo-vids');
     String termination = videoFile.path.split('.').last;
     Reference video = ppFolder.child('$gymId.$termination');
     await video.putFile(videoFile);
@@ -180,13 +181,13 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> addDemonstration(
-      String gymId, DemonstrationData demonstrationData, File? video) async {
+      DemonstrationData demonstrationData, File? video) async {
     if (video != null) {
-      String videoURL = await createDemoVideo(gymId, video);
+      String videoURL = await createDemoVideo(generateRandomString(28), video);
       demonstrationData.resourceURL = videoURL;
       demonstrationData.resourceFormat = video.path.split('.').last;
     }
-    FirebaseFirestore.instance.collection('demonstrations').add(
+    await FirebaseFirestore.instance.collection('demonstrations').add(
           demonstrationData.toJson(),
         );
   }

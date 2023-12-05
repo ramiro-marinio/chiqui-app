@@ -38,13 +38,11 @@ class ViewDemoDetails extends StatelessWidget {
               (index) => Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    child: SizedBox(
-                      width: 70,
-                      child: AutoSizeText(
-                        demonstrationData.workAreas[index],
-                        textAlign: TextAlign.center,
-                      ),
+                  child: SizedBox(
+                    width: 70,
+                    child: AutoSizeText(
+                      demonstrationData.workAreas[index],
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),

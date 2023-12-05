@@ -40,7 +40,14 @@ class ControllerField extends StatelessWidget {
           padding: EdgeInsets.all(maxLines != null ? 8.0 : 0.0),
           child: SizedBox(
             width: maxLines != null ? double.infinity : 200,
-            child: TextField(
+            child: TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please insert a title';
+                } else {
+                  return null;
+                }
+              },
               decoration: InputDecoration(
                 border: maxLines != null
                     ? OutlineInputBorder(
