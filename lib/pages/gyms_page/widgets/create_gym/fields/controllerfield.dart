@@ -7,14 +7,15 @@ class ControllerField extends StatelessWidget {
   final int? maxLines;
   final int maxLength;
   final TextEditingController controller;
-  const ControllerField({
-    super.key,
-    required this.controller,
-    required this.title,
-    required this.icon,
-    required this.maxLength,
-    this.maxLines,
-  });
+  final String? Function(String? value)? validator;
+  const ControllerField(
+      {super.key,
+      required this.controller,
+      required this.title,
+      required this.icon,
+      required this.maxLength,
+      this.maxLines,
+      this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +42,7 @@ class ControllerField extends StatelessWidget {
           child: SizedBox(
             width: maxLines != null ? double.infinity : 200,
             child: TextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please insert a title';
-                } else {
-                  return null;
-                }
-              },
+              validator: validator,
               decoration: InputDecoration(
                 border: maxLines != null
                     ? OutlineInputBorder(

@@ -22,6 +22,7 @@ class _CreateGymState extends State<CreateGym> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   String? photoPath;
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final ApplicationState applicationState =
@@ -53,96 +54,109 @@ class _CreateGymState extends State<CreateGym> {
         );
         return true;
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Create a Gym"),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const AutoSizeText(
-                "Create your Gym",
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              const AdaptiveDivider(),
-              ControllerField(
-                icon: const Icon(Icons.edit),
-                title: "Gym Name",
-                controller: nameController,
-                maxLength: 100,
-              ),
-              const AdaptiveDivider(),
-              ControllerField(
-                controller: descriptionController,
-                title: "Gym Description",
-                maxLines: 6,
-                maxLength: 1500,
-                icon: const Icon(Icons.info),
-              ),
-              const AdaptiveDivider(),
-              GymPicPicker(
-                photoPath: photoPath,
-                deletePhoto: () {
-                  setState(() {
-                    photoPath = null;
-                  });
-                },
-                pickPhoto: (xFile) {
-                  setState(() {
-                    photoPath = xFile.path;
-                  });
-                },
-              ),
-            ],
+      child: Form(
+        key: _formKey,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Create a Gym"),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            showDialog(
-              context: context,
-              builder: (context) => const AlertDialog(
-                title: Text("Creating Gym..."),
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator.adaptive(),
-                  ],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const AutoSizeText(
+                  "Create your Gym",
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
-              ),
-            );
-            try {
-              String code = generateRandomString(28);
-              GymData startingData = GymData(
-                ownerId: applicationState.user!.uid,
-                name: nameController.text,
-                description: descriptionController.text,
+                const AdaptiveDivider(),
+                ControllerField(
+                  icon: const Icon(Icons.edit),
+                  title: "Gym Name",
+                  controller: nameController,
+                  maxLength: 100,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please insert a name';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                const AdaptiveDivider(),
+                ControllerField(
+                  controller: descriptionController,
+                  title: "Gym Description",
+                  maxLines: 6,
+                  maxLength: 1500,
+                  icon: const Icon(Icons.info),
+                ),
+                const AdaptiveDivider(),
+                GymPicPicker(
+                  photoPath: photoPath,
+                  deletePhoto: () {
+                    setState(() {
+                      photoPath = null;
+                    });
+                  },
+                  pickPhoto: (xFile) {
+                    setState(() {
+                      photoPath = xFile.path;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              if (!_formKey.currentState!.validate()) {
+                return;
+              }
+              showDialog(
+                context: context,
+                builder: (context) => const AlertDialog(
+                  title: Text("Creating Gym..."),
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator.adaptive(),
+                    ],
+                  ),
+                ),
               );
-              if (photoPath != null) {
-                String picPath =
-                    await applicationState.createGymPic(code, File(photoPath!));
-                startingData.photoURL = picPath;
+              try {
+                String code = generateRandomString(28);
+                GymData startingData = GymData(
+                  ownerId: applicationState.user!.uid,
+                  name: nameController.text,
+                  description: descriptionController.text,
+                );
+                if (photoPath != null) {
+                  String picPath = await applicationState.createGymPic(
+                      code, File(photoPath!));
+                  startingData.photoURL = picPath;
+                }
+                DocumentReference gymReference =
+                    await applicationState.createGym(startingData, code);
+                applicationState.joinGym(gymReference);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(const SnackBar(content: Text("Error")));
+                }
               }
-              DocumentReference gymReference =
-                  await applicationState.createGym(startingData, code);
-              applicationState.joinGym(gymReference);
-            } catch (e) {
               if (context.mounted) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(const SnackBar(content: Text("Error")));
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Gym created successfully!")));
+                Navigator.pop(context);
+                Navigator.pop(context);
               }
-            }
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Gym created successfully!")));
-              Navigator.pop(context);
-              Navigator.pop(context);
-            }
-          },
-          child: const Icon(Icons.check),
+            },
+            child: const Icon(Icons.check),
+          ),
         ),
       ),
     );

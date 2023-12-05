@@ -46,6 +46,13 @@ class _DemoMakerState extends State<DemoMaker> {
                 title: 'Exercise Name',
                 icon: const Icon(Icons.fitness_center),
                 maxLength: 100,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please insert a title';
+                  } else {
+                    return null;
+                  }
+                },
               ),
               const AdaptiveDivider(),
               SwitchField(
