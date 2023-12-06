@@ -128,20 +128,21 @@ class _CreateGymState extends State<CreateGym> {
                 ),
               );
               try {
-                String code = generateRandomString(28);
+                String id = generateRandomString(28);
                 GymData startingData = GymData(
                   ownerId: applicationState.user!.uid,
                   name: nameController.text,
                   description: descriptionController.text,
                 );
                 if (photoPath != null) {
-                  String picPath = await applicationState.createGymPic(
-                      code, File(photoPath!));
+                  String picPath =
+                      await applicationState.createGymPic(id, File(photoPath!));
                   startingData.photoURL = picPath;
                 }
                 DocumentReference gymReference =
-                    await applicationState.createGym(startingData, code);
-                applicationState.joinGym(gymReference);
+                    await applicationState.createGym(startingData, id);
+                await applicationState.addInviteData(id);
+                await applicationState.joinGym(gymReference);
               } catch (e) {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context)

@@ -6,6 +6,7 @@ import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
 import 'package:gymapp/pages/gyms_page/widgets/add_gym.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/creategym.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/gym_view.dart';
+import 'package:gymapp/pages/gyms_page/widgets/join_gym/join_gym.dart';
 import 'package:provider/provider.dart';
 
 class MyGyms extends StatefulWidget {
@@ -27,7 +28,14 @@ class _MyGymsState extends State<MyGyms> {
             title: const Text("My Gyms"),
             actions: [
               AddGymButton(
-                onJoinGym: () {},
+                onJoinGym: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const JoinGym(),
+                    ),
+                  );
+                },
                 onCreateGym: () {
                   Navigator.push(
                     context,

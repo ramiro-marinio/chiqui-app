@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/pages/chat.dart';
+import 'package:gymapp/pages/gyms_page/settings/settings.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/pages/chat/mychats.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/exercisedemos.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/pages/gyminfo.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/pages/info/gyminfo.dart';
+import 'package:gymapp/widgets/crawltext.dart';
+import 'package:provider/provider.dart';
 
 class GymMenu extends StatefulWidget {
   final GymData gymData;
@@ -15,6 +19,7 @@ class GymMenu extends StatefulWidget {
 class GymMenuState extends State<GymMenu> {
   @override
   Widget build(BuildContext context) {
+    ApplicationState applicationState = Provider.of<ApplicationState>(context);
     return DefaultTabController(
       length: 3,
       animationDuration: const Duration(milliseconds: 300),
@@ -32,7 +37,9 @@ class GymMenuState extends State<GymMenu> {
                         as ImageProvider,
               ),
             ),
-            Text(widget.gymData.name)
+            Expanded(
+              child: CrawlText(text: widget.gymData.name),
+            )
           ]),
           bottom: const TabBar(
             tabs: [
@@ -50,10 +57,28 @@ class GymMenuState extends State<GymMenu> {
               ),
             ],
           ),
+          actions: [
+            Visibility(
+              visible: applicationState.user!.uid == widget.gymData.ownerId,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(
+                        gymData: widget.gymData,
+                      ),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.settings),
+              ),
+            )
+          ],
         ),
         body: TabBarView(children: [
           GymInfo(gymData: widget.gymData),
-          const Chat(),
+          MyChats(gymData: widget.gymData),
           ExerciseDemonstrations(
             gymId: widget.gymData.id!,
           ),

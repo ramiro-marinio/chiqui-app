@@ -11,6 +11,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
+import 'package:gymapp/firebase/gyms/invitedata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase_options.dart';
 import 'package:gymapp/functions/random_string.dart';
@@ -53,8 +54,9 @@ class ApplicationState extends ChangeNotifier {
           _gyms = [];
 
           for (QueryDocumentSnapshot documentSnapshot in newMemberships) {
-            _gyms?.add(await getGymData((documentSnapshot.data()
-                as Map<String, dynamic>)['gymId'] as String));
+            GymData? gymData = await getGymData((documentSnapshot.data()
+                as Map<String, dynamic>)['gymId'] as String);
+            _gyms?.add(gymData!);
           }
           notifyListeners();
         });
@@ -136,10 +138,23 @@ class ApplicationState extends ChangeNotifier {
         );
   }
 
-  Future<GymData> getGymData(String gymId) async {
-    return GymData.fromJson(
+  bool checkMembership(String gymId) {
+    for (GymData gymData in _gyms!) {
+      if (gymData.id == gymId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<GymData?> getGymData(String gymId) async {
+    Map<String, dynamic>? data =
         (await FirebaseFirestore.instance.collection('gyms').doc(gymId).get())
-            .data()!);
+            .data();
+    if (data != null) {
+      return GymData.fromJson(data);
+    }
+    return null;
   }
 
   Future<String> createGymPic(String gymId, File file) async {
@@ -190,5 +205,59 @@ class ApplicationState extends ChangeNotifier {
     await FirebaseFirestore.instance.collection('demonstrations').add(
           demonstrationData.toJson(),
         );
+  }
+
+  Future<InviteData?> getInviteData(String gymId) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('invites')
+        .where('gymId', isEqualTo: gymId)
+        .get();
+    if (querySnapshot.docs.isEmpty) {
+      return null;
+    }
+    return InviteData.fromJson(
+      querySnapshot.docs[0].data(),
+    );
+  }
+
+  Future<InviteData?> getInviteDataByCode(String code) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('invites')
+        .where('code', isEqualTo: code)
+        .get();
+    if (querySnapshot.docs.isEmpty) {
+      return null;
+    }
+    return InviteData.fromJson(
+      querySnapshot.docs[0].data(),
+    );
+  }
+
+  Future<void> addInviteData(String gymId) async {
+    await FirebaseFirestore.instance
+        .collection('invites')
+        .add(InviteData(code: generateRandomString(7), gymId: gymId).toJson());
+  }
+
+  Future<void> updateInviteData(InviteData data) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('invites')
+        .where('gymId', isEqualTo: data.gymId)
+        .get();
+    await querySnapshot.docs[0].reference.update(data.toJson());
+  }
+
+  Future<bool> verifyInvite(String code) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('invites')
+        .where('code', isEqualTo: code)
+        .get();
+    if (querySnapshot.docs.isEmpty) {
+      return true;
+    }
+    return false;
   }
 }

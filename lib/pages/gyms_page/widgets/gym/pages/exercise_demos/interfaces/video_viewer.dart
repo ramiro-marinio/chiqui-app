@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/interfaces/widgets/progressbar.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/interfaces/widgets/videoprogressbar.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoViewer extends StatefulWidget {
