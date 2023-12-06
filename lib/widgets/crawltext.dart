@@ -16,6 +16,9 @@ class _CrawlTextState extends State<CrawlText> {
   Widget build(BuildContext context) {
     return StatefulBuilder(
       builder: (context, setState) {
+        setState(
+          () {},
+        );
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
           int distance = (_controller.position.maxScrollExtent -
                   _controller.position.minScrollExtent)

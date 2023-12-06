@@ -176,6 +176,24 @@ class ApplicationState extends ChangeNotifier {
     // return result;
   }
 
+  Future<List<UserData?>> getGymUsers(String gymId) async {
+    QuerySnapshot<Map<String, dynamic>> membershipsQuerySnapshot =
+        await FirebaseFirestore.instance
+            .collection('memberships')
+            .where('gymId', isEqualTo: gymId)
+            .get();
+    List<String> userIds =
+        List.generate(membershipsQuerySnapshot.docs.length, (index) {
+      Map<String, dynamic> data = membershipsQuerySnapshot.docs[index].data();
+      return data['userId'] as String;
+    });
+    List<UserData?> result = [];
+    for (String uid in userIds) {
+      result.add(await getUserInfo(uid));
+    }
+    return result;
+  }
+
   Future<List<Map<String, dynamic>>> getDemoData(String gymId) async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs =
         (await FirebaseFirestore.instance

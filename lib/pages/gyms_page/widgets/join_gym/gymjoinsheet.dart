@@ -66,6 +66,7 @@ class _GymJoinSheetState extends State<GymJoinSheet> {
                             .collection('gyms')
                             .doc(gymData.id));
                         Navigator.pop(context);
+                        Navigator.pop(context);
                       } else {
                         showInfoDialog(
                           title: 'Already Joined',
