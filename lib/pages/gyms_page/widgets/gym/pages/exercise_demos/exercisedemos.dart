@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
+import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/demodata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/exercisedemo.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/interfaces/demomaker.dart';
 import 'package:provider/provider.dart';
 
 class ExerciseDemonstrations extends StatefulWidget {
-  final String gymId;
-  const ExerciseDemonstrations({super.key, required this.gymId});
+  final GymData gymData;
+  const ExerciseDemonstrations({
+    super.key,
+    required this.gymData,
+  });
 
   @override
   State<ExerciseDemonstrations> createState() => _ExerciseDemonstrationsState();
@@ -22,7 +26,7 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
     return Consumer<ApplicationState>(
         builder: (context, applicationState, child) {
       Future<List<Map<String, dynamic>>> data =
-          applicationState.getDemoData(widget.gymId);
+          applicationState.getDemoData(widget.gymData.id!);
 
       return FutureBuilder(
         future: data,
@@ -50,8 +54,7 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
                 ),
                 ...result!,
                 Visibility(
-                  visible:
-                      applicationState.user!.uid == applicationState.user!.uid,
+                  visible: applicationState.user!.uid == widget.gymData.ownerId,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -61,7 +64,7 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DemoMaker(
-                                gymId: widget.gymId,
+                                gymId: widget.gymData.id!,
                               ),
                             ),
                           );

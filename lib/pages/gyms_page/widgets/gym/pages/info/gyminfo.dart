@@ -35,6 +35,7 @@ class GymInfo extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Gym Name:${gymData.name}',
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                           fontSize: 25, fontWeight: FontWeight.w600),
                     ),

@@ -2,18 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/widgets/icontext.dart';
 
 class OptionsButton extends StatelessWidget {
-  const OptionsButton({super.key});
+  final VoidCallback leaveGym;
+  final VoidCallback rateGym;
+  const OptionsButton(
+      {super.key, required this.leaveGym, required this.rateGym});
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
       itemBuilder: (context) {
         return [
-          const PopupMenuItem(
-            child: IconText(icon: Icon(Icons.star), text: "Rate gym"),
+          PopupMenuItem(
+            child: const IconText(icon: Icon(Icons.star), text: "Rate gym"),
+            onTap: () {
+              rateGym();
+            },
           ),
-          const PopupMenuItem(
-            child: IconText(icon: Icon(Icons.close), text: "Leave"),
+          PopupMenuItem(
+            child: const IconText(icon: Icon(Icons.close), text: "Leave"),
+            onTap: () {
+              leaveGym();
+            },
           ),
         ];
       },

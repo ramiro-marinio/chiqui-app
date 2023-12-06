@@ -33,7 +33,7 @@ class UserData {
       'birthDay': birthDay.millisecondsSinceEpoch,
       'staff': staff,
       'displayName': displayName,
-      'photoUrl': photoURL
+      'photoURL': photoURL
     };
   }
 }

@@ -1,10 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/optionsbutton.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/gymmenu.dart';
+import 'package:gymapp/pages/gyms_page/widgets/rating/rate_gym.dart';
 import 'package:provider/provider.dart';
 
 class GymView extends StatefulWidget {
@@ -16,10 +18,12 @@ class GymView extends StatefulWidget {
 }
 
 class _GymViewState extends State<GymView> {
+  Future<double?>? rating;
   @override
   Widget build(BuildContext context) {
     return Consumer<ApplicationState>(
         builder: (context, applicationState, child) {
+      rating ??= applicationState.getRating(widget.gymData.id!);
       return Padding(
         padding: const EdgeInsets.only(top: 8),
         child: Card(
@@ -42,6 +46,36 @@ class _GymViewState extends State<GymView> {
                   ),
                 ),
               ),
+              Positioned(
+                  right: 10,
+                  top: 2,
+                  child: FutureBuilder(
+                    future: rating,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return Visibility(
+                          visible: snapshot.data != null,
+                          child: Row(children: [
+                            RatingBarIndicator(
+                              rating: snapshot.data ?? 5,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: adaptiveColor(
+                                    const Color.fromARGB(255, 100, 77, 0),
+                                    Colors.amber,
+                                    context),
+                              ),
+                              itemCount: 5,
+                              itemSize: 20.0,
+                              direction: Axis.horizontal,
+                            ),
+                          ]),
+                        );
+                      } else {
+                        return const CircularProgressIndicator.adaptive();
+                      }
+                    },
+                  )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -84,7 +118,19 @@ class _GymViewState extends State<GymView> {
                       icon: const Icon(Icons.exit_to_app),
                     ),
                   ),
-                  const OptionsButton(),
+                  OptionsButton(
+                    rateGym: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RateGym(
+                            gymData: widget.gymData,
+                          ),
+                        ),
+                      );
+                    },
+                    leaveGym: () {},
+                  ),
                 ],
               ),
             ]),

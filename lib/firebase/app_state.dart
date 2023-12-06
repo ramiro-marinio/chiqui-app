@@ -13,6 +13,7 @@ import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/invitedata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
+import 'package:gymapp/firebase/gyms/messagedata.dart';
 import 'package:gymapp/firebase_options.dart';
 import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/demodata.dart';
@@ -93,7 +94,7 @@ class ApplicationState extends ChangeNotifier {
     FirebaseFirestore.instance
         .collection('userData')
         .doc(user!.uid)
-        .update({'photoURL': pic.getDownloadURL()});
+        .update({'photoURL': await pic.getDownloadURL()});
     return pic.getDownloadURL();
   }
 
@@ -277,5 +278,42 @@ class ApplicationState extends ChangeNotifier {
       return true;
     }
     return false;
+  }
+
+  Future<void> sendMessage(MessageData messageData) async {
+    await FirebaseFirestore.instance
+        .collection('messages')
+        .add(messageData.toJson());
+  }
+
+  Future<void> sendReview(String review, double stars, String gymId) async {
+    await FirebaseFirestore.instance.collection('ratings').doc(user!.uid).set({
+      'review': review,
+      'stars': stars,
+      'gymId': gymId,
+      'userId': user!.uid,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+    });
+  }
+
+  Future<double?> getRating(String gymId) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('ratings')
+        .where('gymId', isEqualTo: gymId)
+        .orderBy('timestamp', descending: true)
+        .limit(100)
+        .get();
+    if (querySnapshot.docs.isEmpty) {
+      return null;
+    }
+    double sum = 0;
+    int amount = 0;
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc
+        in querySnapshot.docs) {
+      sum += doc.data()['stars'] as double;
+      amount++;
+    }
+    return sum / amount;
   }
 }

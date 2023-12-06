@@ -80,7 +80,7 @@ class GymMenuState extends State<GymMenu> {
           GymInfo(gymData: widget.gymData),
           MyChats(gymData: widget.gymData),
           ExerciseDemonstrations(
-            gymId: widget.gymData.id!,
+            gymData: widget.gymData,
           ),
         ]),
       ),
