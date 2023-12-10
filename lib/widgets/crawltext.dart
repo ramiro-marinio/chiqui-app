@@ -11,30 +11,43 @@ class CrawlText extends StatefulWidget {
 
 class _CrawlTextState extends State<CrawlText> {
   final _controller = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      double maxExtent = _controller.position.maxScrollExtent;
+      double minExtent = _controller.position.minScrollExtent;
+      autoSlide(maxExtent, minExtent, maxExtent);
+    });
+  }
+
+  void autoSlide(double max, double min, double direction) {
+    double distance = max - min;
+    _controller
+        .animateTo(
+      direction,
+      duration: Duration(milliseconds: distance.toInt() * 35),
+      curve: Curves.linear,
+    )
+        .then((_) {
+      if (direction == max) {
+        direction = 0;
+      } else {
+        direction = max;
+      }
+      Future.delayed(
+        const Duration(seconds: 1),
+        () {
+          autoSlide(max, min, direction);
+        },
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
       builder: (context, setState) {
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-          int distance = (_controller.position.maxScrollExtent -
-                  _controller.position.minScrollExtent)
-              .toInt();
-          _controller.jumpTo(0);
-          await _controller.animateTo(_controller.position.maxScrollExtent,
-              duration:
-                  Duration(milliseconds: ((distance / 10) * 1000).toInt()),
-              curve: Curves.linear);
-          await Future.delayed(const Duration(seconds: 3));
-          await _controller.animateTo(_controller.position.minScrollExtent,
-              duration:
-                  Duration(milliseconds: ((distance / 10) * 1000).toInt()),
-              curve: Curves.linear);
-          await Future.delayed(const Duration(seconds: 3));
-          if (context.mounted) {
-            setState(() {});
-          }
-        });
         return SingleChildScrollView(
           controller: _controller,
           physics: const NeverScrollableScrollPhysics(),

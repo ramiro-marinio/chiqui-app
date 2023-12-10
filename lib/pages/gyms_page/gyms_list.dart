@@ -5,7 +5,7 @@ import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
 import 'package:gymapp/pages/gyms_page/widgets/add_gym.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/creategym.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/gym_view.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/widgets/gym_view.dart';
 import 'package:gymapp/pages/gyms_page/widgets/join_gym/join_gym.dart';
 import 'package:provider/provider.dart';
 

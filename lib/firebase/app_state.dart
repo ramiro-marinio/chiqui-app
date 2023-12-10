@@ -16,7 +16,7 @@ import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase/gyms/messagedata.dart';
 import 'package:gymapp/firebase_options.dart';
 import 'package:gymapp/functions/random_string.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/pages/exercise_demos/demodata.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -61,7 +61,7 @@ class ApplicationState extends ChangeNotifier {
           }
           notifyListeners();
         });
-        notifyListeners();
+        // notifyListeners();
       },
     );
     //MEMBERSHIPS LISTENER
@@ -137,6 +137,17 @@ class ApplicationState extends ChangeNotifier {
           MembershipData(userId: user!.uid, gymId: documentReference.id)
               .toJson(),
         );
+  }
+
+  Future<void> leaveGym(String gymId) async {
+    (await FirebaseFirestore.instance
+            .collection('memberships')
+            .where('gymId', isEqualTo: gymId)
+            .where('userId', isEqualTo: user!.uid)
+            .get())
+        .docs[0]
+        .reference
+        .delete();
   }
 
   bool checkMembership(String gymId) {
@@ -287,7 +298,10 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> sendReview(String review, double stars, String gymId) async {
-    await FirebaseFirestore.instance.collection('ratings').doc(user!.uid).set({
+    await FirebaseFirestore.instance
+        .collection('ratings')
+        .doc(user!.uid + gymId)
+        .set({
       'review': review,
       'stars': stars,
       'gymId': gymId,
@@ -315,5 +329,24 @@ class ApplicationState extends ChangeNotifier {
       amount++;
     }
     return sum / amount;
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatStream(
+      {required String gymId, String? senderId, String? receiverId}) {
+    if (receiverId == null || senderId == null) {
+      return FirebaseFirestore.instance
+          .collection('messages')
+          .where('receiverId', isEqualTo: null)
+          .where('gymId', isEqualTo: gymId)
+          .orderBy('timestamp', descending: false)
+          .snapshots();
+    }
+    return FirebaseFirestore.instance
+        .collection('messages')
+        .where('gymId', isEqualTo: gymId)
+        .where('senderId', isEqualTo: senderId)
+        .where('receiverId', isEqualTo: receiverId)
+        .orderBy('timestamp', descending: false)
+        .snapshots();
   }
 }

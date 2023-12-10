@@ -1,0 +1,234 @@
+Date : 2023-12-10 11:25:37
+Directory : c:\Users\ferna\development\flutter\gymapp
+Total : 111 files,  5682 codes, 311 comments, 520 blanks, all 6513 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| Dart       |         62 |      4,142 |         26 |        245 |      4,413 |
+| C++        |         16 |        557 |        121 |        182 |        860 |
+| XML        |         10 |        464 |         48 |         13 |        525 |
+| JSON       |          6 |        262 |          0 |          4 |        266 |
+| Gradle     |          3 |         94 |          5 |         22 |        121 |
+| Swift      |          6 |         64 |          7 |         20 |         91 |
+| HTML       |          1 |         38 |         16 |          6 |         60 |
+| YAML       |          2 |         35 |         79 |         19 |        133 |
+| Java       |          1 |         13 |          9 |          4 |         26 |
+| Properties |          2 |          8 |          0 |          2 |         10 |
+| Markdown   |          2 |          5 |          0 |          3 |          8 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                                         | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                            |        111 |      5,682 |        311 |        520 |      6,513 |
+| . (Files)                                                                                                                                    |          3 |         37 |         79 |         20 |        136 |
+| android                                                                                                                                      |         13 |        175 |         60 |         38 |        273 |
+| android (Files)                                                                                                                              |          3 |         46 |          0 |         11 |         57 |
+| android\app                                                                                                                                  |          9 |        124 |         60 |         26 |        210 |
+| android\app (Files)                                                                                                                          |          1 |         51 |          5 |         12 |         68 |
+| android\app\src                                                                                                                              |          8 |         73 |         55 |         14 |        142 |
+| android\app\src\debug                                                                                                                        |          1 |          3 |          4 |          1 |          8 |
+| android\app\src\main                                                                                                                         |          6 |         67 |         47 |         12 |        126 |
+| android\app\src\main (Files)                                                                                                                 |          1 |         28 |          6 |          2 |         36 |
+| android\app\src\main\java                                                                                                                    |          1 |         13 |          9 |          4 |         26 |
+| android\app\src\main\java\io                                                                                                                 |          1 |         13 |          9 |          4 |         26 |
+| android\app\src\main\java\io\flutter                                                                                                         |          1 |         13 |          9 |          4 |         26 |
+| android\app\src\main\java\io\flutter\app                                                                                                     |          1 |         13 |          9 |          4 |         26 |
+| android\app\src\main\res                                                                                                                     |          4 |         26 |         32 |          6 |         64 |
+| android\app\src\main\res\drawable                                                                                                            |          1 |          4 |          7 |          2 |         13 |
+| android\app\src\main\res\drawable-v21                                                                                                        |          1 |          4 |          7 |          2 |         13 |
+| android\app\src\main\res\values                                                                                                              |          1 |          9 |          9 |          1 |         19 |
+| android\app\src\main\res\values-night                                                                                                        |          1 |          9 |          9 |          1 |         19 |
+| android\app\src\profile                                                                                                                      |          1 |          3 |          4 |          1 |          8 |
+| android\gradle                                                                                                                               |          1 |          5 |          0 |          1 |          6 |
+| android\gradle\wrapper                                                                                                                       |          1 |          5 |          0 |          1 |          6 |
+| ios                                                                                                                                          |          9 |        236 |          4 |         13 |        253 |
+| ios (Files)                                                                                                                                  |          1 |          7 |          0 |          0 |          7 |
+| ios\Runner                                                                                                                                   |          7 |        222 |          2 |          9 |        233 |
+| ios\Runner (Files)                                                                                                                           |          2 |         13 |          0 |          3 |         16 |
+| ios\RunnerTests                                                                                                                              |          1 |          7 |          2 |          4 |         13 |
+| ios\Runner\Assets.xcassets                                                                                                                   |          3 |        148 |          0 |          4 |        152 |
+| ios\Runner\Assets.xcassets\AppIcon.appiconset                                                                                                |          1 |        122 |          0 |          1 |        123 |
+| ios\Runner\Assets.xcassets\LaunchImage.imageset                                                                                              |          2 |         26 |          0 |          3 |         29 |
+| ios\Runner\Base.lproj                                                                                                                        |          2 |         61 |          2 |          2 |         65 |
+| lib                                                                                                                                          |         62 |      4,142 |         26 |        245 |      4,413 |
+| lib (Files)                                                                                                                                  |          2 |        106 |         12 |         11 |        129 |
+| lib\firebase                                                                                                                                 |         16 |      1,072 |          9 |         70 |      1,151 |
+| lib\firebase (Files)                                                                                                                         |          1 |        310 |          6 |         29 |        345 |
+| lib\firebase\auth                                                                                                                            |          2 |         95 |          1 |          4 |        100 |
+| lib\firebase\gyms                                                                                                                            |          4 |         84 |          0 |          4 |         88 |
+| lib\firebase\widgets                                                                                                                         |          9 |        583 |          2 |         33 |        618 |
+| lib\firebase\widgets (Files)                                                                                                                 |          3 |        126 |          0 |         10 |        136 |
+| lib\firebase\widgets\profile_config                                                                                                          |          6 |        457 |          2 |         23 |        482 |
+| lib\firebase\widgets\profile_config (Files)                                                                                                  |          2 |        153 |          0 |          7 |        160 |
+| lib\firebase\widgets\profile_config\fields                                                                                                   |          4 |        304 |          2 |         16 |        322 |
+| lib\functions                                                                                                                                |          5 |         56 |          0 |          9 |         65 |
+| lib\navigation                                                                                                                               |          4 |        161 |          0 |          9 |        170 |
+| lib\navigation\widgets                                                                                                                       |          4 |        161 |          0 |          9 |        170 |
+| lib\pages                                                                                                                                    |         33 |      2,650 |          5 |        136 |      2,791 |
+| lib\pages\gyms_page                                                                                                                          |         32 |      2,632 |          5 |        132 |      2,769 |
+| lib\pages\gyms_page (Files)                                                                                                                  |          1 |         74 |          1 |          4 |         79 |
+| lib\pages\gyms_page\settings                                                                                                                 |          4 |        314 |          0 |         17 |        331 |
+| lib\pages\gyms_page\settings (Files)                                                                                                         |          1 |         40 |          0 |          4 |         44 |
+| lib\pages\gyms_page\settings\invite                                                                                                          |          3 |        274 |          0 |         13 |        287 |
+| lib\pages\gyms_page\widgets                                                                                                                  |         27 |      2,244 |          4 |        111 |      2,359 |
+| lib\pages\gyms_page\widgets (Files)                                                                                                          |          1 |         28 |          0 |          3 |         31 |
+| lib\pages\gyms_page\widgets\create_gym                                                                                                       |          3 |        353 |          2 |         13 |        368 |
+| lib\pages\gyms_page\widgets\create_gym (Files)                                                                                               |          1 |        161 |          0 |          5 |        166 |
+| lib\pages\gyms_page\widgets\create_gym\fields                                                                                                |          2 |        192 |          2 |          8 |        202 |
+| lib\pages\gyms_page\widgets\gym                                                                                                              |         20 |      1,609 |          2 |         83 |      1,694 |
+| lib\pages\gyms_page\widgets\gym\menu                                                                                                         |         18 |      1,410 |          2 |         76 |      1,488 |
+| lib\pages\gyms_page\widgets\gym\menu (Files)                                                                                                 |          1 |         86 |          0 |          4 |         90 |
+| lib\pages\gyms_page\widgets\gym\menu\pages                                                                                                   |         17 |      1,324 |          2 |         72 |      1,398 |
+| lib\pages\gyms_page\widgets\gym\menu\pages\chat                                                                                              |          5 |        349 |          2 |         21 |        372 |
+| lib\pages\gyms_page\widgets\gym\menu\pages\chat (Files)                                                                                      |          1 |         59 |          0 |          4 |         63 |
+| lib\pages\gyms_page\widgets\gym\menu\pages\chat\widgets                                                                                      |          4 |        290 |          2 |         17 |        309 |
+| lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos                                                                                    |         11 |        900 |          0 |         48 |        948 |
+| lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos (Files)                                                                            |          4 |        247 |          0 |         13 |        260 |
+| lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces                                                                         |          7 |        653 |          0 |         35 |        688 |
+| lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces (Files)                                                                 |          5 |        506 |          0 |         28 |        534 |
+| lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces\widgets                                                                 |          2 |        147 |          0 |          7 |        154 |
+| lib\pages\gyms_page\widgets\gym\menu\pages\info                                                                                              |          1 |         75 |          0 |          3 |         78 |
+| lib\pages\gyms_page\widgets\gym\widgets                                                                                                      |          2 |        199 |          0 |          7 |        206 |
+| lib\pages\gyms_page\widgets\join_gym                                                                                                         |          2 |        172 |          0 |          8 |        180 |
+| lib\pages\gyms_page\widgets\rating                                                                                                           |          1 |         82 |          0 |          4 |         86 |
+| lib\pages\home_page                                                                                                                          |          1 |         18 |          0 |          4 |         22 |
+| lib\widgets                                                                                                                                  |          2 |         97 |          0 |         10 |        107 |
+| linux                                                                                                                                        |          5 |        102 |         27 |         38 |        167 |
+| linux (Files)                                                                                                                                |          3 |         86 |         18 |         27 |        131 |
+| linux\flutter                                                                                                                                |          2 |         16 |          9 |         11 |         36 |
+| macos                                                                                                                                        |          7 |        463 |          5 |         16 |        484 |
+| macos (Files)                                                                                                                                |          1 |          7 |          0 |          0 |          7 |
+| macos\Flutter                                                                                                                                |          1 |         18 |          3 |          4 |         25 |
+| macos\Runner                                                                                                                                 |          4 |        431 |          0 |          8 |        439 |
+| macos\Runner (Files)                                                                                                                         |          2 |         20 |          0 |          6 |         26 |
+| macos\RunnerTests                                                                                                                            |          1 |          7 |          2 |          4 |         13 |
+| macos\Runner\Assets.xcassets                                                                                                                 |          1 |         68 |          0 |          1 |         69 |
+| macos\Runner\Assets.xcassets\AppIcon.appiconset                                                                                              |          1 |         68 |          0 |          1 |         69 |
+| macos\Runner\Base.lproj                                                                                                                      |          1 |        343 |          0 |          1 |        344 |
+| web                                                                                                                                          |          2 |         73 |         16 |          7 |         96 |
+| windows                                                                                                                                      |         10 |        454 |         94 |        143 |        691 |
+| windows\flutter                                                                                                                              |          2 |         26 |          9 |         11 |         46 |
+| windows\runner                                                                                                                               |          8 |        428 |         85 |        132 |        645 |
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                                                     | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\ferna\development\flutter\gymapp\README.md                                                                                          | Markdown   |          2 |          0 |          1 |          3 |
+| c:\Users\ferna\development\flutter\gymapp\analysis_options.yaml                                                                              | YAML       |          3 |         22 |          4 |         29 |
+| c:\Users\ferna\development\flutter\gymapp\android\app\build.gradle                                                                           | Gradle     |         51 |          5 |         12 |         68 |
+| c:\Users\ferna\development\flutter\gymapp\android\app\src\debug\AndroidManifest.xml                                                          | XML        |          3 |          4 |          1 |          8 |
+| c:\Users\ferna\development\flutter\gymapp\android\app\src\main\AndroidManifest.xml                                                           | XML        |         28 |          6 |          2 |         36 |
+| c:\Users\ferna\development\flutter\gymapp\android\app\src\main\java\io\flutter\app\FlutterMultiDexApplication.java                           | Java       |         13 |          9 |          4 |         26 |
+| c:\Users\ferna\development\flutter\gymapp\android\app\src\main\res\drawable-v21\launch_background.xml                                        | XML        |          4 |          7 |          2 |         13 |
+| c:\Users\ferna\development\flutter\gymapp\android\app\src\main\res\drawable\launch_background.xml                                            | XML        |          4 |          7 |          2 |         13 |
+| c:\Users\ferna\development\flutter\gymapp\android\app\src\main\res\values-night\styles.xml                                                   | XML        |          9 |          9 |          1 |         19 |
+| c:\Users\ferna\development\flutter\gymapp\android\app\src\main\res\values\styles.xml                                                         | XML        |          9 |          9 |          1 |         19 |
+| c:\Users\ferna\development\flutter\gymapp\android\app\src\profile\AndroidManifest.xml                                                        | XML        |          3 |          4 |          1 |          8 |
+| c:\Users\ferna\development\flutter\gymapp\android\build.gradle                                                                               | Gradle     |         27 |          0 |          5 |         32 |
+| c:\Users\ferna\development\flutter\gymapp\android\gradle.properties                                                                          | Properties |          3 |          0 |          1 |          4 |
+| c:\Users\ferna\development\flutter\gymapp\android\gradle\wrapper\gradle-wrapper.properties                                                   | Properties |          5 |          0 |          1 |          6 |
+| c:\Users\ferna\development\flutter\gymapp\android\settings.gradle                                                                            | Gradle     |         16 |          0 |          5 |         21 |
+| c:\Users\ferna\development\flutter\gymapp\ios\RunnerTests\RunnerTests.swift                                                                  | Swift      |          7 |          2 |          4 |         13 |
+| c:\Users\ferna\development\flutter\gymapp\ios\Runner\AppDelegate.swift                                                                       | Swift      |         12 |          0 |          2 |         14 |
+| c:\Users\ferna\development\flutter\gymapp\ios\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json                                        | JSON       |        122 |          0 |          1 |        123 |
+| c:\Users\ferna\development\flutter\gymapp\ios\Runner\Assets.xcassets\LaunchImage.imageset\Contents.json                                      | JSON       |         23 |          0 |          1 |         24 |
+| c:\Users\ferna\development\flutter\gymapp\ios\Runner\Assets.xcassets\LaunchImage.imageset\README.md                                          | Markdown   |          3 |          0 |          2 |          5 |
+| c:\Users\ferna\development\flutter\gymapp\ios\Runner\Base.lproj\LaunchScreen.storyboard                                                      | XML        |         36 |          1 |          1 |         38 |
+| c:\Users\ferna\development\flutter\gymapp\ios\Runner\Base.lproj\Main.storyboard                                                              | XML        |         25 |          1 |          1 |         27 |
+| c:\Users\ferna\development\flutter\gymapp\ios\Runner\Runner-Bridging-Header.h                                                                | C++        |          1 |          0 |          1 |          2 |
+| c:\Users\ferna\development\flutter\gymapp\ios\firebase_app_id_file.json                                                                      | JSON       |          7 |          0 |          0 |          7 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\app_state.dart                                                                        | Dart       |        310 |          6 |         29 |        345 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\auth\loginscreen.dart                                                                 | Dart       |         56 |          1 |          3 |         60 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\auth\userdata.dart                                                                    | Dart       |         39 |          0 |          1 |         40 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\gyms\gymdata.dart                                                                     | Dart       |         28 |          0 |          1 |         29 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\gyms\invitedata.dart                                                                  | Dart       |         14 |          0 |          1 |         15 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\gyms\membershipdata.dart                                                              | Dart       |         14 |          0 |          1 |         15 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\gyms\messagedata.dart                                                                 | Dart       |         28 |          0 |          1 |         29 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\widgets\icontext.dart                                                                 | Dart       |         23 |          0 |          3 |         26 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\widgets\mustbeloggedin.dart                                                           | Dart       |         15 |          0 |          3 |         18 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\widgets\profile_config\adaptivedivider.dart                                           | Dart       |         16 |          0 |          3 |         19 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\widgets\profile_config\fields\birthdayfield.dart                                      | Dart       |         55 |          0 |          5 |         60 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\widgets\profile_config\fields\field.dart                                              | Dart       |         45 |          0 |          3 |         48 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\widgets\profile_config\fields\genderfield.dart                                        | Dart       |         80 |          0 |          4 |         84 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\widgets\profile_config\fields\profilepicpicker.dart                                   | Dart       |        124 |          2 |          4 |        130 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\widgets\profile_config\profileconfig.dart                                             | Dart       |        137 |          0 |          4 |        141 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase\widgets\profilelisttile.dart                                                          | Dart       |         88 |          0 |          4 |         92 |
+| c:\Users\ferna\development\flutter\gymapp\lib\firebase_options.dart                                                                          | Dart       |         64 |         12 |          6 |         82 |
+| c:\Users\ferna\development\flutter\gymapp\lib\functions\adaptive_color.dart                                                                  | Dart       |          6 |          0 |          2 |          8 |
+| c:\Users\ferna\development\flutter\gymapp\lib\functions\formatduration.dart                                                                  | Dart       |          5 |          0 |          1 |          6 |
+| c:\Users\ferna\development\flutter\gymapp\lib\functions\random_string.dart                                                                   | Dart       |          8 |          0 |          2 |         10 |
+| c:\Users\ferna\development\flutter\gymapp\lib\functions\showinfodialog.dart                                                                  | Dart       |         21 |          0 |          2 |         23 |
+| c:\Users\ferna\development\flutter\gymapp\lib\functions\showprogressdialog.dart                                                              | Dart       |         16 |          0 |          2 |         18 |
+| c:\Users\ferna\development\flutter\gymapp\lib\main.dart                                                                                      | Dart       |         42 |          0 |          5 |         47 |
+| c:\Users\ferna\development\flutter\gymapp\lib\navigation\widgets\confirmationdialog.dart                                                     | Dart       |         40 |          0 |          2 |         42 |
+| c:\Users\ferna\development\flutter\gymapp\lib\navigation\widgets\gorouter.dart                                                               | Dart       |         44 |          0 |          2 |         46 |
+| c:\Users\ferna\development\flutter\gymapp\lib\navigation\widgets\icongoroute.dart                                                            | Dart       |         18 |          0 |          2 |         20 |
+| c:\Users\ferna\development\flutter\gymapp\lib\navigation\widgets\navigationdrawer.dart                                                       | Dart       |         59 |          0 |          3 |         62 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\gyms_list.dart                                                                 | Dart       |         74 |          1 |          4 |         79 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\settings\invite\choosevaluedialog.dart                                         | Dart       |         90 |          0 |          5 |         95 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\settings\invite\invitesettings.dart                                            | Dart       |        121 |          0 |          4 |        125 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\settings\invite\lengthinputdialog.dart                                         | Dart       |         63 |          0 |          4 |         67 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\settings\settings.dart                                                         | Dart       |         40 |          0 |          4 |         44 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\add_gym.dart                                                           | Dart       |         28 |          0 |          3 |         31 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\create_gym\creategym.dart                                              | Dart       |        161 |          0 |          5 |        166 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\create_gym\fields\controllerfield.dart                                 | Dart       |         60 |          0 |          3 |         63 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\create_gym\fields\gympicpicker.dart                                    | Dart       |        132 |          2 |          5 |        139 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\gymmenu.dart                                                  | Dart       |         86 |          0 |          4 |         90 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\chat\my_chats.dart                                      | Dart       |         59 |          0 |          4 |         63 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\chat\widgets\chat_page.dart                             | Dart       |         96 |          2 |          6 |        104 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\chat\widgets\chat_tile.dart                             | Dart       |         38 |          0 |          2 |         40 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\chat\widgets\messagecard.dart                           | Dart       |         90 |          0 |          4 |         94 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\chat\widgets\messagetyper.dart                          | Dart       |         66 |          0 |          5 |         71 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\demodata.dart                            | Dart       |         44 |          0 |          1 |         45 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\exercisedemo.dart                        | Dart       |         39 |          0 |          4 |         43 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\exercisedemos.dart                       | Dart       |         88 |          0 |          5 |         93 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces\demomaker.dart                | Dart       |        156 |          0 |          5 |        161 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces\extraadvice.dart              | Dart       |         45 |          0 |          3 |         48 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces\video_viewer.dart             | Dart       |         61 |          0 |          6 |         67 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces\videopickfield.dart           | Dart       |        143 |          0 |         10 |        153 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces\widgets\tag.dart              | Dart       |         41 |          0 |          3 |         44 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces\widgets\videoprogressbar.dart | Dart       |        106 |          0 |          4 |        110 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\interfaces\workareasfield.dart           | Dart       |        101 |          0 |          4 |        105 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\exercise_demos\viewdemodetails.dart                     | Dart       |         76 |          0 |          3 |         79 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\menu\pages\info\gyminfo.dart                                       | Dart       |         75 |          0 |          3 |         78 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\widgets\gym_view.dart                                              | Dart       |        168 |          0 |          4 |        172 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\gym\widgets\optionsbutton.dart                                         | Dart       |         31 |          0 |          3 |         34 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\join_gym\gymjoinsheet.dart                                             | Dart       |         95 |          0 |          4 |         99 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\join_gym\join_gym.dart                                                 | Dart       |         77 |          0 |          4 |         81 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\gyms_page\widgets\rating\rate_gym.dart                                                   | Dart       |         82 |          0 |          4 |         86 |
+| c:\Users\ferna\development\flutter\gymapp\lib\pages\home_page\homepage.dart                                                                  | Dart       |         18 |          0 |          4 |         22 |
+| c:\Users\ferna\development\flutter\gymapp\lib\widgets\crawltext.dart                                                                         | Dart       |         63 |          0 |          7 |         70 |
+| c:\Users\ferna\development\flutter\gymapp\lib\widgets\infobutton.dart                                                                        | Dart       |         34 |          0 |          3 |         37 |
+| c:\Users\ferna\development\flutter\gymapp\linux\flutter\generated_plugin_registrant.cc                                                       | C++        |         11 |          4 |          5 |         20 |
+| c:\Users\ferna\development\flutter\gymapp\linux\flutter\generated_plugin_registrant.h                                                        | C++        |          5 |          5 |          6 |         16 |
+| c:\Users\ferna\development\flutter\gymapp\linux\main.cc                                                                                      | C++        |          5 |          0 |          2 |          7 |
+| c:\Users\ferna\development\flutter\gymapp\linux\my_application.cc                                                                            | C++        |         74 |         11 |         20 |        105 |
+| c:\Users\ferna\development\flutter\gymapp\linux\my_application.h                                                                             | C++        |          7 |          7 |          5 |         19 |
+| c:\Users\ferna\development\flutter\gymapp\macos\Flutter\GeneratedPluginRegistrant.swift                                                      | Swift      |         18 |          3 |          4 |         25 |
+| c:\Users\ferna\development\flutter\gymapp\macos\RunnerTests\RunnerTests.swift                                                                | Swift      |          7 |          2 |          4 |         13 |
+| c:\Users\ferna\development\flutter\gymapp\macos\Runner\AppDelegate.swift                                                                     | Swift      |          8 |          0 |          2 |         10 |
+| c:\Users\ferna\development\flutter\gymapp\macos\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json                                      | JSON       |         68 |          0 |          1 |         69 |
+| c:\Users\ferna\development\flutter\gymapp\macos\Runner\Base.lproj\MainMenu.xib                                                               | XML        |        343 |          0 |          1 |        344 |
+| c:\Users\ferna\development\flutter\gymapp\macos\Runner\MainFlutterWindow.swift                                                               | Swift      |         12 |          0 |          4 |         16 |
+| c:\Users\ferna\development\flutter\gymapp\macos\firebase_app_id_file.json                                                                    | JSON       |          7 |          0 |          0 |          7 |
+| c:\Users\ferna\development\flutter\gymapp\pubspec.yaml                                                                                       | YAML       |         32 |         57 |         15 |        104 |
+| c:\Users\ferna\development\flutter\gymapp\web\index.html                                                                                     | HTML       |         38 |         16 |          6 |         60 |
+| c:\Users\ferna\development\flutter\gymapp\web\manifest.json                                                                                  | JSON       |         35 |          0 |          1 |         36 |
+| c:\Users\ferna\development\flutter\gymapp\windows\flutter\generated_plugin_registrant.cc                                                     | C++        |         21 |          4 |          5 |         30 |
+| c:\Users\ferna\development\flutter\gymapp\windows\flutter\generated_plugin_registrant.h                                                      | C++        |          5 |          5 |          6 |         16 |
+| c:\Users\ferna\development\flutter\gymapp\windows\runner\flutter_window.cpp                                                                  | C++        |         49 |          7 |         16 |         72 |
+| c:\Users\ferna\development\flutter\gymapp\windows\runner\flutter_window.h                                                                    | C++        |         20 |          5 |          9 |         34 |
+| c:\Users\ferna\development\flutter\gymapp\windows\runner\main.cpp                                                                            | C++        |         30 |          4 |         10 |         44 |
+| c:\Users\ferna\development\flutter\gymapp\windows\runner\resource.h                                                                          | C++        |          9 |          6 |          2 |         17 |
+| c:\Users\ferna\development\flutter\gymapp\windows\runner\utils.cpp                                                                           | C++        |         54 |          2 |         10 |         66 |
+| c:\Users\ferna\development\flutter\gymapp\windows\runner\utils.h                                                                             | C++        |          8 |          6 |          6 |         20 |
+| c:\Users\ferna\development\flutter\gymapp\windows\runner\win32_window.cpp                                                                    | C++        |        210 |         24 |         55 |        289 |
+| c:\Users\ferna\development\flutter\gymapp\windows\runner\win32_window.h                                                                      | C++        |         48 |         31 |         24 |        103 |
+| Total                                                                                                                                        |            |      5,682 |        311 |        520 |      6,513 |
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
