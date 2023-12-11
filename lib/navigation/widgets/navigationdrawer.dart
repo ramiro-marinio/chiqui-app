@@ -4,7 +4,7 @@ import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/firebase/widgets/profilelisttile.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
-import 'package:gymapp/navigation/widgets/gorouter.dart';
+import 'package:gymapp/navigation/gorouter.dart';
 import 'package:gymapp/navigation/widgets/icongoroute.dart';
 import 'package:provider/provider.dart';
 
@@ -26,36 +26,38 @@ class NavDrawer extends StatelessWidget {
                     context.go(goRoute.path);
                   }
                 : null,
-            subtitle: Visibility(
-              visible: goRoute.mustBeLoggedIn && !applicationState.loggedIn,
-              child: const Text("Must be logged in."),
-            ),
+            subtitle: goRoute.mustBeLoggedIn && !applicationState.loggedIn
+                ? const Text("Must be logged in.")
+                : null,
             splashColor: const Color.fromARGB(35, 0, 155, 255),
           )
         ];
       }
     }
     return Drawer(
-      child: ListView(children: [
-        const Profile(),
-        Divider(
-          thickness: 1,
-          color: adaptiveColor(Colors.black, Colors.white, context),
-          indent: 8,
-          endIndent: 8,
-        ),
-        ...List.generate(
-          links.length,
-          (index) => Column(
-            children: [
-              links[index],
-              const AdaptiveDivider(
-                indent: 8,
-              )
-            ],
+      child: ListView(
+        children: [
+          const Profile(),
+          Divider(
+            thickness: 1,
+            color: adaptiveColor(Colors.black, Colors.white, context),
+            indent: 8,
+            endIndent: 8,
           ),
-        ),
-      ]),
+          ...List.generate(
+            links.length,
+            (index) => Column(
+              children: [
+                links[index],
+                const AdaptiveDivider(
+                  indent: 8,
+                  thickness: 0.2,
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

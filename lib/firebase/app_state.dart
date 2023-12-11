@@ -216,11 +216,15 @@ class ApplicationState extends ChangeNotifier {
     return List.generate(docs.length, (index) => docs[index].data());
   }
 
-  Future<String> createDemoVideo(String gymId, File videoFile) async {
+  Future<String> createDemoVideo(String designatedId, File videoFile) async {
     Reference referenceRoot = FirebaseStorage.instance.ref();
     Reference ppFolder = referenceRoot.child('demo-vids');
-    String termination = videoFile.path.split('.').last;
-    Reference video = ppFolder.child('$gymId.$termination');
+    String extension = videoFile.path.split('.').last;
+    String videoName = '$designatedId.$extension';
+    if (designatedId.contains('.')) {
+      videoName = designatedId;
+    }
+    Reference video = ppFolder.child(videoName);
     await video.putFile(videoFile);
     return await video.getDownloadURL();
   }
@@ -228,13 +232,48 @@ class ApplicationState extends ChangeNotifier {
   Future<void> addDemonstration(
       DemonstrationData demonstrationData, File? video) async {
     if (video != null) {
-      String videoURL = await createDemoVideo(generateRandomString(28), video);
+      String id = generateRandomString(28);
+      String extension = video.path.split('.').last;
+      String videoURL = await createDemoVideo(id, video);
+      demonstrationData.resourceName = '$id.$extension';
       demonstrationData.resourceURL = videoURL;
-      demonstrationData.resourceFormat = video.path.split('.').last;
     }
-    await FirebaseFirestore.instance.collection('demonstrations').add(
-          demonstrationData.toJson(),
-        );
+    String id = generateRandomString(28);
+    demonstrationData.id = id;
+    await FirebaseFirestore.instance
+        .collection('demonstrations')
+        .doc(demonstrationData.id)
+        .set(demonstrationData.toJson());
+  }
+
+  Future<void> editDemonstration(
+      DemonstrationData demonstrationData, File? video) async {
+    if (video != null) {
+      String id = generateRandomString(28);
+      //Extension value will only be used if there was no resource before
+      String extension = video.path.split('.').last;
+      String videoURL =
+          await createDemoVideo(demonstrationData.resourceName ?? id, video);
+      demonstrationData.resourceName ??= '$id.$extension';
+      demonstrationData.resourceURL = videoURL;
+    }
+    FirebaseFirestore.instance
+        .collection('demonstrations')
+        .doc(demonstrationData.id)
+        .set(demonstrationData.toJson());
+  }
+
+  Future<void> deleteDemonstration(DemonstrationData demonstrationData) async {
+    if (demonstrationData.resourceName != null) {
+      Reference referenceRoot = FirebaseStorage.instance.ref();
+      Reference ppFolder = referenceRoot.child('demo-vids');
+      Reference file = ppFolder.child(demonstrationData.resourceName!);
+      await file.delete();
+    }
+    await FirebaseFirestore.instance
+        .collection('demonstrations')
+        .doc(demonstrationData.id)
+        .delete();
   }
 
   Future<InviteData?> getInviteData(String gymId) async {

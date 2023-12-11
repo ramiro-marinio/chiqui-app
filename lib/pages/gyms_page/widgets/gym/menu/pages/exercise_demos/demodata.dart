@@ -1,5 +1,5 @@
 class DemonstrationData {
-  final String? id;
+  String id;
   final String? gymId;
   final String exerciseName;
   final bool repUnit;
@@ -7,7 +7,7 @@ class DemonstrationData {
   final List workAreas;
   final String? advice;
   String? resourceURL;
-  String? resourceFormat;
+  String? resourceName;
   DemonstrationData.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         exerciseName = json['exerciseName'],
@@ -16,7 +16,7 @@ class DemonstrationData {
         workAreas = json['muscles'],
         advice = json['advice'],
         resourceURL = json['resourceURL'],
-        resourceFormat = json['resourceFormat'],
+        resourceName = json['resourceName'],
         gymId = json['gymId'];
   DemonstrationData({
     required this.exerciseName,
@@ -25,8 +25,7 @@ class DemonstrationData {
     required this.workAreas,
     this.advice,
     this.resourceURL,
-    this.resourceFormat,
-    this.id,
+    required this.id,
     this.gymId,
   });
   Map<String, dynamic> toJson() {
@@ -37,7 +36,7 @@ class DemonstrationData {
       'muscles': workAreas,
       'advice': advice,
       'resourceURL': resourceURL,
-      'resourceFormat': resourceFormat,
+      'resourceName': resourceName,
       'gymId': gymId,
     };
   }

@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/auth/loginscreen.dart';
 import 'package:gymapp/navigation/widgets/icongoroute.dart';
+import 'package:gymapp/pages/help/help.dart';
 import 'package:gymapp/pages/home_page/homepage.dart';
 import 'package:gymapp/pages/gyms_page/gyms_list.dart';
+import 'package:gymapp/pages/settings/settings.dart';
+import 'package:gymapp/pages/suggestion.dart/suggestion.dart';
 
 final List<GoRoute> routes = [
   IconGoRoute(
@@ -38,6 +41,26 @@ final List<GoRoute> routes = [
     builder: (context, state) => const MyGyms(),
     icon: const Icon(Icons.fitness_center),
     name: "My Gyms",
+  ),
+  IconGoRoute(
+    path: '/help',
+    mustBeLoggedIn: false,
+    builder: (context, state) => const Help(),
+    icon: const Icon(Icons.help),
+    name: 'Help',
+  ),
+  IconGoRoute(
+    path: '/suggestion',
+    builder: (context, state) => const Suggestion(),
+    icon: const Icon(Icons.lightbulb),
+    mustBeLoggedIn: true,
+    name: 'Send a Suggestion',
+  ),
+  IconGoRoute(
+    path: '/settings',
+    builder: (context, state) => const LocalSettings(),
+    icon: const Icon(Icons.settings),
+    mustBeLoggedIn: false,
   ),
 ];
 final GoRouter goRouter = GoRouter(

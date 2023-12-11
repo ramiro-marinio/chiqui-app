@@ -5,6 +5,7 @@ import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/genderfield.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
+import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/functions/showprogressdialog.dart';
 import 'package:gymapp/navigation/widgets/confirmationdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/fields/controllerfield.dart';
@@ -131,6 +132,7 @@ class _DemoMakerState extends State<DemoMaker> {
                                   workAreas: workAreas,
                                   description: descriptionController.text,
                                   gymId: widget.gymId,
+                                  id: generateRandomString(28),
                                 ),
                                 videoPath != null ? File(videoPath!) : null,
                               );
