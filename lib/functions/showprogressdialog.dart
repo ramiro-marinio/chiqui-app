@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Future<void> showProgressDialog(String? title, BuildContext context) async {
-  await showDialog(
+  showDialog(
     context: context,
     barrierDismissible: false,
     builder: (context) {

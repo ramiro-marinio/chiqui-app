@@ -17,7 +17,8 @@ import 'package:provider/provider.dart';
 
 class DemoMaker extends StatefulWidget {
   final String gymId;
-  const DemoMaker({super.key, required this.gymId});
+  final DemonstrationData? editData;
+  const DemoMaker({super.key, required this.gymId, this.editData});
 
   @override
   State<DemoMaker> createState() => _DemoMakerState();
@@ -27,12 +28,20 @@ class _DemoMakerState extends State<DemoMaker> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   List<String> workAreas = [];
-  String advice = "";
+  final TextEditingController adviceController = TextEditingController();
   String? videoPath;
   bool unit = true;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    DemonstrationData? editData = widget.editData;
+    if (editData != null) {
+      nameController.text = editData.exerciseName;
+      descriptionController.text = editData.description ?? '';
+      workAreas = editData.workAreas;
+      adviceController.text = editData.advice ?? '';
+      videoPath = editData.resourceURL;
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Build a Demonstration'),
@@ -96,66 +105,75 @@ class _DemoMakerState extends State<DemoMaker> {
                 },
               ),
               const AdaptiveDivider(),
-              ExtraAdviceField(
-                onChange: (text) {
-                  advice = text;
-                },
+              ExerciseAdviceField(
+                controller: adviceController,
               ),
               const AdaptiveDivider(),
               VideoPickField(
                 chooseVideo: (path) {
                   videoPath = path;
                 },
+                initialVideo: videoPath,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (!_formKey.currentState!.validate()) {
-                      return;
-                    }
-                    showDialog(
-                      context: context,
-                      builder: (context) => ConfirmationDialog(
-                        title: 'Create Exercise?',
-                        description: 'Make sure you inserted the correct data!',
-                        yes: () async {
-                          showProgressDialog(
-                              'Saving Demonstration...', context);
-                          await context
-                              .read<ApplicationState>()
-                              .addDemonstration(
-                                DemonstrationData(
-                                  exerciseName: nameController.text,
-                                  repUnit: unit,
-                                  advice: advice,
-                                  workAreas: workAreas,
-                                  description: descriptionController.text,
-                                  gymId: widget.gymId,
-                                  id: generateRandomString(28),
-                                ),
-                                videoPath != null ? File(videoPath!) : null,
-                              );
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content:
-                                    Text('Demonstration Created Successfully!'),
-                              ),
-                            );
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          }
-                        },
-                      ),
-                    );
-                  },
-                  child: const Text('Create'),
-                ),
+              const SizedBox(
+                height: 50,
+                width: 50,
               ),
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (!_formKey.currentState!.validate()) {
+            return;
+          }
+
+          showDialog(
+            context: context,
+            builder: (context) => ConfirmationDialog(
+              title: editData == null ? 'Create Exercise?' : 'Modify Exercise?',
+              description: 'Make sure you inserted the correct data!',
+              yes: () {
+                DemonstrationData demonstrationData = DemonstrationData(
+                  exerciseName: nameController.text,
+                  repUnit: unit,
+                  advice: adviceController.text,
+                  workAreas: workAreas,
+                  description: descriptionController.text,
+                  gymId: widget.gymId,
+                  id: editData?.id ?? generateRandomString(28),
+                );
+                if (context.mounted) {
+                  if (editData == null) {
+                    context.read<ApplicationState>().addDemonstration(
+                          demonstrationData,
+                          videoPath != null ? File(videoPath!) : null,
+                        );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Demonstration Saved Successfully!'),
+                      ),
+                    );
+                    Navigator.pop(context);
+                  } else {
+                    context
+                        .read<ApplicationState>()
+                        .editDemonstration(demonstrationData, videoPath);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Demonstration Saved Successfully!'),
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
+                }
+              },
+            ),
+          );
+        },
+        child:
+            editData != null ? const Icon(Icons.save) : const Icon(Icons.check),
       ),
     );
   }

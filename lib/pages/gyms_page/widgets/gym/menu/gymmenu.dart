@@ -38,7 +38,9 @@ class GymMenuState extends State<GymMenu> {
               ),
             ),
             Expanded(
-              child: CrawlText(text: widget.gymData.name),
+              child: Crawl(
+                child: Text(widget.gymData.name),
+              ),
             )
           ]),
           bottom: const TabBar(

@@ -32,11 +32,13 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
         future: data,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            result = List.generate(
-                snapshot.data!.length,
-                (index) => ExerciseDemo(
-                    demoData:
-                        DemonstrationData.fromJson(snapshot.data![index])));
+            result = List<ExerciseDemo>.generate(
+              snapshot.data!.length,
+              (index) => ExerciseDemo(
+                demoData: DemonstrationData.fromJson(snapshot.data![index]),
+                gymData: widget.gymData,
+              ),
+            );
             return ListView(
               children: [
                 const Row(
@@ -52,7 +54,7 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
                     ),
                   ],
                 ),
-                ...result!,
+                ...result ?? [],
                 Visibility(
                   visible: applicationState.user!.uid == widget.gymData.ownerId,
                   child: Row(
@@ -74,7 +76,7 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             );
           } else {

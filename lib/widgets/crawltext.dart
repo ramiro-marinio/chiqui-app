@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-class CrawlText extends StatefulWidget {
-  final String text;
-  final TextStyle? textStyle;
-  const CrawlText({required this.text, super.key, this.textStyle});
+class Crawl extends StatefulWidget {
+  final Widget child;
+  const Crawl({required this.child, super.key});
 
   @override
-  State<CrawlText> createState() => _CrawlTextState();
+  State<Crawl> createState() => _CrawlState();
 }
 
-class _CrawlTextState extends State<CrawlText> {
+class _CrawlState extends State<Crawl> {
   final _controller = ScrollController();
   @override
   void initState() {
@@ -26,7 +25,7 @@ class _CrawlTextState extends State<CrawlText> {
     _controller
         .animateTo(
       direction,
-      duration: Duration(milliseconds: distance.toInt() * 35),
+      duration: Duration(milliseconds: distance.toInt() * 50),
       curve: Curves.linear,
     )
         .then((_) {
@@ -36,7 +35,7 @@ class _CrawlTextState extends State<CrawlText> {
         direction = max;
       }
       Future.delayed(
-        const Duration(seconds: 1),
+        const Duration(seconds: 3),
         () {
           autoSlide(max, min, direction);
         },
@@ -49,14 +48,10 @@ class _CrawlTextState extends State<CrawlText> {
     return StatefulBuilder(
       builder: (context, setState) {
         return SingleChildScrollView(
-          controller: _controller,
-          physics: const NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          child: Text(
-            widget.text,
-            style: widget.textStyle,
-          ),
-        );
+            controller: _controller,
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            child: widget.child);
       },
     );
   }

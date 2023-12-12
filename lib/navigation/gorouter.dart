@@ -61,6 +61,7 @@ final List<GoRoute> routes = [
     builder: (context, state) => const LocalSettings(),
     icon: const Icon(Icons.settings),
     mustBeLoggedIn: false,
+    name: 'Settings',
   ),
 ];
 final GoRouter goRouter = GoRouter(

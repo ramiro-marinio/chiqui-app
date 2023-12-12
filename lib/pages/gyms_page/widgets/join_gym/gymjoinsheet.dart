@@ -51,11 +51,13 @@ class _GymJoinSheetState extends State<GymJoinSheet> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: CrawlText(
-                      text: gymData?.name ?? 'Error',
-                      textStyle: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w900,
+                    child: Crawl(
+                      child: Text(
+                        gymData?.name ?? 'Error',
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                   ),

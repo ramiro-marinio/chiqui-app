@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gymapp/functions/showwarningdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/widgets/videoprogressbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPickField extends StatefulWidget {
+  final String? initialVideo;
   final Function(String? path) chooseVideo;
-  const VideoPickField({super.key, required this.chooseVideo});
+  const VideoPickField(
+      {super.key, required this.chooseVideo, this.initialVideo});
 
   @override
   State<VideoPickField> createState() => _VideoPickFieldState();
@@ -20,12 +23,17 @@ class _VideoPickFieldState extends State<VideoPickField> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.file(File(videoPath ?? ''));
+    videoPath = widget.initialVideo;
+    _controller = widget.initialVideo == videoPath
+        ? VideoPlayerController.networkUrl(Uri.parse(videoPath ?? ''))
+        : VideoPlayerController.file(File(videoPath ?? ''));
   }
 
   @override
   Widget build(BuildContext context) {
-    _controller = VideoPlayerController.file(File(videoPath ?? ''));
+    _controller = widget.initialVideo == videoPath
+        ? VideoPlayerController.networkUrl(Uri.parse(videoPath ?? ''))
+        : VideoPlayerController.file(File(videoPath ?? ''));
     if (_controller.value.isInitialized) {
       _controller.dispose();
     }
@@ -85,12 +93,18 @@ class _VideoPickFieldState extends State<VideoPickField> {
                 onPressed: videoPath?.isEmpty ?? true
                     ? null
                     : () {
-                        widget.chooseVideo(null);
-                        setState(() {
-                          _controller.pause();
-                          _controller.dispose();
-                          videoPath = null;
-                        });
+                        showWarningDialog(
+                          title: 'Delete Video?',
+                          context: context,
+                          yes: () {
+                            widget.chooseVideo(null);
+                            setState(() {
+                              _controller.pause();
+                              _controller.dispose();
+                              videoPath = null;
+                            });
+                          },
+                        );
                       },
               )),
               ElevatedButton(

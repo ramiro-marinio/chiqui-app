@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ExtraAdviceField extends StatelessWidget {
-  final Function(String text) onChange;
-  const ExtraAdviceField({super.key, required this.onChange});
+class ExerciseAdviceField extends StatelessWidget {
+  final TextEditingController controller;
+  const ExerciseAdviceField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ExtraAdviceField extends StatelessWidget {
                 child: Icon(Icons.library_books),
               ),
               Text(
-                "Extra Advice",
+                "Exercise Advice",
                 style: TextStyle(fontSize: 20),
               ),
             ],
@@ -27,11 +27,9 @@ class ExtraAdviceField extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
-            onChanged: (value) {
-              onChange(value);
-            },
             maxLength: 1000,
             maxLines: 4,
+            controller: controller,
             decoration: InputDecoration(
               hintText: 'Technique advice, caution measures, etc...',
               border: OutlineInputBorder(

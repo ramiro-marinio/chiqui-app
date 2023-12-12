@@ -27,7 +27,7 @@ class ConfirmationDialog extends StatelessWidget {
           child: const Text('No'),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             if (yes != null) {
               yes!();
             }

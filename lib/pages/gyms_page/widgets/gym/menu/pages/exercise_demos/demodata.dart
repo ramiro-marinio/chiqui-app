@@ -4,7 +4,7 @@ class DemonstrationData {
   final String exerciseName;
   final bool repUnit;
   final String? description;
-  final List workAreas;
+  final List<String> workAreas;
   final String? advice;
   String? resourceURL;
   String? resourceName;
@@ -13,7 +13,8 @@ class DemonstrationData {
         exerciseName = json['exerciseName'],
         repUnit = json['repUnit'],
         description = json['description'],
-        workAreas = json['muscles'],
+        workAreas = List.generate((json['workAreas'] as List).length,
+            (index) => json['workAreas'][index] as String),
         advice = json['advice'],
         resourceURL = json['resourceURL'],
         resourceName = json['resourceName'],
@@ -33,11 +34,12 @@ class DemonstrationData {
       'exerciseName': exerciseName,
       'repUnit': repUnit,
       'description': description,
-      'muscles': workAreas,
+      'workAreas': workAreas,
       'advice': advice,
       'resourceURL': resourceURL,
       'resourceName': resourceName,
       'gymId': gymId,
+      'id': id,
     };
   }
 }
