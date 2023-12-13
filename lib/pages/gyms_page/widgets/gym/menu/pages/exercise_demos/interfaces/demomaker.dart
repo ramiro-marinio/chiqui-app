@@ -6,7 +6,6 @@ import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/genderfield.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/functions/random_string.dart';
-import 'package:gymapp/functions/showprogressdialog.dart';
 import 'package:gymapp/navigation/widgets/confirmationdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/fields/controllerfield.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';

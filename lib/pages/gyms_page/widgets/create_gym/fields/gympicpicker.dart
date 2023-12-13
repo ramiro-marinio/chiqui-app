@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:image_picker/image_picker.dart';
 
-class GymPicPicker extends StatefulWidget {
+class GymPicPicker extends StatelessWidget {
   final String? photoPath;
+  final GymData? editGym;
   final VoidCallback deletePhoto;
   final Function(XFile xFile) pickPhoto;
   const GymPicPicker({
@@ -13,15 +15,19 @@ class GymPicPicker extends StatefulWidget {
     this.photoPath,
     required this.deletePhoto,
     required this.pickPhoto,
+    this.editGym,
   });
 
   @override
-  State<GymPicPicker> createState() => _GymPicPickerState();
-}
-
-class _GymPicPickerState extends State<GymPicPicker> {
-  @override
   Widget build(BuildContext context) {
+    ImageProvider imageProvider = const AssetImage('assets/no_image_gym.jpg');
+    if (photoPath != null) {
+      if (photoPath == editGym?.photoURL) {
+        imageProvider = NetworkImage(photoPath!);
+      } else {
+        imageProvider = FileImage(File(photoPath!));
+      }
+    }
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Padding(
@@ -43,9 +49,7 @@ class _GymPicPickerState extends State<GymPicPicker> {
             ),
             CircleAvatar(
               radius: 80,
-              backgroundImage: widget.photoPath == null
-                  ? const AssetImage("assets/no_image_gym.jpg")
-                  : FileImage(File(widget.photoPath!)) as ImageProvider,
+              backgroundImage: imageProvider,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +58,7 @@ class _GymPicPickerState extends State<GymPicPicker> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: IconButton(
-                    onPressed: widget.photoPath == null
+                    onPressed: photoPath == null
                         ? null
                         : () {
                             showDialog(
@@ -70,7 +74,7 @@ class _GymPicPickerState extends State<GymPicPicker> {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      widget.deletePhoto();
+                                      deletePhoto();
                                       Navigator.pop(context);
                                     },
                                     child: const Text("yes"),
@@ -123,7 +127,7 @@ class _GymPicPickerState extends State<GymPicPicker> {
                       if (xFile == null) {
                         return;
                       }
-                      widget.pickPhoto(xFile);
+                      pickPhoto(xFile);
                     },
                     icon: const Icon(Icons.add_a_photo),
                   ),

@@ -132,6 +132,14 @@ class ApplicationState extends ChangeNotifier {
     return FirebaseFirestore.instance.collection('gyms').doc(code);
   }
 
+  Future<void> updateGym(GymData gymData) async {
+    await FirebaseFirestore.instance
+        .collection('gyms')
+        .doc(gymData.id!)
+        .update(gymData.toJson());
+    notifyListeners();
+  }
+
   Future<void> joinGym(DocumentReference documentReference) async {
     FirebaseFirestore.instance.collection('memberships').add(
           MembershipData(userId: user!.uid, gymId: documentReference.id)
@@ -169,13 +177,23 @@ class ApplicationState extends ChangeNotifier {
     return null;
   }
 
-  Future<String> createGymPic(String gymId, File file) async {
+  Future<String> saveGymPic(String gymId, String picturePath) async {
+    File? file = File(picturePath);
     Reference referenceRoot = FirebaseStorage.instance.ref();
     Reference ppFolder = referenceRoot.child('gym-profile-pics');
-    String termination = file.path.split('.').last;
-    Reference pic = ppFolder.child('$gymId.$termination');
+    String extension = file.path.split('.').last;
+    String name =
+        !picturePath.contains('.') ? '$gymId.$extension' : picturePath;
+    Reference pic = ppFolder.child(name);
     await pic.putFile(file);
     return pic.getDownloadURL();
+  }
+
+  Future<void> deleteGymPic(String photoName) async {
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference ppFolder = referenceRoot.child('gym-profile-pics');
+    Reference pic = ppFolder.child(photoName);
+    await pic.delete();
   }
 
   Future<UserData?> getUserInfo(String uid) async {
