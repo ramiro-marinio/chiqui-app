@@ -29,8 +29,8 @@ class ChatTile extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ChatPage(
-              gymData: gymData,
-              otherUser: userData?.userId,
+              gymId: gymData.id!,
+              otherUser: userData,
               users: users,
               publicChat: publicChat,
             ),

@@ -46,7 +46,8 @@ class _MessageCardState extends State<MessageCard> {
                 color: applicationState.user!.uid == widget.messageData.senderId
                     ? adaptiveColor(const Color.fromARGB(255, 188, 227, 134),
                         const Color.fromARGB(255, 29, 64, 34), context)
-                    : const Color.fromARGB(255, 60, 60, 60),
+                    : adaptiveColor(const Color.fromARGB(255, 174, 174, 174),
+                        const Color.fromARGB(255, 60, 60, 60), context),
                 child: Column(
                   children: [
                     Row(

@@ -181,7 +181,6 @@ class _CreateGymState extends State<CreateGym> {
                   Navigator.pop(context);
                 }
               } catch (e) {
-                print('ERRRRRORRRRR!!!!!!!!! $e');
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

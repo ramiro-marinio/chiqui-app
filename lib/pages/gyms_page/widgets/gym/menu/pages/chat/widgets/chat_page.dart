@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
-import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/messagedata.dart';
 import 'package:gymapp/functions/processmessagedocs.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/messagecard.dart';
@@ -9,13 +8,13 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/messa
 import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
-  final GymData gymData;
-  final String? otherUser;
+  final String gymId;
+  final UserData? otherUser;
   final List<UserData?> users;
   final bool publicChat;
   const ChatPage({
     super.key,
-    required this.gymData,
+    required this.gymId,
     required this.otherUser,
     required this.users,
     required this.publicChat,
@@ -38,9 +37,9 @@ class _ChatPageState extends State<ChatPage> {
     if (widget.publicChat == false) {
       applicationState
           .getChatStream(
-              gymId: widget.gymData.id!,
+              gymId: widget.gymId,
               senderId: applicationState.user!.uid,
-              receiverId: widget.otherUser)
+              receiverId: widget.otherUser!.userId)
           .listen((event) {
         setState(() {
           myMessages = processMessageDocs(event.docs);
@@ -51,8 +50,8 @@ class _ChatPageState extends State<ChatPage> {
       //Listener for messages from other user
       applicationState
           .getChatStream(
-              gymId: widget.gymData.id!,
-              senderId: widget.otherUser,
+              gymId: widget.gymId,
+              senderId: widget.otherUser!.userId,
               receiverId: applicationState.user!.uid)
           .listen((event) {
         setState(() {
@@ -63,8 +62,7 @@ class _ChatPageState extends State<ChatPage> {
       });
     } else {
       applicationState
-          .getChatStream(
-              gymId: widget.gymData.id!, receiverId: null, senderId: null)
+          .getChatStream(gymId: widget.gymId, receiverId: null, senderId: null)
           .listen((event) {
         setState(() {
           messages = processMessageDocs(event.docs);
@@ -76,12 +74,14 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController controller = ScrollController();
     return Scaffold(
       appBar: AppBar(title: const Text('Chat')),
       body: Column(
         children: [
           Expanded(
             child: ListView(
+              controller: controller,
               children: List.generate(
                 messages.length,
                 (index) => MessageCard(
@@ -92,15 +92,23 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           MessageTyper(
-            onSubmit: (value) {
-              applicationState.sendMessage(
-                MessageData(
-                    message: value,
-                    gymId: widget.gymData.id!,
-                    senderId: applicationState.user!.uid,
-                    receiverId: widget.otherUser,
-                    timestamp: DateTime.now().millisecondsSinceEpoch),
-              );
+            onSubmit: (text) async {
+              // await applicationState.sendMessage(
+              //   MessageData(
+              //       message: text,
+              //       gymId: widget.gymId,
+              //       senderId: applicationState.user!.uid,
+              //       receiverId: widget.otherUser?.userId,
+              //       timestamp: DateTime.now().millisecondsSinceEpoch),
+              // );
+              controller.jumpTo(controller.position.maxScrollExtent);
+              if (!widget.publicChat) {
+                applicationState.sendNotification(
+                  receiver: widget.otherUser!,
+                  gymId: widget.gymId,
+                  message: text,
+                );
+              }
             },
           )
         ],

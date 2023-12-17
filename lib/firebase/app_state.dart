@@ -1,11 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, AuthProvider;
+import 'package:firebase_messaging/firebase_messaging.dart';
 //this is necessary because there is another emailauthprovider,
 //which collides with firebase_ui_auth's emailauthprovider, creating errors.
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,10 @@ import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/invitedata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase/gyms/messagedata.dart';
-import 'package:gymapp/firebase_options.dart';
+import 'package:gymapp/functions/handlemessage.dart';
 import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
+import 'package:http/http.dart' as http;
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -31,11 +33,12 @@ class ApplicationState extends ChangeNotifier {
   List<GymData>? _gyms;
   List<GymData>? get gyms => _gyms;
   void init() async {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
     FirebaseAuth.instance.userChanges().listen(
       (userUpdate) async {
+        print('user update');
         _loggedIn = userUpdate != null;
         _user = userUpdate;
+        updateNotificationToken(signedIn: _user != null);
         Map<String, dynamic>? map = (await FirebaseFirestore.instance
                 .collection("userData")
                 .doc(user?.uid)
@@ -61,7 +64,6 @@ class ApplicationState extends ChangeNotifier {
           }
           notifyListeners();
         });
-        // notifyListeners();
       },
     );
     //MEMBERSHIPS LISTENER
@@ -374,6 +376,31 @@ class ApplicationState extends ChangeNotifier {
         .add(messageData.toJson());
   }
 
+  Future<void> sendNotification(
+      {required UserData receiver,
+      required String gymId,
+      required String message}) async {
+    String? displayName = user?.displayName;
+    if (displayName == null) {
+      return;
+    }
+    print('NIGER');
+    print(receiver.toMap().toString());
+    print((await http.post(
+      Uri.parse('https://sendmessagenotification-xg2n2l3ccq-uc.a.run.app'),
+      body: jsonEncode({
+        'displayName': displayName,
+        'senderId': user!.uid,
+        'user': jsonEncode(receiver.toMap()),
+        'receiverId': receiver.userId,
+        'gymId': gymId,
+        'message': message,
+      }),
+    ))
+        .body);
+    print('FINISHHHH');
+  }
+
   Future<void> sendReview(String review, double stars, String gymId) async {
     await FirebaseFirestore.instance
         .collection('ratings')
@@ -425,5 +452,12 @@ class ApplicationState extends ChangeNotifier {
         .where('receiverId', isEqualTo: receiverId)
         .orderBy('timestamp', descending: false)
         .snapshots();
+  }
+
+  Future<void> updateNotificationToken({required bool signedIn}) async {
+    FirebaseFirestore.instance.collection('tokens').doc(user!.uid).set({
+      'userId': user!.uid,
+      'token': signedIn ? await FirebaseMessaging.instance.getToken() : null,
+    });
   }
 }
