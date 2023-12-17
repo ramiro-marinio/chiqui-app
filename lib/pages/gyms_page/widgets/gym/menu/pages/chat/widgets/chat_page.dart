@@ -93,14 +93,14 @@ class _ChatPageState extends State<ChatPage> {
           ),
           MessageTyper(
             onSubmit: (text) async {
-              // await applicationState.sendMessage(
-              //   MessageData(
-              //       message: text,
-              //       gymId: widget.gymId,
-              //       senderId: applicationState.user!.uid,
-              //       receiverId: widget.otherUser?.userId,
-              //       timestamp: DateTime.now().millisecondsSinceEpoch),
-              // );
+              await applicationState.sendMessage(
+                MessageData(
+                    message: text,
+                    gymId: widget.gymId,
+                    senderId: applicationState.user!.uid,
+                    receiverId: widget.otherUser?.userId,
+                    timestamp: DateTime.now().millisecondsSinceEpoch),
+              );
               controller.jumpTo(controller.position.maxScrollExtent);
               if (!widget.publicChat) {
                 applicationState.sendNotification(

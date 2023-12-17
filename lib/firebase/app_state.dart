@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, AuthProvider;
@@ -15,10 +13,8 @@ import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/invitedata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase/gyms/messagedata.dart';
-import 'package:gymapp/functions/handlemessage.dart';
 import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
-import 'package:http/http.dart' as http;
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -35,7 +31,6 @@ class ApplicationState extends ChangeNotifier {
   void init() async {
     FirebaseAuth.instance.userChanges().listen(
       (userUpdate) async {
-        print('user update');
         _loggedIn = userUpdate != null;
         _user = userUpdate;
         updateNotificationToken(signedIn: _user != null);
@@ -384,21 +379,6 @@ class ApplicationState extends ChangeNotifier {
     if (displayName == null) {
       return;
     }
-    print('NIGER');
-    print(receiver.toMap().toString());
-    print((await http.post(
-      Uri.parse('https://sendmessagenotification-xg2n2l3ccq-uc.a.run.app'),
-      body: jsonEncode({
-        'displayName': displayName,
-        'senderId': user!.uid,
-        'user': jsonEncode(receiver.toMap()),
-        'receiverId': receiver.userId,
-        'gymId': gymId,
-        'message': message,
-      }),
-    ))
-        .body);
-    print('FINISHHHH');
   }
 
   Future<void> sendReview(String review, double stars, String gymId) async {

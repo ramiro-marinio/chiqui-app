@@ -10,7 +10,13 @@ import 'package:provider/provider.dart';
 void handleMessage(
     RemoteMessage? message, GlobalKey<NavigatorState> key) async {
   BuildContext context = key.currentContext!;
-  print("THIS! IS! THE! FUCKING! PARENT!!! ${context.widget}");
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => const Center(
+      child: CircularProgressIndicator.adaptive(),
+    ),
+  );
   ApplicationState applicationState =
       Provider.of<ApplicationState>(context, listen: false);
   if (message == null) {
@@ -25,6 +31,7 @@ void handleMessage(
         jsonDecode(message.data['user']) as Map<String, dynamic>,
       );
       if (context.mounted) {
+        Navigator.of(context).pop();
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ChatPage(
             gymId: gymId,

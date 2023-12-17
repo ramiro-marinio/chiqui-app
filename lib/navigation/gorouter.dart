@@ -2,6 +2,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/auth/loginscreen.dart';
+import 'package:gymapp/main.dart';
 import 'package:gymapp/navigation/widgets/icongoroute.dart';
 import 'package:gymapp/pages/help/help.dart';
 import 'package:gymapp/pages/home_page/homepage.dart';
@@ -65,5 +66,6 @@ final List<GoRoute> routes = [
   ),
 ];
 final GoRouter goRouter = GoRouter(
+  navigatorKey: fuckinKey,
   routes: routes,
 );

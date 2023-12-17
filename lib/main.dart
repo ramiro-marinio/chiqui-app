@@ -11,6 +11,12 @@ GlobalKey<NavigatorState> fuckinKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ApplicationState(),
+      child: const App(),
+    ),
+  );
   FirebaseMessaging.instance.requestPermission();
   FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
@@ -18,7 +24,9 @@ void main() async {
     sound: true,
   );
   FirebaseMessaging.instance.getInitialMessage().then((value) {
-    handleMessage(value, fuckinKey);
+    if (value != null) {
+      handleMessage(value, fuckinKey);
+    }
   });
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
     handleMessage(event, fuckinKey);
@@ -26,12 +34,6 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage((message) async {
     handleMessage(message, fuckinKey);
   });
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => ApplicationState(),
-      child: const App(),
-    ),
-  );
 }
 
 class App extends StatefulWidget {
