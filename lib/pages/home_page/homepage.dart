@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
           child: ElevatedButton(
         onPressed: () {
-          fuckinKey.currentContext!.go('/gyms');
+          globalKeyNavState.currentContext!.go('/gyms');
         },
         child: const Text('Move'),
       )),

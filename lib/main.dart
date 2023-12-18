@@ -7,7 +7,7 @@ import 'package:gymapp/functions/handlemessage.dart';
 import 'package:gymapp/navigation/gorouter.dart';
 import 'package:provider/provider.dart';
 
-GlobalKey<NavigatorState> fuckinKey = GlobalKey<NavigatorState>();
+GlobalKey<NavigatorState> globalKeyNavState = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
@@ -25,14 +25,14 @@ void main() async {
   );
   FirebaseMessaging.instance.getInitialMessage().then((value) {
     if (value != null) {
-      handleMessage(value, fuckinKey);
+      handleMessage(value, globalKeyNavState);
     }
   });
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    handleMessage(event, fuckinKey);
+    handleMessage(event, globalKeyNavState);
   });
   FirebaseMessaging.onBackgroundMessage((message) async {
-    handleMessage(message, fuckinKey);
+    handleMessage(message, globalKeyNavState);
   });
 }
 
@@ -49,22 +49,24 @@ class _AppState extends State<App> {
     return MaterialApp.router(
       routerConfig: goRouter,
       theme: ThemeData(
-          useMaterial3: true,
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.black,
-            ),
-          ),
-          sliderTheme: const SliderThemeData(
-            showValueIndicator: ShowValueIndicator.always,
-          )),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
         useMaterial3: true,
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+          ),
+        ),
         sliderTheme: const SliderThemeData(
           showValueIndicator: ShowValueIndicator.always,
         ),
+        fontFamily: 'SansSerif',
       ),
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          useMaterial3: true,
+          sliderTheme: const SliderThemeData(
+            showValueIndicator: ShowValueIndicator.always,
+          ),
+          fontFamily: 'SansSerif'),
     );
   }
 }

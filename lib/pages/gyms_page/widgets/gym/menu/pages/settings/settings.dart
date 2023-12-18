@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
-import 'package:gymapp/pages/gyms_page/settings/invite/invitesettings.dart';
-import 'package:gymapp/pages/gyms_page/settings/widgets/option.dart';
-import 'package:gymapp/pages/gyms_page/settings/widgets/usersettingstile.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/invite/invitesettings.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/option.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/usersettingstile.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/creategym.dart';
 import 'package:provider/provider.dart';
 
@@ -60,8 +60,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 ...List.generate(
                     snapshot.data!.length,
-                    (index) =>
-                        UserSettingsTile(userData: snapshot.data![index]!)),
+                    (index) => UserSettingsTile(
+                          userData: snapshot.data![index]!,
+                          gymId: widget.gymData.id!,
+                        )),
               ],
             ),
           );

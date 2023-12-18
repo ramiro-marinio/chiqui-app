@@ -66,7 +66,9 @@ class _MessageCardState extends State<MessageCard> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8, right: 8),
                             child: AutoSizeText(
-                              sender?.displayName ?? 'Unavailable User',
+                              sender?.displayName ??
+                                  applicationState.user?.displayName ??
+                                  'Unavailable User',
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.ellipsis,
                             ),

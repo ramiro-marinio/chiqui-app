@@ -4,7 +4,8 @@ Future<void> showWarningDialog(
     {required String title,
     String? description,
     required BuildContext context,
-    required VoidCallback yes}) async {
+    required VoidCallback yes,
+    VoidCallback? no}) async {
   await showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -13,6 +14,9 @@ Future<void> showWarningDialog(
       actions: [
         TextButton(
           onPressed: () {
+            if (no != null) {
+              no();
+            }
             Navigator.pop(context);
           },
           child: const Text('No'),

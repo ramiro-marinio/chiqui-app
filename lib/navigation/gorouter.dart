@@ -37,7 +37,7 @@ final List<GoRoute> routes = [
     ],
   ),
   IconGoRoute(
-    path: "/my-gym",
+    path: "/my-gyms",
     mustBeLoggedIn: true,
     builder: (context, state) => const MyGyms(),
     icon: const Icon(Icons.fitness_center),
@@ -66,6 +66,6 @@ final List<GoRoute> routes = [
   ),
 ];
 final GoRouter goRouter = GoRouter(
-  navigatorKey: fuckinKey,
+  navigatorKey: globalKeyNavState,
   routes: routes,
 );

@@ -72,9 +72,9 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
-    ScrollController controller = ScrollController();
     return Scaffold(
       appBar: AppBar(title: const Text('Chat')),
       body: Column(

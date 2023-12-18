@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
-import 'package:gymapp/firebase/widgets/profilelisttile.dart';
+import 'package:gymapp/firebase/widgets/profile.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/navigation/gorouter.dart';
 import 'package:gymapp/navigation/widgets/icongoroute.dart';

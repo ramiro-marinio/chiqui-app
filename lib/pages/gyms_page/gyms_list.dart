@@ -25,7 +25,7 @@ class _MyGymsState extends State<MyGyms> {
       return Scaffold(
           drawer: const NavDrawer(),
           appBar: AppBar(
-            title: const Text("My Gyms"),
+            title: const Text('My Gyms'),
             actions: [
               AddGymButton(
                 onJoinGym: () {
@@ -47,7 +47,6 @@ class _MyGymsState extends State<MyGyms> {
               )
             ],
           ),
-          // ignore: prefer_const_constructors
           body: ListView(
             children: [
               const Row(
@@ -56,7 +55,7 @@ class _MyGymsState extends State<MyGyms> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: AutoSizeText(
-                      "My Gyms",
+                      'My Gyms',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w900,

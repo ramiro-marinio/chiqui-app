@@ -4,6 +4,7 @@ import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/functions/processconvodocs.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/chat_tile.dart';
+import 'package:gymapp/widgets/filterbar.dart';
 import 'package:provider/provider.dart';
 
 class MyChats extends StatefulWidget {
@@ -15,12 +16,13 @@ class MyChats extends StatefulWidget {
 }
 
 class _MyChatsState extends State<MyChats> {
+  String search = '';
   Future<List<UserData?>>? _getUsers;
   @override
   Widget build(BuildContext context) {
     final ApplicationState applicationState =
         Provider.of<ApplicationState>(context);
-    _getUsers = applicationState.getGymUsers(widget.gymData.id!);
+    _getUsers ??= applicationState.getGymUsers(widget.gymData.id!);
     return FutureBuilder(
         future: _getUsers,
         builder: (context, snapshot) {
@@ -37,17 +39,28 @@ class _MyChatsState extends State<MyChats> {
                         'Chats in this gym',
                         style: TextStyle(fontSize: 30),
                       ),
-                      ChatTile(
-                        userData: null,
-                        gymData: widget.gymData,
-                        users: users,
-                        publicChat: true,
+                      FilterBar(
+                        onChanged: (value) {
+                          setState(() {
+                            search = value;
+                          });
+                        },
+                      ),
+                      Visibility(
+                        visible: search.isEmpty,
+                        child: ChatTile(
+                          userData: null,
+                          gymData: widget.gymData,
+                          users: users,
+                          publicChat: true,
+                        ),
                       ),
                       ...processConversations(
                         users,
                         context,
                         widget.gymData,
                         users,
+                        search,
                       ),
                     ],
                   ),

@@ -4,6 +4,7 @@ import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/exercisedemo.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/demomaker.dart';
+import 'package:gymapp/widgets/filterbar.dart';
 import 'package:provider/provider.dart';
 
 class ExerciseDemonstrations extends StatefulWidget {
@@ -18,6 +19,7 @@ class ExerciseDemonstrations extends StatefulWidget {
 }
 
 class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
+  String search = '';
   Widget? page;
   List<DemonstrationData> demoData = [];
   List<Widget>? result;
@@ -28,67 +30,77 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
       Future<List<Map<String, dynamic>>> data =
           applicationState.getDemoData(widget.gymData.id!);
 
-      return FutureBuilder(
-        future: data,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            result = List<ExerciseDemo>.generate(
-              snapshot.data!.length,
-              (index) => ExerciseDemo(
-                demoData: DemonstrationData.fromJson(snapshot.data![index]),
-                gymData: widget.gymData,
-              ),
-            );
-            return ListView(
-              children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 12),
-                      child: Text(
-                        "Exercises",
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.w900),
-                      ),
-                    ),
-                  ],
-                ),
-                ...result ?? [],
-                Visibility(
-                  visible: applicationState.user!.uid == widget.gymData.ownerId,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DemoMaker(
-                                gymId: widget.gymData.id!,
-                              ),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.add_circle),
-                        color: Colors.green,
-                      ),
-                    ],
+      return StatefulBuilder(builder: (context, setState) {
+        return FutureBuilder(
+          future: data,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              result = List<Widget>.generate(
+                snapshot.data!.length,
+                (index) => Visibility(
+                  visible: DemonstrationData.fromJson(snapshot.data![index])
+                      .exerciseName
+                      .contains(search),
+                  child: ExerciseDemo(
+                    demoData: DemonstrationData.fromJson(snapshot.data![index]),
+                    gymData: widget.gymData,
                   ),
                 ),
-              ],
-            );
-          } else {
-            return const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator.adaptive(),
-              ],
-            );
-          }
-        },
-      );
+              );
+              return Scaffold(
+                body: ListView(
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 12),
+                          child: Text(
+                            "Exercises",
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                      ],
+                    ),
+                    FilterBar(
+                      onChanged: (value) {
+                        setState(() {
+                          search = value;
+                        });
+                      },
+                    ),
+                    ...result ?? [],
+                  ],
+                ),
+                floatingActionButton: Visibility(
+                  visible: applicationState.user!.uid == widget.gymData.ownerId,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DemoMaker(
+                            gymId: widget.gymData.id!,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Icon(Icons.add),
+                  ),
+                ),
+              );
+            } else {
+              return const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator.adaptive(),
+                ],
+              );
+            }
+          },
+        );
+      });
     });
   }
 }

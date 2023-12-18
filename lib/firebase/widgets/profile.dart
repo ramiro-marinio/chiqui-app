@@ -23,15 +23,15 @@ class _ProfileState extends State<Profile> {
           ImageProvider imageProvider = applicationState.loggedIn &&
                   applicationState.user?.photoURL != null
               ? NetworkImage(applicationState.user!.photoURL!)
-              : const AssetImage("assets/no_image.jpg") as ImageProvider;
+              : const AssetImage('assets/no_image.jpg') as ImageProvider;
           return CircleAvatar(
             radius: 25,
             backgroundImage: imageProvider,
           );
         }),
         title: applicationState.loggedIn
-            ? const Text("Your account")
-            : const Text("No account"),
+            ? const Text('Your account')
+            : const Text('No account'),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

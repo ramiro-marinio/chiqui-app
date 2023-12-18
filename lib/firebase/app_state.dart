@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
@@ -15,6 +16,7 @@ import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase/gyms/messagedata.dart';
 import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
+import 'package:http/http.dart' as http;
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -139,7 +141,11 @@ class ApplicationState extends ChangeNotifier {
 
   Future<void> joinGym(DocumentReference documentReference) async {
     FirebaseFirestore.instance.collection('memberships').add(
-          MembershipData(userId: user!.uid, gymId: documentReference.id)
+          MembershipData(
+                  userId: user!.uid,
+                  gymId: documentReference.id,
+                  admin: false,
+                  coach: false)
               .toJson(),
         );
   }
@@ -379,6 +385,18 @@ class ApplicationState extends ChangeNotifier {
     if (displayName == null) {
       return;
     }
+    UserData? userData = await getUserInfo(user!.uid);
+    await http.post(
+      Uri.parse('https://sendmessagenotification-xg2n2l3ccq-uc.a.run.app'),
+      body: jsonEncode({
+        'displayName': displayName,
+        'gymId': gymId,
+        'message': message,
+        'senderId': user!.uid,
+        'receiverId': receiver.userId,
+        'user': jsonEncode(userData!.toMap()),
+      }),
+    );
   }
 
   Future<void> sendReview(String review, double stars, String gymId) async {
@@ -439,5 +457,26 @@ class ApplicationState extends ChangeNotifier {
       'userId': user!.uid,
       'token': signedIn ? await FirebaseMessaging.instance.getToken() : null,
     });
+  }
+
+  Future<void> modifyMembership(
+      Map<String, dynamic> json, MembershipData membershipData) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('memberships')
+        .where('gymId', isEqualTo: membershipData.gymId)
+        .where('userId', isEqualTo: membershipData.userId)
+        .get();
+    querySnapshot.docs[0].reference.update(json);
+  }
+
+  Future<MembershipData> getMembership(String gymId, String userId) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('memberships')
+        .where('gymId', isEqualTo: gymId)
+        .where('userId', isEqualTo: userId)
+        .get();
+    return MembershipData.fromJson(querySnapshot.docs[0].data());
   }
 }
