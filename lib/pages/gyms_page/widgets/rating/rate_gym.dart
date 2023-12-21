@@ -15,6 +15,7 @@ class RateGym extends StatefulWidget {
 }
 
 class _RateGymState extends State<RateGym> {
+  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _controller = TextEditingController();
   double stars = 5;
   @override
@@ -47,12 +48,29 @@ class _RateGymState extends State<RateGym> {
               ),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.all(12.0),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextField(
+              maxLines: 1,
+              maxLength: 50,
+              controller: _titleController,
+              decoration: const InputDecoration(
+                hintText: 'Title',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
             child: TextField(
               maxLines: 6,
               maxLength: 1000,
-              decoration: InputDecoration(
+              controller: _controller,
+              decoration: const InputDecoration(
                 hintText: 'Your Review',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
@@ -65,9 +83,11 @@ class _RateGymState extends State<RateGym> {
           ElevatedButton.icon(
             onPressed: () async {
               showProgressDialog('Saving...', context);
-              await context
-                  .read<ApplicationState>()
-                  .sendReview(_controller.text, stars, widget.gymData.id!);
+              await context.read<ApplicationState>().sendRating(
+                  _titleController.text,
+                  _controller.text,
+                  stars,
+                  widget.gymData.id!);
               if (context.mounted) {
                 Navigator.pop(context);
                 Navigator.pop(context);

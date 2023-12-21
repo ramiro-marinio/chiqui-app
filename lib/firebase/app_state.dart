@@ -16,6 +16,7 @@ import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase/gyms/messagedata.dart';
 import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
+import 'package:gymapp/pages/gyms_page/widgets/rating/data/ratingdata.dart';
 import 'package:http/http.dart' as http;
 
 class ApplicationState extends ChangeNotifier {
@@ -159,6 +160,15 @@ class ApplicationState extends ChangeNotifier {
         .docs[0]
         .reference
         .delete();
+  }
+
+  Future<void> kickUser(String gymId, String userId) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('memberships')
+        .where('gymId', isEqualTo: gymId)
+        .where('userId', isEqualTo: userId)
+        .get();
+    querySnapshot.docs[0].reference.delete();
   }
 
   bool checkMembership(String gymId) {
@@ -399,11 +409,39 @@ class ApplicationState extends ChangeNotifier {
     );
   }
 
-  Future<void> sendReview(String review, double stars, String gymId) async {
+  Future<int> getRatingCount(String gymId) async {
+    AggregateQuerySnapshot aggregateQuerySnapshot = await FirebaseFirestore
+        .instance
+        .collection('ratings')
+        .where('gymId', isEqualTo: gymId)
+        .count()
+        .get();
+    return aggregateQuerySnapshot.count;
+  }
+
+  Future<List<RatingData>> getRatings(String gymId, int page) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('ratings')
+        .where('gymId', isEqualTo: gymId)
+        .orderBy('timestamp', descending: true)
+        .limit(page * 30)
+        .get();
+    final List<QueryDocumentSnapshot<Map<String, dynamic>>> docs =
+        querySnapshot.docs;
+    return List.generate(
+      docs.length,
+      (index) => RatingData.fromJson(docs[index].data()),
+    );
+  }
+
+  Future<void> sendRating(
+      String title, String review, double stars, String gymId) async {
     await FirebaseFirestore.instance
         .collection('ratings')
         .doc(user!.uid + gymId)
         .set({
+      'title': title,
       'review': review,
       'stars': stars,
       'gymId': gymId,
@@ -412,7 +450,7 @@ class ApplicationState extends ChangeNotifier {
     });
   }
 
-  Future<double?> getRating(String gymId) async {
+  Future<double?> getRatingAvg(String gymId) async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
         .instance
         .collection('ratings')

@@ -6,7 +6,7 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/settings.
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/my_chats.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/exercisedemos.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/info/gyminfo.dart';
-import 'package:gymapp/widgets/crawltext.dart';
+import 'package:gymapp/widgets/crawl.dart';
 import 'package:provider/provider.dart';
 
 class GymMenu extends StatefulWidget {

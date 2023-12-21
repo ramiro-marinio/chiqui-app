@@ -13,7 +13,7 @@ class OptionsButton extends StatelessWidget {
       itemBuilder: (context) {
         return [
           PopupMenuItem(
-            child: const IconText(icon: Icon(Icons.star), text: "Rate gym"),
+            child: const IconText(icon: Icon(Icons.star), text: "Gym Ratings"),
             onTap: () {
               rateGym();
             },

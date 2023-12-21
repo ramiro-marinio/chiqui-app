@@ -4,7 +4,7 @@ import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/invitedata.dart';
 import 'package:gymapp/functions/showinfodialog.dart';
-import 'package:gymapp/widgets/crawltext.dart';
+import 'package:gymapp/widgets/crawl.dart';
 import 'package:provider/provider.dart';
 
 class GymJoinSheet extends StatefulWidget {

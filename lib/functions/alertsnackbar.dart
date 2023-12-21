@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 void showAlertSnackbar(
-    {required BuildContext context, required String text, Widget? icon}) {
+    {required BuildContext context,
+    required String text,
+    Widget? icon,
+    Duration? duration}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Row(
@@ -16,6 +19,7 @@ void showAlertSnackbar(
           Text(text),
         ],
       ),
+      duration: duration ?? const Duration(seconds: 3),
     ),
   );
 }

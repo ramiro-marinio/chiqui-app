@@ -6,7 +6,7 @@ import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/widgets/optionsbutton.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/gymmenu.dart';
-import 'package:gymapp/pages/gyms_page/widgets/rating/rate_gym.dart';
+import 'package:gymapp/pages/gyms_page/widgets/rating/viewpage/view_rating_page.dart';
 import 'package:provider/provider.dart';
 
 class GymView extends StatefulWidget {
@@ -23,9 +23,9 @@ class _GymViewState extends State<GymView> {
   Widget build(BuildContext context) {
     return Consumer<ApplicationState>(
         builder: (context, applicationState, child) {
-      rating ??= applicationState.getRating(widget.gymData.id!);
+      rating ??= applicationState.getRatingAvg(widget.gymData.id!);
       return Padding(
-        padding: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.only(top: 8, right: 4, left: 4),
         child: Card(
           color: adaptiveColor(const Color.fromARGB(255, 180, 200, 255),
               const Color.fromARGB(255, 54, 77, 142), context),
@@ -123,10 +123,8 @@ class _GymViewState extends State<GymView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RateGym(
-                            gymData: widget.gymData,
-                          ),
-                        ),
+                            builder: (context) =>
+                                ViewRatingPage(gymData: widget.gymData)),
                       );
                     },
                     leaveGym:

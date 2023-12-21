@@ -33,6 +33,7 @@ class _MessageCardState extends State<MessageCard> {
     return Consumer<ApplicationState>(
         builder: (context, applicationState, child) {
       return Row(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment:
             applicationState.user!.uid == widget.messageData.senderId
                 ? MainAxisAlignment.end
@@ -51,6 +52,7 @@ class _MessageCardState extends State<MessageCard> {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0, top: 4),
@@ -78,10 +80,13 @@ class _MessageCardState extends State<MessageCard> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        widget.messageData.message,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(fontSize: 16),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          widget.messageData.message,
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(fontSize: 16),
+                        ),
                       ),
                     ),
                   ],

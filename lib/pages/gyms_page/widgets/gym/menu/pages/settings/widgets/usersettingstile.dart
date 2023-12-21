@@ -5,16 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
-import 'package:gymapp/functions/alertsnackbar.dart';
+import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/functions/calcage.dart';
-import 'package:gymapp/functions/showwarningdialog.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/functions/useroptionsmenu.dart';
 import 'package:provider/provider.dart';
 
 class UserSettingsTile extends StatefulWidget {
   final UserData userData;
   final String gymId;
+  final MembershipData localMembershipData;
   const UserSettingsTile(
-      {super.key, required this.userData, required this.gymId});
+      {super.key,
+      required this.userData,
+      required this.gymId,
+      required this.localMembershipData});
 
   @override
   State<UserSettingsTile> createState() => _UserSettingsTileState();
@@ -22,75 +26,46 @@ class UserSettingsTile extends StatefulWidget {
 
 class _UserSettingsTileState extends State<UserSettingsTile> {
   StreamSubscription? subscription;
+  StreamSubscription? mySubscription;
   MembershipData? membership;
   bool? coach;
   bool? admin;
 
   @override
   Widget build(BuildContext context) {
-    ApplicationState applicationState = Provider.of<ApplicationState>(context);
-    return StatefulBuilder(builder: (context, setState) {
-      subscription ??= FirebaseFirestore.instance
-          .collection('memberships')
-          .where('gymId', isEqualTo: widget.gymId)
-          .where('userId', isEqualTo: widget.userData.userId)
-          .snapshots()
-          .listen((value) {
-        setState(() {
-          membership = MembershipData.fromJson(value.docs[0].data());
-          coach = membership!.coach;
-          admin = membership!.admin;
-        });
+    final ApplicationState applicationState =
+        Provider.of<ApplicationState>(context);
+    subscription ??= FirebaseFirestore.instance
+        .collection('memberships')
+        .where('gymId', isEqualTo: widget.gymId)
+        .where('userId', isEqualTo: widget.userData.userId)
+        .snapshots()
+        .listen((value) {
+      setState(() {
+        membership = MembershipData.fromJson(value.docs[0].data());
+        coach = membership!.coach;
+        admin = membership!.admin;
       });
-      return Card(
+    });
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Card(
+        color: adaptiveColor(const Color.fromARGB(255, 220, 220, 220),
+            const Color.fromARGB(255, 46, 46, 71), context),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: InkWell(
           customBorder:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           onTapUp: (details) {
-            showMenu(
-                context: context,
-                position: RelativeRect.fromDirectional(
-                    textDirection: TextDirection.ltr,
-                    start: details.globalPosition.dx,
-                    top: details.globalPosition.dy,
-                    end: details.globalPosition.dx,
-                    bottom: details.globalPosition.dy),
-                items: [
-                  PopupMenuItem(
-                    child: Text(coach != null
-                        ? (coach! ? 'Remove Coach Role' : 'Make Coach')
-                        : 'Loading...'),
-                    onTap: () {
-                      applicationState
-                          .modifyMembership({'coach': !coach!}, membership!);
-                      showAlertSnackbar(
-                          context: context, text: 'Role Changed Successfully!');
-                    },
-                  ),
-                  PopupMenuItem(
-                    child: Text(admin != null
-                        ? (admin!
-                            ? 'Remove Administrator Role'
-                            : 'Make Administrator')
-                        : 'Loading...'),
-                    onTap: () {
-                      applicationState
-                          .modifyMembership({'admin': !admin!}, membership!);
-                      showAlertSnackbar(
-                          context: context, text: 'Role Changed Successfully!');
-                    },
-                  ),
-                  PopupMenuItem(
-                    child: const Text('Kick Out'),
-                    onTap: () {
-                      showWarningDialog(
-                        title: 'Are you sure?',
-                        context: context,
-                        yes: () {},
-                      );
-                    },
-                  )
-                ]);
+            showUserOptionsMenu(
+              context: context,
+              details: details,
+              membership: membership,
+              applicationState: applicationState,
+              localMembershipData: widget.localMembershipData,
+              gymId: widget.gymId,
+              userData: widget.userData,
+            );
           },
           child: ListTile(
             title: Text(widget.userData.displayName),
@@ -106,7 +81,8 @@ class _UserSettingsTileState extends State<UserSettingsTile> {
                     ? Expanded(
                         child: Text(
                         widget.userData.info,
-                        overflow: TextOverflow.fade,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ))
                     : const Text('No info'),
                 coach != null
@@ -122,7 +98,7 @@ class _UserSettingsTileState extends State<UserSettingsTile> {
                       )
                     : const CircularProgressIndicator.adaptive(),
                 SizedBox(
-                  width: 100,
+                  width: 80,
                   child: Column(
                     children: [
                       Icon(widget.userData.sex ? Icons.female : Icons.male),
@@ -138,7 +114,7 @@ class _UserSettingsTileState extends State<UserSettingsTile> {
             ),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }

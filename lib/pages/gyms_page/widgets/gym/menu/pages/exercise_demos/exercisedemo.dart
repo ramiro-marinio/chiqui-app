@@ -6,7 +6,7 @@ import 'package:gymapp/functions/showwarningdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/demomaker.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/viewdemodetails.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
-import 'package:gymapp/widgets/crawltext.dart';
+import 'package:gymapp/widgets/crawl.dart';
 import 'package:provider/provider.dart';
 
 class ExerciseDemo extends StatelessWidget {

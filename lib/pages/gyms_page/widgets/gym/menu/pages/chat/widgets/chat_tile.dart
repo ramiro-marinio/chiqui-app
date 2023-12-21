@@ -44,11 +44,10 @@ class ChatTile extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.done) {
                   MembershipData data =
                       MembershipData.fromJson(snapshot.data!.docs[0].data());
-                  String tag = '';
-                  if (userData?.userId == gymData.ownerId) {
+                  String tag = ' ';
+                  if (userData!.userId == gymData.ownerId) {
                     tag = 'Owner';
-                  }
-                  if (data.admin && data.coach) {
+                  } else if (data.admin && data.coach) {
                     tag = 'Coach and Administrator';
                   } else if (data.admin) {
                     tag = 'Admin';

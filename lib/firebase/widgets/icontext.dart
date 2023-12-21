@@ -8,18 +8,18 @@ class IconText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 120,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          icon,
-          AutoSizeText(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        icon,
+        SizedBox(
+          width: 80,
+          child: AutoSizeText(
             text,
             maxLines: 1,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

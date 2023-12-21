@@ -14,9 +14,11 @@ class _CrawlState extends State<Crawl> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      double maxExtent = _controller.position.maxScrollExtent;
-      double minExtent = _controller.position.minScrollExtent;
-      autoSlide(maxExtent, minExtent, maxExtent);
+      if (_controller.positions.isNotEmpty) {
+        double maxExtent = _controller.position.maxScrollExtent;
+        double minExtent = _controller.position.minScrollExtent;
+        autoSlide(maxExtent, minExtent, maxExtent);
+      }
     });
   }
 
@@ -45,15 +47,11 @@ class _CrawlState extends State<Crawl> {
 
   @override
   Widget build(BuildContext context) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return SingleChildScrollView(
-            controller: _controller,
-            physics: const NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            child: widget.child);
-      },
-    );
+    return SingleChildScrollView(
+        controller: _controller,
+        physics: const NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: widget.child);
   }
 
   @override

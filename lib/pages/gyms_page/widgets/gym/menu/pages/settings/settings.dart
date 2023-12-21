@@ -1,28 +1,35 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
+import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/invite/invitesettings.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/option.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/usersettingstile.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/creategym.dart';
 import 'package:provider/provider.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   final GymData gymData;
   const SettingsPage({super.key, required this.gymData});
-
-  @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
+    MembershipData? localMembershipData;
     final ApplicationState applicationState =
         Provider.of<ApplicationState>(context);
+    FirebaseFirestore.instance
+        .collection('memberships')
+        .where('gymId', isEqualTo: gymData.id!)
+        .where('userId', isEqualTo: applicationState.user!.uid)
+        .snapshots()
+        .listen((event) {
+      localMembershipData = MembershipData.fromJson(event.docs[0].data());
+    });
     final Future<List<UserData?>> users =
-        applicationState.getGymUsers(widget.gymData.id!);
+        applicationState.getGymUsers(gymData.id!);
     return FutureBuilder(
       future: users,
       builder: (context, snapshot) {
@@ -39,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => InviteSettings(
-                          gymData: widget.gymData,
+                          gymData: gymData,
                         ),
                       ),
                     );
@@ -52,18 +59,19 @@ class _SettingsPageState extends State<SettingsPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            CreateGym(editGym: widget.gymData),
+                        builder: (context) => CreateGym(editGym: gymData),
                       ),
                     );
                   },
                 ),
                 ...List.generate(
-                    snapshot.data!.length,
-                    (index) => UserSettingsTile(
-                          userData: snapshot.data![index]!,
-                          gymId: widget.gymData.id!,
-                        )),
+                  snapshot.data!.length,
+                  (index) => UserSettingsTile(
+                    userData: snapshot.data![index]!,
+                    gymId: gymData.id!,
+                    localMembershipData: localMembershipData!,
+                  ),
+                ),
               ],
             ),
           );
