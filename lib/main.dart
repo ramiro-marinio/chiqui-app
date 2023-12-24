@@ -1,22 +1,29 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase_options.dart';
 import 'package:gymapp/functions/handlemessage.dart';
 import 'package:gymapp/navigation/gorouter.dart';
+import 'package:gymapp/pages/other/function/handlewifi.dart';
 import 'package:provider/provider.dart';
 
 GlobalKey<NavigatorState> globalKeyNavState = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
+  GoRouter goRouter = await getRouter();
   runApp(
     ChangeNotifierProvider(
       create: (_) => ApplicationState(),
-      child: const App(),
+      child: App(
+        goRouter: goRouter,
+      ),
     ),
   );
+  wifiHandler = Connectivity().onConnectivityChanged.listen(handleWifi);
   FirebaseMessaging.instance.requestPermission();
   FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
@@ -37,7 +44,8 @@ void main() async {
 }
 
 class App extends StatefulWidget {
-  const App({super.key});
+  final GoRouter goRouter;
+  const App({super.key, required this.goRouter});
 
   @override
   State<App> createState() => _AppState();
@@ -47,7 +55,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: goRouter,
+      routerConfig: widget.goRouter,
       theme: ThemeData(
         useMaterial3: true,
         textButtonTheme: TextButtonThemeData(

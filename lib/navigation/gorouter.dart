@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import 'package:gymapp/navigation/widgets/icongoroute.dart';
 import 'package:gymapp/pages/help/help.dart';
 import 'package:gymapp/pages/home_page/homepage.dart';
 import 'package:gymapp/pages/gyms_page/gyms_list.dart';
+import 'package:gymapp/pages/other/noconncetion.dart';
 import 'package:gymapp/pages/settings/settings.dart';
 import 'package:gymapp/pages/suggestion.dart/suggestion.dart';
 
@@ -64,8 +66,19 @@ final List<GoRoute> routes = [
     mustBeLoggedIn: false,
     name: 'Settings',
   ),
+  GoRoute(
+    path: '/no-connection',
+    builder: (context, state) => const NoConnection(),
+  ),
 ];
-final GoRouter goRouter = GoRouter(
-  navigatorKey: globalKeyNavState,
-  routes: routes,
-);
+
+Future<GoRouter> getRouter() async {
+  ConnectivityResult connectivityResult =
+      await Connectivity().checkConnectivity();
+  return GoRouter(
+    navigatorKey: globalKeyNavState,
+    initialLocation:
+        connectivityResult == ConnectivityResult.none ? '/no-connection' : '/',
+    routes: routes,
+  );
+}

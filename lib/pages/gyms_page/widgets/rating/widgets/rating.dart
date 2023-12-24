@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/pages/gyms_page/widgets/rating/data/ratingdata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/rating/widgets/ratingdetail.dart';
-import 'package:gymapp/widgets/crawltext.dart';
+import 'package:gymapp/widgets/crawl.dart';
 
 class RatingTile extends StatelessWidget {
   final RatingData ratingData;

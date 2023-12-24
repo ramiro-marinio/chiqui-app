@@ -53,6 +53,11 @@ dependencies:
   firebase_analytics: ^10.7.4
   http: ^1.1.0
   video_player_platform_interface: ^6.2.1
+  devicelocale: ^0.7.0
+  html: ^0.15.4
+  url_launcher: ^6.2.2
+  favicon: ^1.1.2
+  connectivity_plus: ^5.0.2
 
 dev_dependencies:
   flutter_test:

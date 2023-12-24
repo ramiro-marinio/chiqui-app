@@ -14,6 +14,7 @@ import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/invitedata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase/gyms/messagedata.dart';
+import 'package:gymapp/firebase/news/newsdata.dart';
 import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/rating/data/ratingdata.dart';
@@ -516,5 +517,25 @@ class ApplicationState extends ChangeNotifier {
         .where('userId', isEqualTo: userId)
         .get();
     return MembershipData.fromJson(querySnapshot.docs[0].data());
+  }
+
+  Future<List<NewsData>> getNews(String language) async {
+    List<NewsData> list = [];
+
+    await http
+        .get(
+      Uri.parse(
+        'https://getlocalnews-xg2n2l3ccq-uc.a.run.app?language=$language',
+      ),
+    )
+        .then((res) {
+      final result = jsonDecode(res.body) as Map<String, dynamic>;
+      final List<NewsData> news = List.generate(
+        result['data']!.length,
+        (index) => NewsData.fromJson(result['data']![index]),
+      );
+      list = news;
+    });
+    return list;
   }
 }
