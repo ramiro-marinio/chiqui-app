@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, AuthProvider;
-import 'package:firebase_messaging/firebase_messaging.dart';
 //this is necessary because there is another emailauthprovider,
 //which collides with firebase_ui_auth's emailauthprovider, creating errors.
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,20 +24,23 @@ class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
   }
+  bool _loading = true;
+  bool get loading => _loading;
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
   User? _user;
   User? get user => _user;
   UserData? _userData;
   UserData? get userData => _userData;
-  List<GymData>? _gyms;
-  List<GymData>? get gyms => _gyms;
+  final List<GymData> _gyms = [];
+  List<GymData>? get gyms => _gyms.isNotEmpty ? _gyms : null;
   void init() async {
     FirebaseAuth.instance.userChanges().listen(
       (userUpdate) async {
+        _loading = false;
         _loggedIn = userUpdate != null;
         _user = userUpdate;
-        updateNotificationToken(signedIn: _user != null);
+        updateNotificationToken();
         Map<String, dynamic>? map = (await FirebaseFirestore.instance
                 .collection("userData")
                 .doc(user?.uid)
@@ -53,13 +56,16 @@ class ApplicationState extends ChangeNotifier {
             .where('userId', isEqualTo: user?.uid)
             .snapshots()
             .listen((event) async {
+          if (_gyms.isNotEmpty) {
+            _gyms.clear();
+          }
           List<QueryDocumentSnapshot> newMemberships = event.docs;
-          _gyms = [];
-
           for (QueryDocumentSnapshot documentSnapshot in newMemberships) {
             GymData? gymData = await getGymData((documentSnapshot.data()
                 as Map<String, dynamic>)['gymId'] as String);
-            _gyms?.add(gymData!);
+            if (gymData != null) {
+              _gyms.add(gymData);
+            }
           }
           notifyListeners();
         });
@@ -173,7 +179,7 @@ class ApplicationState extends ChangeNotifier {
   }
 
   bool checkMembership(String gymId) {
-    for (GymData gymData in _gyms!) {
+    for (GymData gymData in _gyms) {
       if (gymData.id == gymId) {
         return true;
       }
@@ -220,7 +226,7 @@ class ApplicationState extends ChangeNotifier {
     // return result;
   }
 
-  Future<List<UserData?>> getGymUsers(String gymId) async {
+  Future<List<UserData>> getGymUsers(String gymId) async {
     QuerySnapshot<Map<String, dynamic>> membershipsQuerySnapshot =
         await FirebaseFirestore.instance
             .collection('memberships')
@@ -231,9 +237,9 @@ class ApplicationState extends ChangeNotifier {
       Map<String, dynamic> data = membershipsQuerySnapshot.docs[index].data();
       return data['userId'] as String;
     });
-    List<UserData?> result = [];
+    List<UserData> result = [];
     for (String uid in userIds) {
-      result.add(await getUserInfo(uid));
+      result.add((await getUserInfo(uid))!);
     }
     return result;
   }
@@ -491,7 +497,8 @@ class ApplicationState extends ChangeNotifier {
         .snapshots();
   }
 
-  Future<void> updateNotificationToken({required bool signedIn}) async {
+  Future<void> updateNotificationToken() async {
+    bool signedIn = user != null;
     FirebaseFirestore.instance.collection('tokens').doc(user!.uid).set({
       'userId': user!.uid,
       'token': signedIn ? await FirebaseMessaging.instance.getToken() : null,

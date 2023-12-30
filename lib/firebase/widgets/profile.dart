@@ -20,14 +20,24 @@ class _ProfileState extends State<Profile> {
     return GestureDetector(
       child: ListTile(
         leading: Builder(builder: (context) {
-          ImageProvider imageProvider = applicationState.loggedIn &&
-                  applicationState.user?.photoURL != null
-              ? NetworkImage(applicationState.user!.photoURL!)
-              : const AssetImage('assets/no_image.jpg') as ImageProvider;
-          return CircleAvatar(
-            radius: 25,
-            backgroundImage: imageProvider,
-          );
+          if (!applicationState.loading) {
+            ImageProvider imageProvider =
+                const AssetImage('assets/no_image.jpg');
+            if (applicationState.loggedIn &&
+                applicationState.user!.photoURL != null) {
+              imageProvider = NetworkImage(applicationState.user!.photoURL!);
+            }
+            return CircleAvatar(
+              radius: 25,
+              backgroundImage: imageProvider,
+            );
+          } else {
+            return const SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
         }),
         title: applicationState.loggedIn
             ? const Text('Your account')
@@ -37,14 +47,19 @@ class _ProfileState extends State<Profile> {
           children: [
             applicationState.loggedIn
                 ? AutoSizeText(
-                    applicationState.user!.email ?? "",
+                    applicationState.user!.email!,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   )
-                : const AutoSizeText(
-                    "Tap to log in (or register)",
-                    maxLines: 1,
-                  ),
+                : !applicationState.loading
+                    ? const AutoSizeText(
+                        "Tap to log in (or register)",
+                        maxLines: 1,
+                      )
+                    : const AutoSizeText(
+                        "Loading...",
+                        maxLines: 1,
+                      ),
             Visibility(
               visible: applicationState.loggedIn,
               child: const Text("Long tap for more options"),
@@ -61,9 +76,11 @@ class _ProfileState extends State<Profile> {
                   ),
                 );
               }
-            : () {
-                context.push("/sign-in");
-              },
+            : !applicationState.loading
+                ? () {
+                    context.push("/sign-in");
+                  }
+                : null,
       ),
       onLongPressStart: (details) {
         if (applicationState.loggedIn) {

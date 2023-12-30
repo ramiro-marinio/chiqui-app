@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
+import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/functions/calcage.dart';
@@ -12,12 +13,12 @@ import 'package:provider/provider.dart';
 
 class UserSettingsTile extends StatefulWidget {
   final UserData userData;
-  final String gymId;
+  final GymData gymData;
   final MembershipData localMembershipData;
   const UserSettingsTile(
       {super.key,
       required this.userData,
-      required this.gymId,
+      required this.gymData,
       required this.localMembershipData});
 
   @override
@@ -37,7 +38,7 @@ class _UserSettingsTileState extends State<UserSettingsTile> {
         Provider.of<ApplicationState>(context);
     subscription ??= FirebaseFirestore.instance
         .collection('memberships')
-        .where('gymId', isEqualTo: widget.gymId)
+        .where('gymId', isEqualTo: widget.gymData.id!)
         .where('userId', isEqualTo: widget.userData.userId)
         .snapshots()
         .listen((value) {
@@ -60,17 +61,17 @@ class _UserSettingsTileState extends State<UserSettingsTile> {
             showUserOptionsMenu(
               context: context,
               details: details,
-              membership: membership,
+              membership: membership!,
               applicationState: applicationState,
               localMembershipData: widget.localMembershipData,
-              gymId: widget.gymId,
+              gymData: widget.gymData,
               userData: widget.userData,
             );
           },
           child: ListTile(
             title: Text(widget.userData.displayName),
             leading: CircleAvatar(
-              radius: 20,
+              radius: 24,
               backgroundImage: widget.userData.photoURL != null
                   ? NetworkImage(widget.userData.photoURL!)
                   : const AssetImage('assets/no_image.jpg') as ImageProvider,
