@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/invitedata.dart';
+import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/invite/choosevaluedialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/invite/lengthinputdialog.dart';
 import 'package:gymapp/functions/random_string.dart';
@@ -18,11 +19,26 @@ class InviteSettings extends StatefulWidget {
 }
 
 class _InviteSettingsState extends State<InviteSettings> {
+  late ApplicationState applicationState;
+  late Future<InviteData?> inviteData;
+  MembershipData? membershipData;
+  @override
+  void initState() {
+    super.initState();
+    applicationState = Provider.of<ApplicationState>(context, listen: false);
+    inviteData = applicationState.getInviteData(widget.gymData.id!);
+    applicationState
+        .getMembership(widget.gymData.id!, applicationState.user!.uid)
+        .then(
+          (value) => membershipData = value,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     ApplicationState applicationState = Provider.of<ApplicationState>(context);
-    Future<InviteData?> inviteData =
-        applicationState.getInviteData(widget.gymData.id!);
+    bool canChange = applicationState.user!.uid == widget.gymData.ownerId ||
+        membershipData?.admin == true;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Invite Code'),
@@ -77,39 +93,43 @@ class _InviteSettingsState extends State<InviteSettings> {
                     ),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) => LengthInputDialog(
-                          chars: 7,
-                          onComplete: (val) async {
-                            await applicationState.updateInviteData(
-                              InviteData(
-                                code: generateRandomString(val),
-                                gymId: widget.gymData.id!,
+                    onPressed: canChange
+                        ? () async {
+                            await showDialog(
+                              context: context,
+                              builder: (context) => LengthInputDialog(
+                                chars: 7,
+                                onComplete: (val) async {
+                                  await applicationState.updateInviteData(
+                                    InviteData(
+                                      code: generateRandomString(val),
+                                      gymId: widget.gymData.id!,
+                                    ),
+                                  );
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                  }
+                                  setState(() {});
+                                },
                               ),
                             );
-                            if (context.mounted) {
-                              Navigator.pop(context);
-                            }
-                            setState(() {});
-                          },
-                        ),
-                      );
-                    },
+                          }
+                        : null,
                     icon: const Icon(Icons.question_mark),
                     label: const Text('Randomize'),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => ChooseValueDialog(
-                          gymData: widget.gymData,
-                          setState: setState,
-                        ),
-                      );
-                    },
+                    onPressed: canChange
+                        ? () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => ChooseValueDialog(
+                                gymData: widget.gymData,
+                                setState: setState,
+                              ),
+                            );
+                          }
+                        : null,
                     icon: const Icon(Icons.edit),
                     label: const Text('Pick Manually'),
                   ),

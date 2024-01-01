@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
+import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/exercisedemo.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/demomaker.dart';
@@ -23,6 +24,25 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
   Widget? page;
   List<DemonstrationData> demoData = [];
   List<Widget>? result;
+  MembershipData? membershipData;
+  @override
+  void initState() {
+    super.initState();
+    ApplicationState applicationState = Provider.of<ApplicationState>(
+      context,
+      listen: false,
+    );
+    applicationState
+        .getMembership(widget.gymData.id!, applicationState.user!.uid)
+        .then(
+          (value) => setState(
+            () {
+              membershipData = value;
+            },
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ApplicationState>(
@@ -44,6 +64,10 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
                   child: ExerciseDemo(
                     demoData: DemonstrationData.fromJson(snapshot.data![index]),
                     gymData: widget.gymData,
+                    canEdit:
+                        applicationState.user!.uid == widget.gymData.ownerId ||
+                            membershipData?.admin == true ||
+                            membershipData?.coach == true,
                   ),
                 ),
               );
@@ -74,19 +98,25 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
                   ],
                 ),
                 floatingActionButton: Visibility(
-                  visible: applicationState.user!.uid == widget.gymData.ownerId,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DemoMaker(
-                            gymId: widget.gymData.id!,
+                  visible:
+                      applicationState.user!.uid == widget.gymData.ownerId ||
+                          membershipData?.admin == true ||
+                          membershipData?.coach == true,
+                  child: Tooltip(
+                    message: 'Add Demonstration',
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DemoMaker(
+                              gymId: widget.gymData.id!,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    child: const Icon(Icons.add),
+                        );
+                      },
+                      child: const Icon(Icons.add),
+                    ),
                   ),
                 ),
               );

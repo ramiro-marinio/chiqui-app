@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
 
 class LocalSettings extends StatefulWidget {
   const LocalSettings({super.key});
@@ -11,6 +12,7 @@ class _SettingsState extends State<LocalSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const NavDrawer(),
       appBar: AppBar(title: const Text('Settings')),
       body: const SingleChildScrollView(
         child: Column(

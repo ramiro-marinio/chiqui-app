@@ -10,7 +10,7 @@ import 'package:gymapp/pages/home_page/homepage.dart';
 import 'package:gymapp/pages/gyms_page/gyms_list.dart';
 import 'package:gymapp/pages/other/noconncetion.dart';
 import 'package:gymapp/pages/settings/settings.dart';
-import 'package:gymapp/pages/suggestion.dart/suggestion.dart';
+import 'package:gymapp/pages/suggestion/suggestion.dart';
 
 final List<GoRoute> routes = [
   IconGoRoute(

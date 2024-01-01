@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +22,7 @@ import 'package:gymapp/pages/gyms_page/widgets/rating/data/ratingdata.dart';
 import 'package:http/http.dart' as http;
 
 class ApplicationState extends ChangeNotifier {
+  StreamSubscription? gymsSubscription;
   ApplicationState() {
     init();
   }
@@ -51,24 +53,27 @@ class ApplicationState extends ChangeNotifier {
             _userData = UserData.fromJson(map);
           }
         }
-        FirebaseFirestore.instance
-            .collection('memberships')
-            .where('userId', isEqualTo: user?.uid)
-            .snapshots()
-            .listen((event) async {
-          if (_gyms.isNotEmpty) {
-            _gyms.clear();
-          }
-          List<QueryDocumentSnapshot> newMemberships = event.docs;
-          for (QueryDocumentSnapshot documentSnapshot in newMemberships) {
-            GymData? gymData = await getGymData((documentSnapshot.data()
-                as Map<String, dynamic>)['gymId'] as String);
-            if (gymData != null) {
-              _gyms.add(gymData);
+        if (userUpdate != null) {
+          gymsSubscription?.cancel();
+          gymsSubscription = FirebaseFirestore.instance
+              .collection('memberships')
+              .where('userId', isEqualTo: user?.uid)
+              .snapshots()
+              .listen((event) async {
+            if (_gyms.isNotEmpty) {
+              _gyms.clear();
             }
-          }
-          notifyListeners();
-        });
+            List<QueryDocumentSnapshot> newMemberships = event.docs;
+            for (QueryDocumentSnapshot documentSnapshot in newMemberships) {
+              GymData? gymData = await getGymData((documentSnapshot.data()
+                  as Map<String, dynamic>)['gymId'] as String);
+              if (gymData != null) {
+                _gyms.add(gymData);
+              }
+            }
+            notifyListeners();
+          });
+        }
       },
     );
     //MEMBERSHIPS LISTENER

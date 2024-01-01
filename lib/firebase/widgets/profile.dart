@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/widgets/profile_config/profileconfig.dart';
-import 'package:gymapp/firebase/widgets/icontext.dart';
+import 'package:gymapp/widgets/icontext.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {

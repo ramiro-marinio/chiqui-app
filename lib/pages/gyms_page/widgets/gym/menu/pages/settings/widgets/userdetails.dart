@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/functions/calcage.dart';
+import 'package:gymapp/widgets/zoomavatar.dart';
 
 class UserDetails extends StatelessWidget {
   final UserData userData;
@@ -68,30 +69,8 @@ class UserDetails extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 240,
-                height: 240,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(120),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(120),
-                    splashColor: const Color.fromARGB(100, 255, 255, 255),
-                    onTap: () {},
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(120),
-                        image: DecorationImage(
-                          image: userData.photoURL != null
-                              ? NetworkImage(userData.photoURL!)
-                              : const AssetImage('assets/no_image.jpg')
-                                  as ImageProvider,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
+              child: ZoomAvatar(photoURL: userData.photoURL, radius: 120),
+            ),
           ],
         ),
       ),

@@ -70,15 +70,18 @@ class _SettingsPageState extends State<SettingsPage> {
                   Option(
                     icon: const Icon(Icons.edit),
                     text: 'Edit Gym Info',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              CreateGym(editGym: widget.gymData),
-                        ),
-                      );
-                    },
+                    onTap: localMembershipData?.admin == true ||
+                            applicationState.user!.uid == widget.gymData.ownerId
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CreateGym(editGym: widget.gymData),
+                              ),
+                            );
+                          }
+                        : null,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

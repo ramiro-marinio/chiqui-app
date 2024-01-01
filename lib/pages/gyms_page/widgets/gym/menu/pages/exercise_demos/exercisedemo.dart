@@ -12,13 +12,18 @@ import 'package:provider/provider.dart';
 class ExerciseDemo extends StatelessWidget {
   final DemonstrationData demoData;
   final GymData gymData;
+  final bool canEdit;
   const ExerciseDemo(
-      {super.key, required this.demoData, required this.gymData});
+      {super.key,
+      required this.demoData,
+      required this.gymData,
+      required this.canEdit});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ApplicationState>(
-      builder: (context, applicationState, child) => Column(
+        builder: (context, applicationState, child) {
+      return Column(
         children: [
           ListTile(
             title: Row(
@@ -31,7 +36,7 @@ class ExerciseDemo extends StatelessWidget {
                       ),
                     )),
                 Visibility(
-                  visible: applicationState.user!.uid == gymData.ownerId,
+                  visible: canEdit,
                   child: Expanded(
                     flex: 1,
                     child: Row(
@@ -91,7 +96,7 @@ class ExerciseDemo extends StatelessWidget {
             indent: 8,
           ),
         ],
-      ),
-    );
+      );
+    });
   }
 }

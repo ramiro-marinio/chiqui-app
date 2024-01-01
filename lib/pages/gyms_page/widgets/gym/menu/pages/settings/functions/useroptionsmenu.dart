@@ -6,6 +6,7 @@ import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/functions/alertsnackbar.dart';
 import 'package:gymapp/functions/showwarningdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/userdetails.dart';
+import 'package:gymapp/widgets/icontext.dart';
 
 void showUserOptionsMenu({
   required BuildContext context,
@@ -33,9 +34,12 @@ void showUserOptionsMenu({
           (!admin! || !coach!) &&
           gymData.ownerId != membership?.userId)
         PopupMenuItem(
-          child: Text(coach != null
-              ? (coach ? 'Remove Coach Role' : 'Make Coach')
-              : 'Loading...'),
+          child: IconText(
+            icon: const Icon(Icons.fitness_center),
+            text: coach != null
+                ? (coach ? 'Remove Coach Role' : 'Make Coach')
+                : 'Loading...',
+          ),
           onTap: () {
             applicationState.modifyMembership({'coach': !coach!}, membership!);
             showAlertSnackbar(
@@ -50,9 +54,12 @@ void showUserOptionsMenu({
               localMembershipData.userId == gymData.ownerId) &&
           gymData.ownerId != membership?.userId)
         PopupMenuItem(
-          child: Text(admin != null
-              ? (admin ? 'Remove Administrator Role' : 'Make Administrator')
-              : 'Loading...'),
+          child: IconText(
+            icon: const Icon(Icons.shield),
+            text: admin != null
+                ? (admin ? 'Remove Admin. Role' : 'Make Administrator')
+                : 'Loading...',
+          ),
           onTap: () {
             if (admin == false) {
               showWarningDialog(
@@ -83,7 +90,10 @@ void showUserOptionsMenu({
               localMembershipData.admin && !(admin ?? true)) &&
           gymData.ownerId != membership!.userId)
         PopupMenuItem(
-          child: const Text('Kick Out'),
+          child: const IconText(
+            icon: Icon(Icons.do_not_disturb),
+            text: 'Kick Out',
+          ),
           onTap: () {
             showWarningDialog(
               title: 'Are you sure?',
@@ -95,7 +105,10 @@ void showUserOptionsMenu({
           },
         ),
       PopupMenuItem(
-        child: const Text('View Details'),
+        child: const IconText(
+          icon: Icon(Icons.remove_red_eye),
+          text: 'View Details',
+        ),
         onTap: () {
           Navigator.push(
             context,

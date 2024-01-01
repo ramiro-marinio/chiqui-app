@@ -7,6 +7,7 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/my_chats.dart
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/exercisedemos.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/info/gyminfo.dart';
 import 'package:gymapp/widgets/crawl.dart';
+import 'package:gymapp/widgets/zoomavatar.dart';
 import 'package:provider/provider.dart';
 
 class GymMenu extends StatefulWidget {
@@ -18,10 +19,11 @@ class GymMenu extends StatefulWidget {
 }
 
 class GymMenuState extends State<GymMenu> {
+  Future<MembershipData>? membershipData;
   @override
   Widget build(BuildContext context) {
     ApplicationState applicationState = Provider.of<ApplicationState>(context);
-    Future<MembershipData> membershipData = applicationState.getMembership(
+    membershipData ??= applicationState.getMembership(
         widget.gymData.id!, applicationState.user!.uid);
     return DefaultTabController(
       length: 3,
@@ -35,15 +37,11 @@ class GymMenuState extends State<GymMenu> {
               appBar: AppBar(
                 title: Row(children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: widget.gymData.photoURL != null
-                          ? NetworkImage(widget.gymData.photoURL!)
-                          : const AssetImage('assets/no_image_gym.jpg')
-                              as ImageProvider,
-                    ),
-                  ),
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: ZoomAvatar(
+                        radius: 20,
+                        photoURL: widget.gymData.photoURL,
+                      )),
                   Expanded(
                     child: Crawl(
                       child: Text(widget.gymData.name),
@@ -88,15 +86,17 @@ class GymMenuState extends State<GymMenu> {
                   )
                 ],
               ),
-              body: TabBarView(children: [
-                GymInfo(gymData: widget.gymData),
-                MyChats(
-                  gymData: widget.gymData,
-                ),
-                ExerciseDemonstrations(
-                  gymData: widget.gymData,
-                ),
-              ]),
+              body: TabBarView(
+                children: [
+                  GymInfo(gymData: widget.gymData),
+                  MyChats(
+                    gymData: widget.gymData,
+                  ),
+                  ExerciseDemonstrations(
+                    gymData: widget.gymData,
+                  ),
+                ],
+              ),
             );
           } else {
             return const Center(

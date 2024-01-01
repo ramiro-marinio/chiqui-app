@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
+import 'package:gymapp/widgets/zoomavatar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -27,12 +28,7 @@ class _ProfilePicPickerState extends State<ProfilePicPicker> {
                   'Profile Picture',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
                 ),
-                CircleAvatar(
-                  radius: 80,
-                  backgroundImage: photoURL == null
-                      ? const AssetImage("assets/no_image.jpg")
-                      : NetworkImage(photoURL) as ImageProvider,
-                ),
+                ZoomAvatar(photoURL: photoURL, radius: 80),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

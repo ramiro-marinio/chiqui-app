@@ -58,6 +58,13 @@ dependencies:
   url_launcher: ^6.2.2
   favicon: ^1.1.2
   connectivity_plus: ^5.0.2
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/greenfitness.jpg"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 dev_dependencies:
   flutter_test:

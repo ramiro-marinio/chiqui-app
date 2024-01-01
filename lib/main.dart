@@ -67,14 +67,21 @@ class _AppState extends State<App> {
           showValueIndicator: ShowValueIndicator.always,
         ),
         fontFamily: 'SansSerif',
+        appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.transparent,
+        ),
       ),
       darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          useMaterial3: true,
-          sliderTheme: const SliderThemeData(
-            showValueIndicator: ShowValueIndicator.always,
-          ),
-          fontFamily: 'SansSerif'),
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        sliderTheme: const SliderThemeData(
+          showValueIndicator: ShowValueIndicator.always,
+        ),
+        fontFamily: 'SansSerif',
+        appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.transparent,
+        ),
+      ),
     );
   }
 }

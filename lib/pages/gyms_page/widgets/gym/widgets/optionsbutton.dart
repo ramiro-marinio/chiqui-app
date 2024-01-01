@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gymapp/firebase/widgets/icontext.dart';
+import 'package:gymapp/widgets/icontext.dart';
 
 class OptionsButton extends StatelessWidget {
   final VoidCallback? leaveGym;
