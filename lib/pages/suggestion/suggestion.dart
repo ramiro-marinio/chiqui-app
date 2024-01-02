@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/app_state.dart';
+import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -76,6 +77,14 @@ class _SuggestionState extends State<Suggestion> {
                 ),
               ),
             ),
+            const AdaptiveDivider(
+              indent: 8,
+              thickness: 0.2,
+            ),
+            const Text(
+              'Suggestion Title',
+              style: TextStyle(fontSize: 25),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -89,6 +98,10 @@ class _SuggestionState extends State<Suggestion> {
                 ),
               ),
             ),
+            const Text(
+              'Communication Mediums',
+              style: TextStyle(fontSize: 25),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -101,6 +114,10 @@ class _SuggestionState extends State<Suggestion> {
                   ),
                 ),
               ),
+            ),
+            const Text(
+              'Suggestion Body',
+              style: TextStyle(fontSize: 25),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -126,7 +143,7 @@ class _SuggestionState extends State<Suggestion> {
                     child: CircularProgressIndicator.adaptive(),
                   ),
                 );
-                FirebaseFirestore.instance.collection('reviews').add(
+                FirebaseFirestore.instance.collection('suggestions').add(
                   {
                     'title': titleController.text,
                     'contacts': contactsController.text,
@@ -138,7 +155,8 @@ class _SuggestionState extends State<Suggestion> {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text('Suggestion sent successfully!')),
+                      content: Text('Suggestion sent successfully!'),
+                    ),
                   );
                   context.go('/');
                 });

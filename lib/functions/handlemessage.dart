@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
+import 'package:gymapp/main.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/chat_page.dart';
 import 'package:provider/provider.dart';
 
@@ -44,4 +46,14 @@ void handleMessage(
         ));
       }
   }
+}
+
+void handleMessageForeground(NotificationResponse details) {
+  print('NEGRO ESTUPIDO LA CONCHA DE TU MADRE');
+  handleMessage(
+    RemoteMessage.fromMap(
+      jsonDecode(details.payload!),
+    ),
+    globalKeyNavState,
+  );
 }

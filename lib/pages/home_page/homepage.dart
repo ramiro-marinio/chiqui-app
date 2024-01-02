@@ -2,6 +2,7 @@ import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/news/newsdata.dart';
+import 'package:gymapp/main.dart';
 import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
 import 'package:gymapp/pages/home_page/widgets/article.dart';
 import 'package:provider/provider.dart';
@@ -46,6 +47,10 @@ class _HomePageState extends State<HomePage> {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 25),
             ),
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Fuck off'),
           ),
           FutureBuilder(
             future: getNews,

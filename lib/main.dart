@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase_options.dart';
-import 'package:gymapp/functions/handlemessage.dart';
+import 'package:gymapp/functions/initnotifications.dart';
 import 'package:gymapp/navigation/gorouter.dart';
 import 'package:gymapp/pages/other/function/handlewifi.dart';
 import 'package:provider/provider.dart';
@@ -25,22 +25,7 @@ void main() async {
   );
   wifiHandler = Connectivity().onConnectivityChanged.listen(handleWifi);
   FirebaseMessaging.instance.requestPermission();
-  FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-  FirebaseMessaging.instance.getInitialMessage().then((value) {
-    if (value != null) {
-      handleMessage(value, globalKeyNavState);
-    }
-  });
-  FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    handleMessage(event, globalKeyNavState);
-  });
-  FirebaseMessaging.onBackgroundMessage((message) async {
-    handleMessage(message, globalKeyNavState);
-  });
+  initNotifications();
 }
 
 class App extends StatefulWidget {
