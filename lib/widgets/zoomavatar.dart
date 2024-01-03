@@ -4,12 +4,15 @@ import 'package:gymapp/widgets/viewimage.dart';
 class ZoomAvatar extends StatelessWidget {
   final double radius;
   final String? photoURL;
-  const ZoomAvatar({super.key, required this.photoURL, required this.radius});
+  final String? tag;
+  const ZoomAvatar(
+      {super.key, required this.photoURL, required this.radius, this.tag});
 
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: 'Pic',
+      tag: tag ?? 'Pic',
+      transitionOnUserGestures: true,
       child: SizedBox(
         width: radius * 2,
         height: radius * 2,
@@ -23,7 +26,10 @@ class ZoomAvatar extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ViewImage(imageUrl: photoURL),
+                    builder: (context) => ViewImage(
+                      imageUrl: photoURL,
+                      tag: tag ?? 'Pic',
+                    ),
                   ),
                 );
               },

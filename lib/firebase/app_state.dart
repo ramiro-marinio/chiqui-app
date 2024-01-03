@@ -26,6 +26,8 @@ class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
   }
+  String? currentChatID;
+  //This variable in line 29 is useful for foreground notifications.
   bool _loading = true;
   bool get loading => _loading;
   bool _loggedIn = false;

@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/functions/handlemessage.dart';
 import 'package:gymapp/main.dart';
+import 'package:provider/provider.dart';
 
 void initNotifications() async {
   FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -22,7 +24,6 @@ void initNotifications() async {
   FirebaseMessaging.onBackgroundMessage((message) async {
     handleMessage(message, globalKeyNavState);
   });
-  print('stupid nigga');
   initLocalNotifications();
 }
 
@@ -31,15 +32,11 @@ void initLocalNotifications() async {
   const iOSIs = DarwinInitializationSettings();
   const androidIs = AndroidInitializationSettings('@mipmap/ic_launcher');
   const settings = InitializationSettings(android: androidIs, iOS: iOSIs);
-  await localNotificationsPlugin
-      .initialize(
-        settings,
-        onDidReceiveNotificationResponse: handleMessageForeground,
-        onDidReceiveBackgroundNotificationResponse: handleMessageForeground,
-      )
-      .then(
-        (value) => print('nigga $value'),
-      );
+  await localNotificationsPlugin.initialize(
+    settings,
+    onDidReceiveNotificationResponse: handleMessageForeground,
+    onDidReceiveBackgroundNotificationResponse: handleMessageForeground,
+  );
   const androidChannel = AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Channel',
@@ -48,26 +45,29 @@ void initLocalNotifications() async {
 
   FirebaseMessaging.onMessage.listen(
     (event) {
-      print('fucking nigga');
-      print(event.notification);
       final RemoteNotification? notification = event.notification;
       if (notification == null) {
         return;
       }
-      localNotificationsPlugin.show(
-        event.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            androidChannel.id,
-            androidChannel.name,
-            channelDescription: androidChannel.description,
-            icon: '@mipmap/ic_launcher',
+      ApplicationState applicationState = Provider.of<ApplicationState>(
+          globalKeyNavState.currentContext!,
+          listen: false);
+      if (applicationState.currentChatID != event.data['senderId']) {
+        localNotificationsPlugin.show(
+          event.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              androidChannel.id,
+              androidChannel.name,
+              channelDescription: androidChannel.description,
+              icon: '@mipmap/ic_launcher',
+            ),
           ),
-        ),
-        payload: jsonEncode(event.toMap()),
-      );
+          payload: jsonEncode(event.toMap()),
+        );
+      }
     },
   );
 }

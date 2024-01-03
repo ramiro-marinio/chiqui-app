@@ -1,23 +1,23 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/widgets/optionsbutton.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/menu/gymmenu.dart';
 import 'package:gymapp/pages/gyms_page/widgets/rating/viewpage/view_rating_page.dart';
 import 'package:provider/provider.dart';
 
-class GymView extends StatefulWidget {
+class GymTile extends StatefulWidget {
   final GymData gymData;
-  const GymView({super.key, required this.gymData});
+  const GymTile({super.key, required this.gymData});
 
   @override
-  State<GymView> createState() => _GymViewState();
+  State<GymTile> createState() => _GymTileState();
 }
 
-class _GymViewState extends State<GymView> {
+class _GymTileState extends State<GymTile> {
   Future<double?>? rating;
   @override
   Widget build(BuildContext context) {
@@ -107,13 +107,8 @@ class _GymViewState extends State<GymView> {
                     message: "Enter to gym's menu",
                     child: IconButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GymMenu(
-                                gymData: widget.gymData,
-                              ),
-                            ));
+                        context.push('/my-gyms/gym-menu',
+                            extra: widget.gymData);
                       },
                       icon: const Icon(Icons.exit_to_app),
                     ),

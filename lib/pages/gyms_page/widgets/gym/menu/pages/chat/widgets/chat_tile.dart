@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/chat_page.dart';
+import 'package:gymapp/widgets/zoomavatar.dart';
 
 class ChatTile extends StatelessWidget {
   final UserData? userData;
@@ -29,14 +30,16 @@ class ChatTile extends StatelessWidget {
     }
     return ListTile(
       title: Text(userData?.displayName ?? 'Public Chat'),
-      leading: CircleAvatar(
-        radius: 20,
-        backgroundImage: userData?.photoURL != null
-            ? NetworkImage(userData!.photoURL!)
-            : AssetImage(
-                    publicChat ? 'assets/group.jpg' : 'assets/no_image.jpg')
-                as ImageProvider,
-      ),
+      leading: publicChat
+          ? const CircleAvatar(
+              radius: 20,
+              backgroundImage: AssetImage('assets/group.jpg'),
+            )
+          : ZoomAvatar(
+              photoURL: userData?.photoURL,
+              radius: 20,
+              tag: UniqueKey().toString(),
+            ),
       subtitle: membershipData != null
           ? FutureBuilder(
               future: membershipData,
@@ -75,17 +78,12 @@ class ChatTile extends StatelessWidget {
             )
           : null,
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatPage(
-              gymId: gymData.id!,
-              otherUser: userData,
-              users: users,
-              publicChat: publicChat,
-            ),
-          ),
-        );
+        context.push('/my-gyms/gym-menu/chat', extra: {
+          'gymId': gymData.id!,
+          'otherUser': userData,
+          'users': users,
+          'publicChat': publicChat,
+        });
       },
     );
   }

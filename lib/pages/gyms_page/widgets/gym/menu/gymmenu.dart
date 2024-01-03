@@ -37,11 +37,12 @@ class GymMenuState extends State<GymMenu> {
               appBar: AppBar(
                 title: Row(children: [
                   Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: ZoomAvatar(
-                        radius: 20,
-                        photoURL: widget.gymData.photoURL,
-                      )),
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: ZoomAvatar(
+                      radius: 20,
+                      photoURL: widget.gymData.photoURL,
+                    ),
+                  ),
                   Expanded(
                     child: Crawl(
                       child: Text(widget.gymData.name),

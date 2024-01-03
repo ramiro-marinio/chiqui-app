@@ -49,7 +49,6 @@ void handleMessage(
 }
 
 void handleMessageForeground(NotificationResponse details) {
-  print('NEGRO ESTUPIDO LA CONCHA DE TU MADRE');
   handleMessage(
     RemoteMessage.fromMap(
       jsonDecode(details.payload!),

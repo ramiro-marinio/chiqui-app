@@ -8,6 +8,6 @@ void handleWifi(result) {
   if (result == ConnectivityResult.none) {
     globalKeyNavState.currentContext!.push('/no-connection');
   } else {
-    globalKeyNavState.currentContext!.pushReplacement('/');
+    globalKeyNavState.currentContext!.go('/');
   }
 }

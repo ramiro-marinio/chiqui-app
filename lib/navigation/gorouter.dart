@@ -3,8 +3,11 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/auth/loginscreen.dart';
+import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/main.dart';
 import 'package:gymapp/navigation/widgets/icongoroute.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/menu/gymmenu.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/chat_page.dart';
 import 'package:gymapp/pages/help/help.dart';
 import 'package:gymapp/pages/home_page/homepage.dart';
 import 'package:gymapp/pages/gyms_page/gyms_list.dart';
@@ -40,6 +43,26 @@ final List<GoRoute> routes = [
   ),
   IconGoRoute(
     path: "/my-gyms",
+    routes: [
+      GoRoute(
+          path: 'gym-menu',
+          builder: (context, state) => GymMenu(gymData: state.extra as GymData),
+          routes: [
+            GoRoute(
+              path: 'chat',
+              builder: (context, state) {
+                Map<String, dynamic> extra =
+                    state.extra! as Map<String, dynamic>;
+                return ChatPage(
+                  gymId: extra['gymId'],
+                  otherUser: extra['otherUser'],
+                  users: extra['users'],
+                  publicChat: extra['publicChat'],
+                );
+              },
+            ),
+          ]),
+    ],
     mustBeLoggedIn: true,
     builder: (context, state) => const MyGyms(),
     icon: const Icon(Icons.fitness_center),
