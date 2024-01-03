@@ -35,6 +35,9 @@ class LoginScreen extends StatelessWidget {
                     staff: false,
                     displayName: 'New User',
                     photoURL: null,
+                    stature: 170,
+                    weight: 70,
+                    injuries: '',
                   ).toMap(),
                   context);
               Navigator.pop(context);

@@ -4,13 +4,19 @@ class Field extends StatelessWidget {
   final Widget icon;
   final String title;
   final String? initialText;
+  final int? maxLength;
+  final int? maxLines;
+  final String? hintText;
   final Function(String) onChanged;
   const Field(
       {super.key,
       required this.title,
       required this.icon,
       this.initialText,
-      required this.onChanged});
+      required this.onChanged,
+      this.maxLength,
+      this.maxLines,
+      this.hintText});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +38,14 @@ class Field extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
-            width: 300,
+            width: maxLines != null ? double.infinity : 350,
             child: TextField(
+              maxLength: maxLength,
+              maxLines: maxLines,
+              decoration: InputDecoration(
+                border: maxLines != null ? const OutlineInputBorder() : null,
+                hintText: hintText,
+              ),
               controller: TextEditingController(text: initialText),
               onChanged: (value) {
                 onChanged(value);

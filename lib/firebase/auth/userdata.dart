@@ -5,6 +5,9 @@ class UserData {
   String? photoURL;
   bool sex;
   DateTime birthDay;
+  double stature;
+  double weight;
+  String injuries;
   final bool staff;
   UserData.fromJson(Map<String, dynamic> map)
       : userId = map['userId'] as String,
@@ -15,7 +18,10 @@ class UserData {
         birthDay = DateTime.fromMillisecondsSinceEpoch(
           map['birthDay'] as int,
         ),
-        staff = map['staff'] as bool;
+        stature = (map['stature'] as double?) ?? 175,
+        weight = (map['weight'] as double?) ?? 70,
+        staff = map['staff'] as bool,
+        injuries = (map['injuries'] as String?) ?? '';
   UserData({
     required this.userId,
     required this.info,
@@ -23,6 +29,9 @@ class UserData {
     required this.birthDay,
     required this.staff,
     required this.displayName,
+    required this.weight,
+    required this.stature,
+    required this.injuries,
     this.photoURL,
   });
   Map<String, dynamic> toMap() {
@@ -33,7 +42,10 @@ class UserData {
       'birthDay': birthDay.millisecondsSinceEpoch,
       'staff': staff,
       'displayName': displayName,
-      'photoURL': photoURL
+      'photoURL': photoURL,
+      'stature': stature,
+      'weight': weight,
+      'injuries': injuries,
     };
   }
 }

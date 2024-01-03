@@ -36,7 +36,7 @@ class UserDetails extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -70,6 +70,29 @@ class UserDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ZoomAvatar(photoURL: userData.photoURL, radius: 120),
+            ),
+            Text(
+              'Stature: ${userData.stature.toInt()} cm.',
+              style: const TextStyle(fontSize: 25),
+            ),
+            Text(
+              'Weight: ${userData.weight.toInt()} kg.',
+              style: const TextStyle(fontSize: 25),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Text(
+                'History:',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 25),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                userData.injuries.isEmpty ? 'No Injuries' : userData.injuries,
+                style: const TextStyle(fontSize: 18),
+              ),
             ),
           ],
         ),

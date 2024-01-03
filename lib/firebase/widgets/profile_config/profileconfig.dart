@@ -9,6 +9,7 @@ import 'package:gymapp/firebase/widgets/profile_config/fields/birthdayfield.dart
 import 'package:gymapp/firebase/widgets/profile_config/fields/field.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/genderfield.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/profilepicpicker.dart';
+import 'package:gymapp/firebase/widgets/profile_config/bodyfield.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:provider/provider.dart';
 
@@ -26,21 +27,33 @@ class _ProfileConfigState extends State<ProfileConfig> {
     User? user = applicationState.user;
     String? displayName = user?.displayName;
     UserData? userData = applicationState.userData;
-    UserData newUserData = UserData(
-      userId: user?.uid ?? "",
-      info: userData?.info ?? "",
-      sex: userData?.sex ?? true,
-      birthDay: userData?.birthDay ?? DateTime.now(),
-      staff: userData?.staff ?? false,
-      displayName: userData?.displayName ?? "",
-      photoURL: userData?.photoURL,
-    );
     if (user == null) {
       return const MustBeLoggedIn();
     }
+    if (userData == null) {
+      return const Scaffold(
+        body: Center(
+            child: Text(
+          'Error',
+          style: TextStyle(fontSize: 30, color: Colors.red),
+        )),
+      );
+    }
+    UserData newUserData = UserData(
+      userId: user.uid,
+      info: userData.info,
+      sex: userData.sex,
+      birthDay: userData.birthDay,
+      staff: userData.staff,
+      displayName: userData.displayName,
+      photoURL: userData.photoURL,
+      stature: userData.stature,
+      weight: userData.weight,
+      injuries: userData.injuries,
+    );
     return WillPopScope(
       onWillPop: () async {
-        if (!mapEquals(userData?.toMap(), newUserData.toMap()) ||
+        if (!mapEquals(userData.toMap(), newUserData.toMap()) ||
             displayName != user.displayName) {
           showDialog(
             context: context,
@@ -97,7 +110,6 @@ class _ProfileConfigState extends State<ProfileConfig> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [ProfilePicPicker()],
               ),
-              const AdaptiveDivider(),
               Field(
                 icon: const Icon(Icons.person),
                 title: "Display Name",
@@ -106,8 +118,8 @@ class _ProfileConfigState extends State<ProfileConfig> {
                   displayName = value;
                   newUserData.displayName = value;
                 },
+                maxLength: 40,
               ),
-              const AdaptiveDivider(),
               Field(
                 title: "User Info",
                 icon: const Icon(Icons.info),
@@ -115,8 +127,27 @@ class _ProfileConfigState extends State<ProfileConfig> {
                 onChanged: (value) {
                   newUserData.info = value;
                 },
+                maxLength: 200,
               ),
-              const AdaptiveDivider(),
+              const Padding(
+                padding: EdgeInsets.only(top: 12.5, bottom: 12.5),
+                child: Column(
+                  children: [
+                    Text(
+                      'Training Information',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Text(
+                      'Only the gym staff will see this, in order to deliver an appropriate training routine.',
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              ),
               SwitchField(
                 value: newUserData.sex,
                 onChange: (value) {
@@ -131,6 +162,29 @@ class _ProfileConfigState extends State<ProfileConfig> {
                 },
               ),
               const AdaptiveDivider(),
+              BodyField(
+                initialStature: newUserData.stature,
+                initialWeight: newUserData.weight,
+                setStature: (value) {
+                  newUserData.stature = value;
+                },
+                setWeight: (value) {
+                  newUserData.weight = value;
+                },
+              ),
+              const AdaptiveDivider(),
+              Field(
+                title: 'History',
+                initialText: newUserData.injuries,
+                icon: const Icon(Icons.personal_injury),
+                onChanged: (value) {
+                  newUserData.injuries = value;
+                },
+                maxLines: 6,
+                maxLength: 4000,
+                hintText:
+                    'Previous injuries that make certain exercises painful or dangerous.',
+              )
             ],
           ),
         ),
