@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
+import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase/gyms/messagedata.dart';
 import 'package:gymapp/functions/processmessagedocs.dart';
@@ -34,6 +35,7 @@ class _ChatPageState extends State<ChatPage> {
   List<MessageData> messages = [];
   late ApplicationState applicationState;
   late Future<MembershipData?> membershipData;
+  late Future<GymData?> gymData;
   @override
   void initState() {
     super.initState();
@@ -41,6 +43,7 @@ class _ChatPageState extends State<ChatPage> {
     applicationState.currentChatID = widget.otherUser?.userId;
     membershipData = applicationState.getMembership(
         widget.gymId, applicationState.user!.uid);
+    gymData = applicationState.getGymData(widget.gymId);
     //Listener for messages from the client user
     if (widget.publicChat == false) {
       applicationState
@@ -109,8 +112,10 @@ class _ChatPageState extends State<ChatPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatOptions(
-                            userData: widget.otherUser!,
-                            membership: membershipData),
+                          userData: widget.otherUser!,
+                          membership: membershipData,
+                          gymData: gymData,
+                        ),
                       ),
                     );
                   },

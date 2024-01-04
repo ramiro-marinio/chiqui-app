@@ -51,10 +51,11 @@ class _UserSettingsTileState extends State<UserSettingsTile> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Card(
-        color: adaptiveColor(const Color.fromARGB(255, 220, 220, 220),
+        color: adaptiveColor(const Color.fromARGB(255, 181, 203, 255),
             const Color.fromARGB(255, 46, 46, 71), context),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: InkWell(
+          splashColor: const Color.fromARGB(100, 255, 255, 255),
           customBorder:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           onTapUp: (details) {

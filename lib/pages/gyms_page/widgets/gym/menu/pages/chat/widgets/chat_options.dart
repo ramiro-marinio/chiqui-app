@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
+import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/userdetails.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
@@ -8,10 +9,12 @@ import 'package:gymapp/widgets/zoomavatar.dart';
 class ChatOptions extends StatefulWidget {
   final UserData? userData;
   final Future<MembershipData?> membership;
+  final Future<GymData?> gymData;
   const ChatOptions({
     super.key,
     required this.userData,
     required this.membership,
+    required this.gymData,
   });
 
   @override
@@ -22,13 +25,15 @@ class _ChatOptionsState extends State<ChatOptions> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: widget.membership,
+        future: Future.wait([widget.membership, widget.gymData]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.data == null) {
               return const Text('Error');
             }
-            final MembershipData membershipData = snapshot.data!;
+            final MembershipData membershipData =
+                snapshot.data![0]! as MembershipData;
+            final GymData? gymData = snapshot.data![1] as GymData?;
             return Scaffold(
               appBar: AppBar(
                 title: const Text('Options'),
@@ -76,8 +81,9 @@ class _ChatOptionsState extends State<ChatOptions> {
                               ),
                             ),
                             Visibility(
-                              visible:
-                                  membershipData.admin || membershipData.coach,
+                              visible: membershipData.admin ||
+                                  membershipData.coach ||
+                                  gymData?.ownerId == membershipData.userId,
                               child: ElevatedButton.icon(
                                 onPressed: () {
                                   Navigator.push(

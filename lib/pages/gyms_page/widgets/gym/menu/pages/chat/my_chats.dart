@@ -35,10 +35,6 @@ class _MyChatsState extends State<MyChats> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Chats in this gym',
-                        style: TextStyle(fontSize: 30),
-                      ),
                       FilterBar(
                         onChanged: (value) {
                           setState(() {

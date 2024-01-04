@@ -27,7 +27,7 @@ class _GymTileState extends State<GymTile> {
       return Padding(
         padding: const EdgeInsets.only(top: 8, right: 4, left: 4),
         child: Card(
-          color: adaptiveColor(const Color.fromARGB(255, 180, 200, 255),
+          color: adaptiveColor(const Color.fromARGB(255, 132, 164, 255),
               const Color.fromARGB(255, 54, 77, 142), context),
           child: SizedBox(
             child: Stack(children: [
@@ -58,12 +58,9 @@ class _GymTileState extends State<GymTile> {
                           child: Row(children: [
                             RatingBarIndicator(
                               rating: snapshot.data ?? 5,
-                              itemBuilder: (context, index) => Icon(
+                              itemBuilder: (context, index) => const Icon(
                                 Icons.star,
-                                color: adaptiveColor(
-                                    const Color.fromARGB(255, 100, 77, 0),
-                                    Colors.amber,
-                                    context),
+                                color: Colors.amber,
                               ),
                               itemCount: 5,
                               itemSize: 20.0,

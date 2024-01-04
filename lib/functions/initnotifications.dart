@@ -40,7 +40,7 @@ void initLocalNotifications() async {
   const androidChannel = AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Channel',
-    importance: Importance.defaultImportance,
+    importance: Importance.high,
   );
 
   FirebaseMessaging.onMessage.listen(

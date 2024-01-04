@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/functions/adaptive_color.dart';
 
 class IconText extends StatelessWidget {
   final Widget icon;
@@ -21,7 +22,10 @@ class IconText extends StatelessWidget {
               ],
             ),
           ),
-          TextSpan(text: text),
+          TextSpan(
+              text: text,
+              style: TextStyle(
+                  color: adaptiveColor(Colors.black, Colors.white, context))),
         ],
       ),
     );
