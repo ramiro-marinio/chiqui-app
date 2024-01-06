@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddGymButton extends StatelessWidget {
   final VoidCallback onJoinGym;
@@ -8,17 +9,18 @@ class AddGymButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return PopupMenuButton(
       itemBuilder: (context) {
         return [
           PopupMenuItem(
-            child: const Text("Join a Gym"),
+            child: Text(appLocalizations.joinGym),
             onTap: () {
               onJoinGym();
             },
           ),
           PopupMenuItem(
-            child: const Text("Create a Gym"),
+            child: Text(appLocalizations.createGym),
             onTap: () {
               onCreateGym();
             },

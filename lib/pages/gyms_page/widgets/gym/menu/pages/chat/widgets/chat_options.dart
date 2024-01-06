@@ -25,98 +25,130 @@ class _ChatOptionsState extends State<ChatOptions> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Future.wait([widget.membership, widget.gymData]),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data == null) {
-              return const Text('Error');
-            }
-            final MembershipData membershipData =
-                snapshot.data![0]! as MembershipData;
-            final GymData? gymData = snapshot.data![1] as GymData?;
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text('Options'),
-              ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            ZoomAvatar(
-                              photoURL: widget.userData?.photoURL,
-                              radius: 80,
-                              tag: 'Chat-Pic',
-                            ),
-                            Text(
-                              widget.userData?.displayName ?? 'Public Chat',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 25),
-                            ),
-                            const AdaptiveDivider(
-                              indent: 8,
-                            ),
-                            const SizedBox(
-                              width: double.infinity,
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Information',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  widget.userData?.info ?? 'No information',
-                                  style: const TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Visibility(
-                              visible: membershipData.admin ||
-                                  membershipData.coach ||
-                                  gymData?.ownerId == membershipData.userId,
-                              child: ElevatedButton.icon(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return UserDetails(
-                                          userData: widget.userData!,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.fitness_center),
-                                label: const Text(
-                                  'Get Training Information',
-                                ),
-                              ),
-                            ),
-                            const AdaptiveDivider(
-                              indent: 8,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          } else {
-            return const CircularProgressIndicator.adaptive();
+      future: Future.wait([widget.membership, widget.gymData]),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data == null) {
+            return const Text('Error');
           }
-        });
+          final MembershipData membershipData =
+              snapshot.data![0]! as MembershipData;
+          final GymData? gymData = snapshot.data![1] as GymData?;
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Options'),
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          ZoomAvatar(
+                            photoURL: widget.userData?.photoURL,
+                            radius: 80,
+                            tag: 'Chat-Pic',
+                          ),
+                          Text(
+                            widget.userData?.displayName ?? 'Public Chat',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 25),
+                          ),
+                          const AdaptiveDivider(
+                            indent: 8,
+                          ),
+                          const SizedBox(
+                            width: double.infinity,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Information',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                widget.userData?.info ?? 'No information',
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: membershipData.admin ||
+                                membershipData.coach ||
+                                gymData?.ownerId == membershipData.userId,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                TextButton.icon(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return UserDetails(
+                                            userData: widget.userData!,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.fitness_center),
+                                  label: const Text(
+                                    'Get Training Information',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const AdaptiveDivider(
+                            indent: 8,
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.do_not_disturb),
+                            title: const Text('Block'),
+                            iconColor: Colors.red,
+                            textColor: Colors.red,
+                            tileColor: const Color.fromARGB(56, 244, 67, 54),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            onTap: () {},
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.message),
+                            title: const Text('Disable Notifications'),
+                            iconColor: Colors.red,
+                            textColor: Colors.red,
+                            tileColor: const Color.fromARGB(56, 244, 67, 54),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        } else {
+          return const CircularProgressIndicator.adaptive();
+        }
+      },
+    );
   }
 }

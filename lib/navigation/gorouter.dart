@@ -20,7 +20,7 @@ final List<GoRoute> routes = [
     path: "/",
     builder: (context, state) => const HomePage(),
     icon: const Icon(Icons.home),
-    name: "Home Page",
+    name: "homePage",
     mustBeLoggedIn: false,
     routes: [
       GoRoute(
@@ -45,49 +45,49 @@ final List<GoRoute> routes = [
     path: "/my-gyms",
     routes: [
       GoRoute(
-          path: 'gym-menu',
-          builder: (context, state) => GymMenu(gymData: state.extra as GymData),
-          routes: [
-            GoRoute(
-              path: 'chat',
-              builder: (context, state) {
-                Map<String, dynamic> extra =
-                    state.extra! as Map<String, dynamic>;
-                return ChatPage(
-                  gymId: extra['gymId'],
-                  otherUser: extra['otherUser'],
-                  users: extra['users'],
-                  publicChat: extra['publicChat'],
-                );
-              },
-            ),
-          ]),
+        path: 'gym-menu',
+        builder: (context, state) => GymMenu(gymData: state.extra as GymData),
+        routes: [
+          GoRoute(
+            path: 'chat',
+            builder: (context, state) {
+              Map<String, dynamic> extra = state.extra! as Map<String, dynamic>;
+              return ChatPage(
+                gymId: extra['gymId'],
+                otherUser: extra['otherUser'],
+                users: extra['users'],
+                publicChat: extra['publicChat'],
+              );
+            },
+          ),
+        ],
+      ),
     ],
     mustBeLoggedIn: true,
     builder: (context, state) => const MyGyms(),
     icon: const Icon(Icons.fitness_center),
-    name: "My Gyms",
+    name: "myGyms",
   ),
   IconGoRoute(
     path: '/help',
     mustBeLoggedIn: false,
     builder: (context, state) => const Help(),
     icon: const Icon(Icons.help),
-    name: 'Help',
+    name: 'help',
   ),
   IconGoRoute(
     path: '/suggestion',
     builder: (context, state) => const Suggestion(),
     icon: const Icon(Icons.lightbulb),
     mustBeLoggedIn: true,
-    name: 'Send a Suggestion',
+    name: 'sendSuggestion',
   ),
   IconGoRoute(
     path: '/settings',
     builder: (context, state) => const LocalSettings(),
     icon: const Icon(Icons.settings),
     mustBeLoggedIn: false,
-    name: 'Settings',
+    name: 'settings',
   ),
   GoRoute(
     path: '/no-connection',

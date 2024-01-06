@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GymPicPicker extends StatelessWidget {
   final String? photoPath;
@@ -20,6 +21,7 @@ class GymPicPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     ImageProvider imageProvider = const AssetImage('assets/no_image_gym.jpg');
     if (photoPath != null) {
       if (photoPath == editGym?.photoURL) {
@@ -34,15 +36,16 @@ class GymPicPicker extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.photo),
+                  const Icon(Icons.photo),
                   AutoSizeText(
-                    'Gym Picture',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                    appLocalizations.gymPicture,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w800),
                   ),
                 ],
               ),
@@ -97,21 +100,21 @@ class GymPicPicker extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text("Choose a Source"),
+                            title: Text(appLocalizations.chooseSource),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   imageSource = ImageSource.camera;
                                   Navigator.pop(context);
                                 },
-                                child: const Text("Camera"),
+                                child: Text(appLocalizations.camera),
                               ),
                               TextButton(
                                 onPressed: () {
                                   imageSource = ImageSource.gallery;
                                   Navigator.pop(context);
                                 },
-                                child: const Text("Gallery"),
+                                child: Text(appLocalizations.gallery),
                               ),
                             ],
                           );

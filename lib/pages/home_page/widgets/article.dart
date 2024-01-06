@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/news/newsdata.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Article extends StatefulWidget {
   final NewsData newsData;
@@ -22,6 +23,7 @@ class _ArticleState extends State<Article> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return StatefulBuilder(builder: (context, setState) {
       return Padding(
         padding: const EdgeInsets.all(8.0),
@@ -36,7 +38,9 @@ class _ArticleState extends State<Article> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Source:${widget.newsData.source}')],
+                children: [
+                  Text('${appLocalizations.source}${widget.newsData.source}')
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),

@@ -7,6 +7,7 @@ import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Suggestion extends StatefulWidget {
   const Suggestion({super.key});
@@ -18,7 +19,9 @@ class Suggestion extends StatefulWidget {
 class _SuggestionState extends State<Suggestion> {
   @override
   Widget build(BuildContext context) {
-    ApplicationState applicationState = Provider.of<ApplicationState>(context);
+    final ApplicationState applicationState =
+        Provider.of<ApplicationState>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
     final titleController = TextEditingController();
     final contactsController =
         TextEditingController(text: applicationState.user!.email);
@@ -26,22 +29,11 @@ class _SuggestionState extends State<Suggestion> {
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
-        title: const Text('Send a suggestion'),
+        title: Text(appLocalizations.sendSuggestion),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Send a suggestion',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25),
-                ),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: RichText(
@@ -55,9 +47,9 @@ class _SuggestionState extends State<Suggestion> {
                     )),
                     TextSpan(
                       children: [
-                        const TextSpan(
-                            text:
-                                'Suggestions help us make our application better in all aspects. If you believe that you have constructive advice for us, don\'t hesitate on writing to us through this option. If you prefer using an email, write to '),
+                        TextSpan(
+                            style: const TextStyle(color: Colors.black),
+                            text: appLocalizations.suggestionDetails),
                         TextSpan(
                           text: 'ramiro.marinho0@gmail.com',
                           recognizer: TapGestureRecognizer()
@@ -81,9 +73,9 @@ class _SuggestionState extends State<Suggestion> {
               indent: 8,
               thickness: 0.2,
             ),
-            const Text(
-              'Suggestion Title',
-              style: TextStyle(fontSize: 25),
+            Text(
+              appLocalizations.suggestionBody,
+              style: const TextStyle(fontSize: 25),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -91,16 +83,16 @@ class _SuggestionState extends State<Suggestion> {
                 controller: titleController,
                 maxLines: 1,
                 decoration: InputDecoration(
-                  hintText: 'Title',
+                  hintText: appLocalizations.stHint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
                 ),
               ),
             ),
-            const Text(
-              'Communication Mediums',
-              style: TextStyle(fontSize: 25),
+            Text(
+              appLocalizations.communicationMediums,
+              style: const TextStyle(fontSize: 25),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -108,16 +100,16 @@ class _SuggestionState extends State<Suggestion> {
                 controller: contactsController,
                 maxLines: 2,
                 decoration: InputDecoration(
-                  hintText: 'An Email or a Phone Number, for us to reply',
+                  hintText: appLocalizations.cmHint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
                 ),
               ),
             ),
-            const Text(
-              'Suggestion Body',
-              style: TextStyle(fontSize: 25),
+            Text(
+              appLocalizations.suggestionBody,
+              style: const TextStyle(fontSize: 25),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -127,7 +119,7 @@ class _SuggestionState extends State<Suggestion> {
                   minLines: 4,
                   maxLines: null,
                   decoration: InputDecoration(
-                    hintText: 'Your suggestion',
+                    hintText: appLocalizations.sbHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -154,14 +146,14 @@ class _SuggestionState extends State<Suggestion> {
                 ).then((value) {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Suggestion sent successfully!'),
+                    SnackBar(
+                      content: Text(appLocalizations.suggestionSent),
                     ),
                   );
                   context.go('/');
                 });
               },
-              child: const Text('Send Suggestion'),
+              child: Text(appLocalizations.sendSuggestionButton),
             )
           ],
         ),

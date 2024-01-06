@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
@@ -9,6 +8,7 @@ import 'package:gymapp/functions/showprogressdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/fields/controllerfield.dart';
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/fields/gympicpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreateGym extends StatefulWidget {
   final GymData? editGym;
@@ -39,27 +39,27 @@ class _CreateGymState extends State<CreateGym> {
   Widget build(BuildContext context) {
     final ApplicationState applicationState =
         Provider.of<ApplicationState>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return WillPopScope(
       onWillPop: () async {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text("Exit?"),
-            content: const Text(
-                "The gym you are creating will not be saved. Proceed anyway?"),
+            title: Text(appLocalizations.leavePrompt),
+            content: Text(appLocalizations.leaveCrationDetails),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text("No"),
+                child: Text(appLocalizations.no),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
-                child: const Text("Yes"),
+                child: Text(appLocalizations.yes),
               ),
             ],
           ),
@@ -70,28 +70,20 @@ class _CreateGymState extends State<CreateGym> {
         key: _formKey,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Create a Gym"),
+            title: Text(appLocalizations.createGym),
           ),
           body: SingleChildScrollView(
             child: Column(
               children: [
-                const AutoSizeText(
-                  "Create your Gym",
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
                 const AdaptiveDivider(),
                 ControllerField(
                   icon: const Icon(Icons.edit),
-                  title: "Gym Name",
+                  title: appLocalizations.gymName,
                   controller: nameController,
                   maxLength: 100,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please insert a name';
+                      return appLocalizations.insertName;
                     } else {
                       return null;
                     }
@@ -100,7 +92,7 @@ class _CreateGymState extends State<CreateGym> {
                 const AdaptiveDivider(),
                 ControllerField(
                   controller: descriptionController,
-                  title: "Gym Description",
+                  title: appLocalizations.gymDescription,
                   maxLines: 6,
                   maxLength: 1500,
                   icon: const Icon(Icons.info),

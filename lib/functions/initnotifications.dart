@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gymapp/firebase/app_state.dart';
@@ -8,6 +7,7 @@ import 'package:gymapp/main.dart';
 import 'package:provider/provider.dart';
 
 void initNotifications() async {
+  FirebaseMessaging.instance.requestPermission();
   FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
     badge: true,

@@ -4,6 +4,7 @@ import 'package:gymapp/firebase/gyms/invitedata.dart';
 import 'package:gymapp/functions/showinfodialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/join_gym/gymjoinsheet.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class JoinGym extends StatefulWidget {
   const JoinGym({super.key});
@@ -18,9 +19,10 @@ class _JoinGymState extends State<JoinGym> {
   @override
   Widget build(BuildContext context) {
     ApplicationState applicationState = context.read<ApplicationState>();
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Join a Gym'),
+        title: Text(AppLocalizations.of(context)!.joinGym),
       ),
       body: Column(
         children: [
@@ -32,8 +34,8 @@ class _JoinGymState extends State<JoinGym> {
                   code = value;
                 });
               },
-              decoration: const InputDecoration(
-                hintText: 'Invite Code',
+              decoration: InputDecoration(
+                hintText: appLocalizations.inviteCode,
               ),
               maxLength: 25,
             ),
@@ -52,9 +54,8 @@ class _JoinGymState extends State<JoinGym> {
                     if (context.mounted) {
                       if (inviteData == null) {
                         await showInfoDialog(
-                            title: 'Not Found',
-                            description:
-                                'The gym with the specified invite code was not found.',
+                            title: appLocalizations.notFound,
+                            description: appLocalizations.nfDetails,
                             context: context);
                       } else {
                         await showModalBottomSheet(
@@ -71,7 +72,7 @@ class _JoinGymState extends State<JoinGym> {
                     width: 20,
                     child: CircularProgressIndicator.adaptive(),
                   )
-                : const Text('Join Gym'),
+                : Text(appLocalizations.joinButton),
           ),
         ],
       ),

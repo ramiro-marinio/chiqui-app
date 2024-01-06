@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/widgets/icontext.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OptionsButton extends StatelessWidget {
   final VoidCallback? leaveGym;
@@ -9,11 +10,14 @@ class OptionsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return PopupMenuButton(
       itemBuilder: (context) {
         return [
           PopupMenuItem(
-            child: const IconText(icon: Icon(Icons.star), text: "Gym Ratings"),
+            child: IconText(
+                icon: const Icon(Icons.star),
+                text: appLocalizations.gymRatings),
             onTap: () {
               rateGym();
             },
@@ -24,7 +28,8 @@ class OptionsButton extends StatelessWidget {
                     leaveGym!();
                   }
                 : null,
-            child: const IconText(icon: Icon(Icons.close), text: "Leave"),
+            child: IconText(
+                icon: const Icon(Icons.close), text: appLocalizations.leave),
           ),
         ];
       },

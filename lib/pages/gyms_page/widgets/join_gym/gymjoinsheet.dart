@@ -6,6 +6,7 @@ import 'package:gymapp/firebase/gyms/invitedata.dart';
 import 'package:gymapp/functions/showinfodialog.dart';
 import 'package:gymapp/widgets/crawl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GymJoinSheet extends StatefulWidget {
   final InviteData inviteData;
@@ -21,6 +22,7 @@ class _GymJoinSheetState extends State<GymJoinSheet> {
   Widget build(BuildContext context) {
     final ApplicationState applicationState =
         Provider.of<ApplicationState>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     gymData ??= applicationState.getGymData(widget.inviteData.gymId);
     return SizedBox(
       height: 400,
@@ -32,11 +34,11 @@ class _GymJoinSheetState extends State<GymJoinSheet> {
               GymData? gymData = snapshot.data;
               return Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Is this the correct gym?',
-                      style: TextStyle(
+                      appLocalizations.correctGym,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
@@ -53,7 +55,7 @@ class _GymJoinSheetState extends State<GymJoinSheet> {
                     padding: const EdgeInsets.all(8.0),
                     child: Crawl(
                       child: Text(
-                        gymData?.name ?? 'Error',
+                        gymData?.name ?? appLocalizations.generalError,
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w900,
@@ -71,21 +73,21 @@ class _GymJoinSheetState extends State<GymJoinSheet> {
                         Navigator.pop(context);
                       } else {
                         showInfoDialog(
-                          title: 'Already Joined',
-                          description: 'You already joined this gym!',
+                          title: appLocalizations.alreadyJoined,
+                          description: appLocalizations.alrJnDetails,
                           context: context,
                         );
                       }
                     },
                     icon: const Icon(Icons.check),
-                    label: const Text('YES'),
+                    label: Text(appLocalizations.yes.toUpperCase()),
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.close),
-                    label: const Text('NO'),
+                    label: Text(appLocalizations.no.toUpperCase()),
                   ),
                 ],
               );

@@ -1,39 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/firebase/widgets/profile.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
-import 'package:gymapp/navigation/gorouter.dart';
-import 'package:gymapp/navigation/widgets/icongoroute.dart';
-import 'package:provider/provider.dart';
+import 'package:gymapp/navigation/widgets/navtile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ApplicationState applicationState = Provider.of<ApplicationState>(context);
-    List<ListTile> links = [];
-    for (GoRoute goRoute in routes) {
-      if (goRoute.runtimeType == IconGoRoute) {
-        links += [
-          ListTile(
-            leading: (goRoute as IconGoRoute).icon,
-            title: Text(goRoute.name ?? ""),
-            onTap: !goRoute.mustBeLoggedIn || applicationState.loggedIn
-                ? () {
-                    context.go(goRoute.path);
-                  }
-                : null,
-            subtitle: goRoute.mustBeLoggedIn && !applicationState.loggedIn
-                ? const Text("Must be logged in.")
-                : null,
-            splashColor: const Color.fromARGB(35, 0, 155, 255),
-          )
-        ];
-      }
-    }
+    List<NavTile> links = [];
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    links = [
+      NavTile(
+        mustBeLoggedIn: false,
+        title: appLocalizations.homePage,
+        path: '/',
+        icon: const Icon(Icons.home),
+      ),
+      NavTile(
+        mustBeLoggedIn: false,
+        title: appLocalizations.myGyms,
+        path: '/my-gyms',
+        icon: const Icon(Icons.fitness_center),
+      ),
+      NavTile(
+        mustBeLoggedIn: false,
+        title: appLocalizations.help,
+        path: '/help',
+        icon: const Icon(Icons.help),
+      ),
+      NavTile(
+        mustBeLoggedIn: false,
+        title: appLocalizations.sendSuggestion,
+        path: '/suggestion',
+        icon: const Icon(Icons.lightbulb),
+      ),
+      NavTile(
+        mustBeLoggedIn: false,
+        title: appLocalizations.settings,
+        path: '/settings',
+        icon: const Icon(Icons.settings),
+      ),
+    ];
     return Drawer(
       child: ListView(
         children: [

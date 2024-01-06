@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gymapp/functions/imperial_system/stature.dart';
+import 'package:gymapp/local_settings/local_settings_state.dart';
+import 'package:provider/provider.dart';
 
 class BodyField extends StatelessWidget {
   final double initialStature;
@@ -15,6 +18,8 @@ class BodyField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocalSettingsState localSettingsState =
+        Provider.of<LocalSettingsState>(context);
     double stature = initialStature;
     double weight = initialWeight;
     return StatefulBuilder(
@@ -49,7 +54,9 @@ class BodyField extends StatelessWidget {
                 SizedBox(
                   width: 100,
                   child: Text(
-                    '${stature.toInt()} cm',
+                    localSettingsState.metricUnit
+                        ? '${stature.toInt()} cm'
+                        : statureImperialSystem(stature),
                     style: const TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
                   ),
@@ -76,7 +83,9 @@ class BodyField extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      '${weight.toInt()} kg',
+                      localSettingsState.metricUnit
+                          ? '${weight.toInt()} kg'
+                          : '${weightImperialSystem(weight)} lb',
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 20),
                     ),

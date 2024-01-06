@@ -5,9 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
+import 'package:gymapp/functions/showinfodialog.dart';
+import 'package:gymapp/functions/showwarningdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/widgets/optionsbutton.dart';
 import 'package:gymapp/pages/gyms_page/widgets/rating/viewpage/view_rating_page.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GymTile extends StatefulWidget {
   final GymData gymData;
@@ -21,6 +24,7 @@ class _GymTileState extends State<GymTile> {
   Future<double?>? rating;
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Consumer<ApplicationState>(
         builder: (context, applicationState, child) {
       rating ??= applicationState.getRatingAvg(widget.gymData.id!);
@@ -33,13 +37,13 @@ class _GymTileState extends State<GymTile> {
             child: Stack(children: [
               Visibility(
                 visible: widget.gymData.ownerId == applicationState.user!.uid,
-                child: const Positioned(
+                child: Positioned(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "OWNED BY YOU",
-                        style: TextStyle(
+                        appLocalizations.ownedByYou,
+                        style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w900),
                       ),
                     ],
@@ -101,7 +105,7 @@ class _GymTileState extends State<GymTile> {
                     ),
                   ),
                   Tooltip(
-                    message: "Enter to gym's menu",
+                    message: appLocalizations.enterGymMenu,
                     child: IconButton(
                       onPressed: () {
                         context.push('/my-gyms/gym-menu',
@@ -122,33 +126,21 @@ class _GymTileState extends State<GymTile> {
                     leaveGym:
                         applicationState.user!.uid != widget.gymData.ownerId
                             ? () {
-                                showDialog(
+                                showWarningDialog(
+                                  title: appLocalizations.leavePrompt,
                                   context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text('Leave?'),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('No')),
-                                        TextButton(
-                                          onPressed: () async {
-                                            await applicationState
-                                                .leaveGym(widget.gymData.id!);
-                                            if (context.mounted) {
-                                              Navigator.pop(context);
-                                            }
-                                          },
-                                          child: const Text('Yes'),
-                                        ),
-                                      ],
-                                    );
+                                  yes: () async {
+                                    await applicationState
+                                        .leaveGym(widget.gymData.id!);
                                   },
                                 );
                               }
-                            : null,
+                            : () {
+                                showInfoDialog(
+                                    title: appLocalizations.generalError,
+                                    description: appLocalizations.cantLeave,
+                                    context: context);
+                              },
                   ),
                 ],
               ),

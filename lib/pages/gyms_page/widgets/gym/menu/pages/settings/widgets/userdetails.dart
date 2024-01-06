@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/functions/calcage.dart';
+import 'package:gymapp/functions/imperial_system/stature.dart';
+import 'package:gymapp/local_settings/local_settings_state.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
+import 'package:provider/provider.dart';
 
 class UserDetails extends StatelessWidget {
   final UserData userData;
@@ -9,6 +12,8 @@ class UserDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocalSettingsState localSettingsState =
+        Provider.of<LocalSettingsState>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
@@ -72,11 +77,11 @@ class UserDetails extends StatelessWidget {
               child: ZoomAvatar(photoURL: userData.photoURL, radius: 120),
             ),
             Text(
-              'Stature: ${userData.stature.toInt()} cm.',
+              'Stature: ${localSettingsState.metricUnit ? userData.stature.toInt() : statureImperialSystem(userData.stature)} ${localSettingsState.metricUnit ? 'cm.' : ''}',
               style: const TextStyle(fontSize: 25),
             ),
             Text(
-              'Weight: ${userData.weight.toInt()} kg.',
+              'Weight: ${localSettingsState.metricUnit ? userData.weight.toInt() : weightImperialSystem(userData.weight)} ${localSettingsState.metricUnit ? 'kg.' : 'lb.'}',
               style: const TextStyle(fontSize: 25),
             ),
             const Padding(
