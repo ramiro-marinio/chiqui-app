@@ -5,6 +5,7 @@ import 'package:gymapp/functions/imperial_system/stature.dart';
 import 'package:gymapp/local_settings/local_settings_state.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserDetails extends StatelessWidget {
   final UserData userData;
@@ -14,9 +15,10 @@ class UserDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     LocalSettingsState localSettingsState =
         Provider.of<LocalSettingsState>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Details'),
+        title: Text(appLocalizations.details),
       ),
       body: SingleChildScrollView(
         child: Column(

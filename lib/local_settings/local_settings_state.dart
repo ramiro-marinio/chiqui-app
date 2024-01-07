@@ -1,8 +1,26 @@
+import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalSettingsState extends ChangeNotifier {
+  Locale? _osLang;
+  Locale get osLang => _osLang ?? const Locale('en');
+
+  Locale _language = const Locale('en');
+  Locale get language => _language;
+
+  set language(Locale? value) {
+    sharedPreferences.setString('language', value?.languageCode ?? 'os').then(
+      (success) {
+        if (success) {
+          _language = value ?? _osLang!;
+          notifyListeners();
+        }
+      },
+    );
+  }
+
   bool _loading = true;
   bool get loading => _loading;
   late SharedPreferences sharedPreferences;
@@ -37,6 +55,13 @@ class LocalSettingsState extends ChangeNotifier {
 
   Future<void> init() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    final langCode = sharedPreferences.getString('language');
+    if (langCode == null || langCode == 'os') {
+      _language =
+          Locale((await Devicelocale.currentLocale)?.substring(0, 2) ?? 'en');
+    } else {
+      _language = Locale(langCode);
+    }
     _theme = sharedPreferences.getInt('theme') ?? 0;
     _metricUnit = sharedPreferences.getBool('metricUnit') ?? true;
     _notificationsAllowed = await Permission.notification.isGranted;

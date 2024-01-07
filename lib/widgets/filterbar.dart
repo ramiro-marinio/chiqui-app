@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterBar extends StatelessWidget {
   final Function(String value) onChanged;
@@ -6,9 +7,12 @@ class FilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return TextField(
-      decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.search), hintText: 'Search'),
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.search),
+        hintText: appLocalizations.search,
+      ),
       onChanged: onChanged,
     );
   }

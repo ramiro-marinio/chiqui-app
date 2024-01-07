@@ -11,6 +11,7 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/messa
 import 'package:gymapp/widgets/crawl.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatPage extends StatefulWidget {
   final String gymId;
@@ -86,6 +87,7 @@ class _ChatPageState extends State<ChatPage> {
   ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return WillPopScope(
       onWillPop: () async {
         applicationState.currentChatID = null;
@@ -107,23 +109,25 @@ class _ChatPageState extends State<ChatPage> {
               SizedBox(
                 height: AppBar().preferredSize.height,
                 child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatOptions(
-                          userData: widget.otherUser!,
-                          membership: membershipData,
-                          gymData: gymData,
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: !widget.publicChat
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatOptions(
+                                userData: widget.otherUser!,
+                                membership: membershipData,
+                                gymData: gymData,
+                              ),
+                            ),
+                          );
+                        }
+                      : null,
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: widget.otherUser?.displayName != null
                         ? Crawl(child: Text(widget.otherUser!.displayName))
-                        : const Text('Public Chat'),
+                        : Text(appLocalizations.publicChat),
                   ),
                 ),
               ),

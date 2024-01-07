@@ -22,6 +22,7 @@ class _SettingsState extends State<LocalSettings> {
   Widget build(BuildContext context) {
     LocalSettingsState localSettingsState =
         Provider.of<LocalSettingsState>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     if (!localSettingsState.loading) {
       theme = localSettingsState.theme;
     }
@@ -29,7 +30,7 @@ class _SettingsState extends State<LocalSettings> {
         ? Scaffold(
             drawer: const NavDrawer(),
             appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.settings),
+              title: Text(appLocalizations.settings),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -39,7 +40,7 @@ class _SettingsState extends State<LocalSettings> {
                     child: Row(
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.theme,
+                          appLocalizations.theme,
                           style: const TextStyle(fontSize: 18),
                         ),
                         Padding(
@@ -49,17 +50,15 @@ class _SettingsState extends State<LocalSettings> {
                             items: [
                               DropdownMenuItem(
                                 value: 0,
-                                child: Text(
-                                    AppLocalizations.of(context)!.sameAsOS),
+                                child: Text(appLocalizations.sameAsOS),
                               ),
                               DropdownMenuItem(
                                 value: 1,
-                                child:
-                                    Text(AppLocalizations.of(context)!.light),
+                                child: Text(appLocalizations.light),
                               ),
                               DropdownMenuItem(
                                 value: 2,
-                                child: Text(AppLocalizations.of(context)!.dark),
+                                child: Text(appLocalizations.dark),
                               ),
                             ],
                             onChanged: (value) {
@@ -77,7 +76,7 @@ class _SettingsState extends State<LocalSettings> {
                     child: Row(
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.units,
+                          appLocalizations.units,
                           style: const TextStyle(fontSize: 18),
                         ),
                         Padding(
@@ -85,7 +84,7 @@ class _SettingsState extends State<LocalSettings> {
                           child: Row(
                             children: [
                               Text(
-                                AppLocalizations.of(context)!.imperial,
+                                appLocalizations.imperial,
                                 style: TextStyle(
                                   color: adaptiveColor(
                                     const Color.fromARGB(255, 57, 131, 59),
@@ -98,8 +97,7 @@ class _SettingsState extends State<LocalSettings> {
                                 value: localSettingsState.metricUnit,
                                 onChanged: (value) {
                                   showWarningDialog(
-                                    title: AppLocalizations.of(context)!
-                                        .changeUnits,
+                                    title: appLocalizations.changeUnits,
                                     context: context,
                                     yes: () {
                                       setState(() {
@@ -118,7 +116,7 @@ class _SettingsState extends State<LocalSettings> {
                                     const Color.fromARGB(255, 61, 90, 103),
                               ),
                               Text(
-                                AppLocalizations.of(context)!.metric,
+                                appLocalizations.metric,
                                 style: TextStyle(
                                   color: adaptiveColor(
                                       const Color.fromARGB(255, 57, 131, 59),
@@ -128,10 +126,8 @@ class _SettingsState extends State<LocalSettings> {
                               ),
                               InfoButton(
                                 icon: const Icon(Icons.info),
-                                title: AppLocalizations.of(context)!
-                                    .metricOrImperial,
-                                description:
-                                    AppLocalizations.of(context)!.moiDetails,
+                                title: appLocalizations.metricOrImperial,
+                                description: appLocalizations.moiDetails,
                               ),
                             ],
                           ),
@@ -148,7 +144,7 @@ class _SettingsState extends State<LocalSettings> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: AppLocalizations.of(context)!.notifications,
+                              text: appLocalizations.notifications,
                               style: TextStyle(
                                 color: adaptiveColor(
                                   Colors.black,
@@ -159,8 +155,8 @@ class _SettingsState extends State<LocalSettings> {
                             ),
                             TextSpan(
                               text: localSettingsState.notificationsAllowed
-                                  ? AppLocalizations.of(context)!.enabled
-                                  : AppLocalizations.of(context)!.disabled,
+                                  ? appLocalizations.enabled
+                                  : appLocalizations.disabled,
                               style: TextStyle(
                                 color: localSettingsState.notificationsAllowed
                                     ? adaptiveColor(
@@ -186,11 +182,9 @@ class _SettingsState extends State<LocalSettings> {
                                   (value) {
                                     if (!value) {
                                       showInfoDialog(
-                                          title: AppLocalizations.of(context)!
-                                              .generalError,
-                                          description:
-                                              AppLocalizations.of(context)!
-                                                  .errorEnablingNotifications,
+                                          title: appLocalizations.generalError,
+                                          description: appLocalizations
+                                              .errorEnablingNotifications,
                                           context: context);
                                     }
                                   },
@@ -198,11 +192,49 @@ class _SettingsState extends State<LocalSettings> {
                               }
                             : null,
                         child: Text(
-                          AppLocalizations.of(context)!.enableNotifications,
+                          appLocalizations.enableNotifications,
                           style: const TextStyle(fontSize: 18),
                         ),
                       ),
                     ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          appLocalizations.language,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButton(
+                            onChanged: (value) {
+                              localSettingsState.language = Locale(value!);
+                            },
+                            value: localSettingsState.language.languageCode,
+                            items: [
+                              DropdownMenuItem(
+                                value: 'os',
+                                child: Text(appLocalizations.sameAsOS),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'en',
+                                child: Text('English'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'es',
+                                child: Text('Español'),
+                              ),
+                              const DropdownMenuItem(
+                                value: 'pt',
+                                child: Text('Português'),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),

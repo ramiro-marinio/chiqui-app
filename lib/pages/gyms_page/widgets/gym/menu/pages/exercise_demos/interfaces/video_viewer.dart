@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/widgets/videoprogressbar.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VideoViewer extends StatefulWidget {
   final String? url;
@@ -23,6 +24,7 @@ class _VideoViewerState extends State<VideoViewer> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Visibility(
       visible: widget.url != null,
       child: FutureBuilder(
@@ -31,9 +33,12 @@ class _VideoViewerState extends State<VideoViewer> {
           if (snapshot.connectionState == ConnectionState.done) {
             return Column(
               children: [
-                const Text(
-                  'Demonstration Video',
-                  style: TextStyle(fontSize: 20),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    appLocalizations.demonstrationVideo,
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ),
                 SizedBox(
                   width: 300,

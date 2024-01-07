@@ -1,11 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ControllerField extends StatelessWidget {
   final Widget icon;
   final String title;
   final int? maxLines;
   final int maxLength;
+  final bool showMaxlength;
   final TextEditingController controller;
   final String? Function(String? value)? validator;
   const ControllerField(
@@ -15,7 +17,8 @@ class ControllerField extends StatelessWidget {
       required this.icon,
       required this.maxLength,
       this.maxLines,
-      this.validator});
+      this.validator,
+      this.showMaxlength = true});
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +40,10 @@ class ControllerField extends StatelessWidget {
             ),
           ],
         ),
-        Padding(
-          padding: EdgeInsets.all(maxLines != null ? 8.0 : 0.0),
-          child: SizedBox(
-            width: maxLines != null ? double.infinity : 200,
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
             child: TextFormField(
               validator: validator,
               decoration: InputDecoration(
@@ -51,7 +54,10 @@ class ControllerField extends StatelessWidget {
                     : null,
               ),
               maxLines: maxLines,
-              maxLength: maxLength,
+              maxLength: showMaxlength ? maxLength : null,
+              inputFormatters: [
+                if (!showMaxlength) LengthLimitingTextInputFormatter(maxLength)
+              ],
               controller: controller,
             ),
           ),

@@ -12,6 +12,7 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/int
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/workareasfield.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/videopickfield.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DemoMaker extends StatefulWidget {
   final String gymId;
@@ -32,6 +33,7 @@ class _DemoMakerState extends State<DemoMaker> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     DemonstrationData? editData = widget.editData;
     if (editData != null) {
       nameController.text = editData.exerciseName;
@@ -42,7 +44,7 @@ class _DemoMakerState extends State<DemoMaker> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Build a Demonstration'),
+        title: Text(appLocalizations.buildDemo),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -51,12 +53,13 @@ class _DemoMakerState extends State<DemoMaker> {
             children: [
               ControllerField(
                 controller: nameController,
-                title: 'Exercise Name',
+                title: appLocalizations.exerciseName,
                 icon: const Icon(Icons.fitness_center),
                 maxLength: 100,
+                showMaxlength: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please insert a title';
+                    return appLocalizations.missingValue;
                   } else {
                     return null;
                   }
@@ -67,9 +70,9 @@ class _DemoMakerState extends State<DemoMaker> {
                 icon: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [Icon(Icons.fitness_center), Icon(Icons.timer)]),
-                title: 'Exercise Unit',
-                valA: 'Time',
-                valB: 'Reps',
+                title: appLocalizations.exerciseUnit,
+                valA: appLocalizations.time,
+                valB: appLocalizations.reps,
                 thumbColors: const [
                   Colors.green,
                   Colors.blue,
@@ -87,7 +90,7 @@ class _DemoMakerState extends State<DemoMaker> {
               const AdaptiveDivider(),
               ControllerField(
                 controller: descriptionController,
-                title: 'Exercise Description',
+                title: appLocalizations.exerciseDescription,
                 icon: const Icon(Icons.info),
                 maxLength: 1000,
                 maxLines: 6,

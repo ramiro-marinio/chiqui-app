@@ -4,6 +4,7 @@ import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/video_viewer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ViewDemoDetails extends StatelessWidget {
   final DemonstrationData demonstrationData;
@@ -11,29 +12,27 @@ class ViewDemoDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: Text(demonstrationData.exerciseName)),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Description:',
-                  style: TextStyle(fontSize: 25),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                demonstrationData.description == null ||
+                        demonstrationData.description!.isEmpty
+                    ? appLocalizations.noDescription
+                    : demonstrationData.description!,
+                style: const TextStyle(fontSize: 18),
+              ),
             ),
-            Text(demonstrationData.description == null ||
-                    demonstrationData.description!.isEmpty
-                ? "No description"
-                : demonstrationData.description!),
-            const AdaptiveDivider(),
-            const Text(
-              'Work Areas:',
-              style: TextStyle(fontSize: 30),
-            ),
+            if (demonstrationData.workAreas.isNotEmpty)
+              Text(
+                appLocalizations.workAreas,
+                style: const TextStyle(fontSize: 30),
+              ),
             ...List.generate(
               demonstrationData.workAreas.length,
               (index) => Padding(
@@ -68,24 +67,27 @@ class ViewDemoDetails extends StatelessWidget {
               ),
             ),
             const AdaptiveDivider(),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(Icons.star),
                 ),
                 Text(
-                  'General Advice',
-                  style: TextStyle(fontSize: 20),
+                  appLocalizations.generalAdvice,
+                  style: const TextStyle(fontSize: 20),
                 ),
               ],
             ),
-            Text(
-              (demonstrationData.advice?.isNotEmpty ?? false)
-                  ? demonstrationData.advice ?? 'No Information'
-                  : 'No Information',
-              style: const TextStyle(fontSize: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+              child: Text(
+                (demonstrationData.advice?.isNotEmpty ?? false)
+                    ? demonstrationData.advice ?? appLocalizations.noAdvice
+                    : appLocalizations.noAdvice,
+                style: const TextStyle(fontSize: 20),
+              ),
             ),
             const AdaptiveDivider(),
             VideoViewer(url: demonstrationData.resourceURL),

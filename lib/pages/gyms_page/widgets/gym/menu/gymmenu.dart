@@ -9,6 +9,7 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/info/gyminfo.dart'
 import 'package:gymapp/widgets/crawl.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GymMenu extends StatefulWidget {
   final GymData gymData;
@@ -22,6 +23,7 @@ class GymMenuState extends State<GymMenu> {
   Future<MembershipData>? membershipData;
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     ApplicationState applicationState = Provider.of<ApplicationState>(context);
     membershipData ??= applicationState.getMembership(
         widget.gymData.id!, applicationState.user!.uid);
@@ -49,19 +51,19 @@ class GymMenuState extends State<GymMenu> {
                     ),
                   )
                 ]),
-                bottom: const TabBar(
+                bottom: TabBar(
                   tabs: [
                     Tab(
-                      icon: Icon(Icons.info),
-                      text: 'Gym Info',
+                      icon: const Icon(Icons.info),
+                      text: appLocalizations.gymInfo,
                     ),
-                    Tab(
+                    const Tab(
                       icon: Icon(Icons.chat),
                       text: 'Chat',
                     ),
                     Tab(
-                      icon: Icon(Icons.fitness_center),
-                      text: 'Exercises Info',
+                      icon: const Icon(Icons.fitness_center),
+                      text: appLocalizations.exercisesInfo,
                     ),
                   ],
                 ),

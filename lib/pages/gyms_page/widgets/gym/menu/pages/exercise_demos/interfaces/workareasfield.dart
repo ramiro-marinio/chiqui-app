@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/widgets/tag.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkAreasField extends StatefulWidget {
   final List<String> workAreas;
@@ -23,19 +24,20 @@ class _WorkAreasFieldState extends State<WorkAreasField> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Form(
       key: _formKey,
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.list),
+                const Icon(Icons.list),
                 AutoSizeText(
-                  "Work Areas trained in exercise",
-                  style: TextStyle(fontSize: 20),
+                  appLocalizations.workAreasTrainedInExercise,
+                  style: const TextStyle(fontSize: 20),
                 ),
               ],
             ),
@@ -74,8 +76,8 @@ class _WorkAreasFieldState extends State<WorkAreasField> {
                     return null;
                   },
                   controller: muscleController,
-                  decoration: const InputDecoration(
-                      hintText: 'What does this exercise work?'),
+                  decoration: InputDecoration(
+                      hintText: appLocalizations.workAreasPrompt),
                 ),
               )),
               Padding(

@@ -6,6 +6,7 @@ import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatTile extends StatelessWidget {
   final UserData? userData;
@@ -20,6 +21,7 @@ class ChatTile extends StatelessWidget {
       required this.publicChat});
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     Future<QuerySnapshot<Map<String, dynamic>>>? membershipData;
     if (userData != null) {
       membershipData = FirebaseFirestore.instance
@@ -29,7 +31,7 @@ class ChatTile extends StatelessWidget {
           .get();
     }
     return ListTile(
-      title: Text(userData?.displayName ?? 'Public Chat'),
+      title: Text(userData?.displayName ?? appLocalizations.publicChat),
       leading: publicChat
           ? const CircleAvatar(
               radius: 20,
@@ -49,21 +51,23 @@ class ChatTile extends StatelessWidget {
                       MembershipData.fromJson(snapshot.data!.docs[0].data());
                   String tag = ' ';
                   if (userData!.userId == gymData.ownerId) {
-                    tag = 'Owner';
+                    tag = appLocalizations.ownerTag;
                   } else if (data.admin && data.coach) {
-                    tag = 'Coach and Administrator';
+                    tag = appLocalizations.coachAdminTag;
                   } else if (data.admin) {
-                    tag = 'Admin';
+                    tag = appLocalizations.adminTag;
                   } else if (data.coach) {
-                    tag = 'Coach';
+                    tag = appLocalizations.coachTag;
                   }
                   return Text(
                     tag,
                     style: TextStyle(
-                        color: adaptiveColor(
-                            const Color.fromARGB(255, 131, 78, 0),
-                            Colors.orange,
-                            context)),
+                      color: adaptiveColor(
+                        const Color.fromARGB(255, 131, 78, 0),
+                        Colors.orange,
+                        context,
+                      ),
+                    ),
                   );
                 } else {
                   return const Center(

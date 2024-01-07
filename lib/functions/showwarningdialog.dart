@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> showWarningDialog(
     {required String title,
@@ -6,6 +7,7 @@ Future<void> showWarningDialog(
     required BuildContext context,
     required VoidCallback yes,
     VoidCallback? no}) async {
+  AppLocalizations appLocalizations = AppLocalizations.of(context)!;
   await showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -19,14 +21,15 @@ Future<void> showWarningDialog(
             }
             Navigator.pop(context);
           },
-          child: const Text('No'),
+          child: Text(appLocalizations.no),
         ),
         TextButton(
-            onPressed: () {
-              yes();
-              Navigator.pop(context);
-            },
-            child: const Text('Yes'))
+          onPressed: () {
+            yes();
+            Navigator.pop(context);
+          },
+          child: Text(appLocalizations.yes),
+        )
       ],
     ),
   );

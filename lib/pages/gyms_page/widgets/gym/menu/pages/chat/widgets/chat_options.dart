@@ -5,6 +5,7 @@ import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/userdetails.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatOptions extends StatefulWidget {
   final UserData? userData;
@@ -24,6 +25,7 @@ class ChatOptions extends StatefulWidget {
 class _ChatOptionsState extends State<ChatOptions> {
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return FutureBuilder(
       future: Future.wait([widget.membership, widget.gymData]),
       builder: (context, snapshot) {
@@ -36,7 +38,7 @@ class _ChatOptionsState extends State<ChatOptions> {
           final GymData? gymData = snapshot.data![1] as GymData?;
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Options'),
+              title: Text(appLocalizations.options),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -59,14 +61,14 @@ class _ChatOptionsState extends State<ChatOptions> {
                           const AdaptiveDivider(
                             indent: 8,
                           ),
-                          const SizedBox(
+                          SizedBox(
                             width: double.infinity,
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                'Information',
+                                appLocalizations.information,
                                 textAlign: TextAlign.left,
-                                style: TextStyle(fontSize: 20),
+                                style: const TextStyle(fontSize: 20),
                               ),
                             ),
                           ),
@@ -75,7 +77,8 @@ class _ChatOptionsState extends State<ChatOptions> {
                             child: SizedBox(
                               width: double.infinity,
                               child: Text(
-                                widget.userData?.info ?? 'No information',
+                                widget.userData?.info ??
+                                    appLocalizations.noInfo,
                                 style: const TextStyle(fontSize: 15),
                               ),
                             ),
@@ -101,8 +104,8 @@ class _ChatOptionsState extends State<ChatOptions> {
                                     );
                                   },
                                   icon: const Icon(Icons.fitness_center),
-                                  label: const Text(
-                                    'Get Training Information',
+                                  label: Text(
+                                    appLocalizations.viewTrainingInfo,
                                   ),
                                 ),
                               ],
@@ -116,7 +119,7 @@ class _ChatOptionsState extends State<ChatOptions> {
                           ),
                           ListTile(
                             leading: const Icon(Icons.do_not_disturb),
-                            title: const Text('Block'),
+                            title: Text(appLocalizations.block),
                             iconColor: Colors.red,
                             textColor: Colors.red,
                             tileColor: const Color.fromARGB(56, 244, 67, 54),
@@ -129,7 +132,7 @@ class _ChatOptionsState extends State<ChatOptions> {
                           ),
                           ListTile(
                             leading: const Icon(Icons.message),
-                            title: const Text('Disable Notifications'),
+                            title: Text(appLocalizations.disableNotifications),
                             iconColor: Colors.red,
                             textColor: Colors.red,
                             tileColor: const Color.fromARGB(56, 244, 67, 54),

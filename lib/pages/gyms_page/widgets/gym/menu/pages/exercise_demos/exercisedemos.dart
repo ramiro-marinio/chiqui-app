@@ -7,6 +7,7 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/exe
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/demomaker.dart';
 import 'package:gymapp/widgets/filterbar.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExerciseDemonstrations extends StatefulWidget {
   final GymData gymData;
@@ -74,19 +75,6 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
               return Scaffold(
                 body: ListView(
                   children: [
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 12),
-                          child: Text(
-                            "Exercises",
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.w900),
-                          ),
-                        ),
-                      ],
-                    ),
                     FilterBar(
                       onChanged: (value) {
                         setState(() {
@@ -103,7 +91,7 @@ class _ExerciseDemonstrationsState extends State<ExerciseDemonstrations> {
                           membershipData?.admin == true ||
                           membershipData?.coach == true,
                   child: Tooltip(
-                    message: 'Add Demonstration',
+                    message: AppLocalizations.of(context)!.addDemonstration,
                     child: FloatingActionButton(
                       onPressed: () {
                         Navigator.push(

@@ -5,6 +5,7 @@ import 'package:gymapp/functions/showwarningdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/widgets/videoprogressbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VideoPickField extends StatefulWidget {
   final String? initialVideo;
@@ -31,6 +32,7 @@ class _VideoPickFieldState extends State<VideoPickField> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     _controller = widget.initialVideo == videoPath
         ? VideoPlayerController.networkUrl(Uri.parse(videoPath ?? ''))
         : VideoPlayerController.file(File(videoPath ?? ''));
@@ -41,18 +43,18 @@ class _VideoPickFieldState extends State<VideoPickField> {
 
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Icon(Icons.video_call),
               ),
               Text(
-                "Demonstration Video",
-                style: TextStyle(fontSize: 20),
+                appLocalizations.demonstrationVideo,
+                style: const TextStyle(fontSize: 20),
               ),
             ],
           ),
@@ -114,21 +116,21 @@ class _VideoPickFieldState extends State<VideoPickField> {
                   await showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Pick a Source'),
+                      title: Text(appLocalizations.chooseSource),
                       actions: [
                         TextButton(
                           onPressed: () {
                             imageSource = ImageSource.camera;
                             Navigator.pop(context);
                           },
-                          child: const Text('Camera'),
+                          child: Text(appLocalizations.camera),
                         ),
                         TextButton(
                           onPressed: () {
                             imageSource = ImageSource.gallery;
                             Navigator.pop(context);
                           },
-                          child: const Text('Gallery'),
+                          child: Text(appLocalizations.gallery),
                         )
                       ],
                     ),
@@ -149,7 +151,7 @@ class _VideoPickFieldState extends State<VideoPickField> {
 
                   widget.chooseVideo(videoPath);
                 },
-                child: const Text("Pick a Video"),
+                child: Text(appLocalizations.pickVideo),
               ),
             ],
           ),

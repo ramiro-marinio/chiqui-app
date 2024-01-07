@@ -8,6 +8,7 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/vie
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/demodata.dart';
 import 'package:gymapp/widgets/crawl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExerciseDemo extends StatelessWidget {
   final DemonstrationData demoData;
@@ -21,6 +22,7 @@ class ExerciseDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Consumer<ApplicationState>(
         builder: (context, applicationState, child) {
       return Column(
@@ -56,7 +58,7 @@ class ExerciseDemo extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             showWarningDialog(
-                              title: 'Delete Demonstration?',
+                              title: appLocalizations.deleteDemoPrompt,
                               context: context,
                               yes: () {
                                 context
@@ -75,11 +77,12 @@ class ExerciseDemo extends StatelessWidget {
             ),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ViewDemoDetails(demonstrationData: demoData),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ViewDemoDetails(demonstrationData: demoData),
+                ),
+              );
             },
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -87,7 +90,9 @@ class ExerciseDemo extends StatelessWidget {
                 demoData.repUnit
                     ? const Icon(Icons.fitness_center)
                     : const Icon(Icons.timer),
-                Text(demoData.repUnit ? 'Repped Exercise' : 'Timed Exercise')
+                Text(demoData.repUnit
+                    ? appLocalizations.reppedExercise
+                    : appLocalizations.timedExercise)
               ],
             ),
           ),
