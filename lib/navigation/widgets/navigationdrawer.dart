@@ -20,19 +20,19 @@ class NavDrawer extends StatelessWidget {
         icon: const Icon(Icons.home),
       ),
       NavTile(
-        mustBeLoggedIn: false,
+        mustBeLoggedIn: true,
         title: appLocalizations.myGyms,
         path: '/my-gyms',
         icon: const Icon(Icons.fitness_center),
       ),
+      // NavTile(
+      //   mustBeLoggedIn: false,
+      //   title: appLocalizations.help,
+      //   path: '/help',
+      //   icon: const Icon(Icons.help),
+      // ),
       NavTile(
-        mustBeLoggedIn: false,
-        title: appLocalizations.help,
-        path: '/help',
-        icon: const Icon(Icons.help),
-      ),
-      NavTile(
-        mustBeLoggedIn: false,
+        mustBeLoggedIn: true,
         title: appLocalizations.sendSuggestion,
         path: '/suggestion',
         icon: const Icon(Icons.lightbulb),

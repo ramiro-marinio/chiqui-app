@@ -101,7 +101,7 @@ class _ProfileState extends State<Profile> {
                       text: appLocalizations.logOut),
                   onTap: () {
                     applicationState.signOut();
-                    context.push('/sign-in');
+                    context.push('/');
                   },
                 ),
               ]);

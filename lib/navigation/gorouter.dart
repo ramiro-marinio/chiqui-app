@@ -8,7 +8,6 @@ import 'package:gymapp/main.dart';
 import 'package:gymapp/navigation/widgets/icongoroute.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/gymmenu.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/chat_page.dart';
-import 'package:gymapp/pages/help/help.dart';
 import 'package:gymapp/pages/home_page/homepage.dart';
 import 'package:gymapp/pages/gyms_page/gyms_list.dart';
 import 'package:gymapp/pages/other/noconncetion.dart';
@@ -68,13 +67,13 @@ final List<GoRoute> routes = [
     icon: const Icon(Icons.fitness_center),
     name: "myGyms",
   ),
-  IconGoRoute(
-    path: '/help',
-    mustBeLoggedIn: false,
-    builder: (context, state) => const Help(),
-    icon: const Icon(Icons.help),
-    name: 'help',
-  ),
+  // IconGoRoute(
+  //   path: '/help',
+  //   mustBeLoggedIn: false,
+  //   builder: (context, state) => const Help(),
+  //   icon: const Icon(Icons.help),
+  //   name: 'help',
+  // ),
   IconGoRoute(
     path: '/suggestion',
     builder: (context, state) => const Suggestion(),

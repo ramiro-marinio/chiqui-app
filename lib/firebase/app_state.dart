@@ -299,26 +299,28 @@ class ApplicationState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> editDemonstration(
-      DemonstrationData demonstrationData, String? videoPath) async {
-    if (videoPath != null && videoPath != demonstrationData.resourceURL) {
-      File video = File(videoPath);
-      String id = generateRandomString(28);
-      //Extension value will only be used if there was no resource before
-      String extension = video.path.split('.').last;
-      String videoURL = (await modifyDemoVideo(
-          demonstrationData.resourceName ?? '$id.$extension', video, null))!;
-      demonstrationData.resourceName ??= '$id.$extension';
-      demonstrationData.resourceURL = videoURL;
-    } else if (videoPath == null && demonstrationData.resourceURL != null) {
-      String extension = demonstrationData.resourceName!.split('.').last;
-      await modifyDemoVideo(
-        demonstrationData.resourceName!,
-        null,
-        extension,
-      );
-      demonstrationData.resourceName = null;
-      demonstrationData.resourceURL = null;
+  Future<void> editDemonstration(DemonstrationData demonstrationData,
+      String? videoPath, bool touchVideo) async {
+    if (touchVideo) {
+      if (videoPath != null && videoPath != demonstrationData.resourceURL) {
+        File video = File(videoPath);
+        String id = generateRandomString(28);
+        //Extension value will only be used if there was no resource before
+        String extension = video.path.split('.').last;
+        String videoURL = (await modifyDemoVideo(
+            demonstrationData.resourceName ?? '$id.$extension', video, null))!;
+        demonstrationData.resourceName ??= '$id.$extension';
+        demonstrationData.resourceURL = videoURL;
+      } else if (videoPath == null && demonstrationData.resourceURL != null) {
+        String extension = demonstrationData.resourceName!.split('.').last;
+        await modifyDemoVideo(
+          demonstrationData.resourceName!,
+          null,
+          extension,
+        );
+        demonstrationData.resourceName = null;
+        demonstrationData.resourceURL = null;
+      }
     }
     await FirebaseFirestore.instance
         .collection('demonstrations')

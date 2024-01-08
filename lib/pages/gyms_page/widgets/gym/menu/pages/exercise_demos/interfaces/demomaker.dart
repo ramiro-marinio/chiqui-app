@@ -43,6 +43,7 @@ class _DemoMakerState extends State<DemoMaker> {
       adviceController.text = editData.advice ?? '';
       videoPath = editData.resourceURL;
     }
+    print(videoPath);
     return WillPopScope(
       onWillPop: () async {
         bool exit = false;
@@ -175,9 +176,10 @@ class _DemoMakerState extends State<DemoMaker> {
                     );
                     Navigator.pop(context);
                   } else {
-                    context
-                        .read<ApplicationState>()
-                        .editDemonstration(demonstrationData, videoPath);
+                    context.read<ApplicationState>().editDemonstration(
+                        demonstrationData,
+                        videoPath,
+                        videoPath != editData.resourceURL);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(appLocalizations.successful),
