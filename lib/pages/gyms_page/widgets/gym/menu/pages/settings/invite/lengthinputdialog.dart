@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gymapp/functions/calculateTextSize.dart';
 
 class LengthInputDialog extends StatefulWidget {
   final int chars;
@@ -14,9 +16,10 @@ class _LengthInputDialogState extends State<LengthInputDialog> {
   int? length;
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     length ??= widget.chars;
     return AlertDialog(
-      title: const Text('Pick a code length'),
+      title: Text(appLocalizations.pickCodeLength),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -35,10 +38,16 @@ class _LengthInputDialogState extends State<LengthInputDialog> {
                 ),
               ),
               SizedBox(
-                width: 80,
+                width: calculateTextSize(
+                      appLocalizations.characters(10),
+                      const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ).width +
+                    10,
                 child: Text(
-                  '$length chars',
-                  textAlign: TextAlign.center,
+                  appLocalizations.characters(length ?? 0),
+                  textAlign: TextAlign.left,
                   style: const TextStyle(fontSize: 18),
                 ),
               ),

@@ -5,6 +5,7 @@ import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/widgets/profile_config/profileconfig.dart';
 import 'package:gymapp/widgets/icontext.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -17,6 +18,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     ApplicationState applicationState = Provider.of<ApplicationState>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return GestureDetector(
       child: ListTile(
         leading: Builder(builder: (context) {
@@ -40,8 +42,8 @@ class _ProfileState extends State<Profile> {
           }
         }),
         title: applicationState.loggedIn
-            ? const Text('Your account')
-            : const Text('No account'),
+            ? Text(appLocalizations.yourAccount)
+            : Text(appLocalizations.noAccount),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -52,9 +54,10 @@ class _ProfileState extends State<Profile> {
                     maxLines: 1,
                   )
                 : !applicationState.loading
-                    ? const AutoSizeText(
-                        "Tap to log in (or register)",
-                        maxLines: 1,
+                    ? AutoSizeText(
+                        appLocalizations.tapToLogIn,
+                        maxLines: 2,
+                        minFontSize: 0,
                       )
                     : const AutoSizeText(
                         "Loading...",
@@ -62,7 +65,7 @@ class _ProfileState extends State<Profile> {
                       ),
             Visibility(
               visible: applicationState.loggedIn,
-              child: const Text("Long tap for more options"),
+              child: Text(appLocalizations.longTapMoreOptions),
             )
           ],
         ),
@@ -93,8 +96,9 @@ class _ProfileState extends State<Profile> {
                   details.globalPosition.dy),
               items: [
                 PopupMenuItem(
-                  child: const IconText(
-                      icon: Icon(Icons.exit_to_app), text: "Log Out"),
+                  child: IconText(
+                      icon: const Icon(Icons.exit_to_app),
+                      text: appLocalizations.logOut),
                   onTap: () {
                     applicationState.signOut();
                     context.push('/sign-in');

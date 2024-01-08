@@ -9,6 +9,31 @@
     "no":"Não",
     "search":"Procurar",
     "missingValue":"Por Favor preencha este Campo.",
+    "savingChanges":"Salvando Alterações...",
+    "networkError":"Verifique a sua conexão com a internet",
+    "successful":"Salvo Com Sucesso!",
+    "willNotBeSaved":"Esto Não Será Salvo.",
+
+    "yourAccount":"Sua Conta",
+    "logOut":"Fechar Sessão",
+    "longTapMoreOptions":"Toque longo pra mais opções",
+    "noAccount":"Sem Conta",
+    "tapToLogIn":"Tap pra Fazer Log-In (Ou Se Cadastrar)",
+
+    "configureProfile":"Configurar Perfil",
+    "displayName":"Nome de Usuário",
+    "userInfo":"Informação",
+    "trainingInformation":"Informação de Treino",
+    "tIDetails":"Só a equipe da acádemia verá estes dados, para que possam oferecer uma rotina personalizada.",
+    "biologicalSex":"Sexo Biológico",
+    "male":"G. Masculino",
+    "female":"G. Feminino",
+    "birthdayHeader":"D. de Nascimento (Tap para mudar)",
+    "statureAndWeight":"Altura e Peso",
+    "historyHeader":"Registro",
+    "historyDetails":"Lesões anteriores que tornam certos exercícios difíceis, dolorosos ou direitamente impossíveis.",
+    "noInjuries":"Não há lesões.",
+
     "homePage":"Página Principal",
     "welcome":"Bem-vindo ao BetterTraining",
     "recentNews":"Notícias Recentes",
@@ -28,7 +53,15 @@
     "correctGym":"Esta é a academia correta?",
     "alreadyJoined":"Já se inscreveu",
     "alrJnDetails":"Você já se inscreveu nesta academia!",
+
+    "writeReview":"Escrever Avaliação",
+    "ratings":"Avaliações de \"{gym}\"",
+    "@ratings":{"placeholders": {
+        "gym":{"type": "String"}
+    }},
+
     "createGym":"Criar Academia",
+    "gymSavedSuccess":"Academia Salva Com Sucesso!",
     "editGym":"Editar Academia",
     "gymName":"Nome da Academia",
     "gymDescription":"Descrição",
@@ -40,8 +73,11 @@
     "owner":"Proprietário:",
     "exercisesInfo":"Demonstrações",
     "buildDemo":"Criar uma Demonstração",
+    "createDemoPrompt":"Criar Demonstração?",
+    "saveDemoPrompt":"Salvar Demonstração?",
+    "demoPromptDetails":"Certifique-se de inserir os dados corretos!",
 
-    "addDemonstration":"Adicionar Demostração",
+    "addDemonstration":"Adicionar Demonstração",
     "exerciseName":"Nome do Exercício",
     "exerciseUnit":"Unidade",
     "time":"Tempo",
@@ -54,11 +90,14 @@
     "demonstrationVideo":"Video de Demonstração",
     "reppedExercise":"Exercício de Repetições",
     "timedExercise":"Exercício de Tempo",
-    "deleteDemoPrompt":"Apagar Demostração?",
+    "deleteDemoPrompt":"Apagar Demonstração?",
     "noDescription":"Não Há Descrição",
     "generalAdvice":"Conselhos Gerais",
     "noAdvice":"Não Há Conselhos",
     "workAreas":"Áreas de Trabalho:",
+    
+
+
 
 
     "publicChat":"Bate-Papo Público",
@@ -74,7 +113,12 @@
     "disableNotifications":"Desativar Notificações",
     "viewTrainingInfo": "Ver Informação de Treino",
     "details":"Detalhes",
-
+    "personalInfo":"Informação Pessoal:",
+    "birthday":"Data de Nascimento:",
+    "stature":"Altura:",
+    "weight":"Peso:",
+    "history":"Registro:",
+    
     "help":"Ajuda",
 
     "sendSuggestion":"Enviar uma Sugestão",
@@ -87,6 +131,48 @@
     "sbHint":"Sua Sugestão",
     "sendSuggestionButton":"Enviar Sugestão",
     "suggestionSent":"Sugestão enviada com Sucesso!",
+
+    "editGymInfo":"Editar Info. da Academia",
+    "age":"{age} Anos",
+    "@age":{
+        "placeholders": {
+            "age":{
+                "type": "int"
+            }
+        }
+    },
+    "makeCoach":"Virar Treinador",
+    "removeCoach":"Desfazer Treinador",
+    "makeAdmin":"Virar Administrador",
+    "removeAdmin":"Desfazer Administrador",
+    "kickOut":"Expulsar",
+    "viewDetails":"Ver Detalhes",
+    "randomizeInviteCode":"Escolher Aleatoriamente",
+    "pickManually":"Escolher Manualmente",
+    "warning":"Aviso",
+    "adminWarning":"Fazer isso transformará o usuário em um administrador. Tem certeza?",
+    "areYouSure":"Você tem Certeza?",
+    "roleChangedSuccesfully":"Função Alterada Com Sucesso!",
+
+
+
+    "inviteCodeWarningDetails":"É recomendável que você altere esse código periodicamente e evite compartilhá-lo excessivamente, pois isso pode resultar na invasão de sua academia por usuários mal-intencionados.",
+    "codeWithSpaces":"Este código contém espaços, o que pode causar confusão quando os usuários inserem o código. Tente alterar o código para não incluir espaços.",
+    "characters":"{chars} caracteres",
+    "@characters":{
+        "placeholders": {
+            "chars":{
+                "type": "int"
+            }
+        }
+    },
+    "cancel":"Cancelar",
+    "choose":"Escolher",
+    "desiredCode":"Escolha o Código Desejado",
+    "notLongEnough":"Deve ter pelo menos 7 caracteres",
+    "submit":"Escolher",
+
+
     "settings":"Configurações",
     "theme":"Tema:",
     "sameAsOS":"Igual ao Sistema",

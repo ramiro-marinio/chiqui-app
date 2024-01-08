@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymapp/functions/imperial_system/stature.dart';
 import 'package:gymapp/local_settings/local_settings_state.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BodyField extends StatelessWidget {
   final double initialStature;
@@ -18,6 +19,7 @@ class BodyField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     LocalSettingsState localSettingsState =
         Provider.of<LocalSettingsState>(context);
     double stature = initialStature;
@@ -26,13 +28,13 @@ class BodyField extends StatelessWidget {
       builder: (context, setState) {
         return Column(
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.man),
+                const Icon(Icons.man),
                 Text(
-                  'Stature and Weight',
-                  style: TextStyle(fontSize: 20),
+                  appLocalizations.statureAndWeight,
+                  style: const TextStyle(fontSize: 20),
                 ),
               ],
             ),

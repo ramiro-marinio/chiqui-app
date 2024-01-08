@@ -10,6 +10,7 @@ import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/functions/calcage.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/functions/useroptionsmenu.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserSettingsTile extends StatefulWidget {
   final UserData userData;
@@ -34,6 +35,7 @@ class _UserSettingsTileState extends State<UserSettingsTile> {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalization = AppLocalizations.of(context)!;
     final ApplicationState applicationState =
         Provider.of<ApplicationState>(context);
     subscription ??= FirebaseFirestore.instance
@@ -86,7 +88,7 @@ class _UserSettingsTileState extends State<UserSettingsTile> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ))
-                    : const Text('No info'),
+                    : Text(appLocalization.noInfo),
                 coach != null
                     ? Visibility(
                         visible: coach!,
@@ -105,13 +107,19 @@ class _UserSettingsTileState extends State<UserSettingsTile> {
                     children: [
                       Icon(widget.userData.sex ? Icons.female : Icons.male),
                       Text(
-                        widget.userData.sex ? 'Female' : 'Male',
+                        widget.userData.sex
+                            ? appLocalization.female
+                            : appLocalization.male,
                         style: const TextStyle(fontSize: 12),
                       ),
                     ],
                   ),
                 ),
-                Text('${calculateAge(widget.userData.birthDay)} years old'),
+                Text(
+                  appLocalization.age(
+                    calculateAge(widget.userData.birthDay),
+                  ),
+                ),
               ],
             ),
           ),

@@ -12,6 +12,7 @@ import 'package:gymapp/firebase/widgets/profile_config/fields/profilepicpicker.d
 import 'package:gymapp/firebase/widgets/profile_config/bodyfield.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileConfig extends StatefulWidget {
   const ProfileConfig({super.key});
@@ -23,6 +24,7 @@ class ProfileConfig extends StatefulWidget {
 class _ProfileConfigState extends State<ProfileConfig> {
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     ApplicationState applicationState = context.read<ApplicationState>();
     User? user = applicationState.user;
     String? displayName = user?.displayName;
@@ -31,11 +33,11 @@ class _ProfileConfigState extends State<ProfileConfig> {
       return const MustBeLoggedIn();
     }
     if (userData == null) {
-      return const Scaffold(
+      return Scaffold(
         body: Center(
             child: Text(
-          'Error',
-          style: TextStyle(fontSize: 30, color: Colors.red),
+          appLocalizations.generalError,
+          style: const TextStyle(fontSize: 30, color: Colors.red),
         )),
       );
     }
@@ -59,9 +61,9 @@ class _ProfileConfigState extends State<ProfileConfig> {
             context: context,
             barrierDismissible: false,
             builder: (context) {
-              return const AlertDialog(
-                title: Text("Saving changes..."),
-                content: Row(
+              return AlertDialog(
+                title: Text(appLocalizations.savingChanges),
+                content: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircularProgressIndicator.adaptive(),
@@ -85,7 +87,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
                         color:
                             adaptiveColor(Colors.white, Colors.black, context),
                       ),
-                      const Text("Updated Successfully!")
+                      Text(appLocalizations.successful)
                     ],
                   ),
                 ),
@@ -94,15 +96,18 @@ class _ProfileConfigState extends State<ProfileConfig> {
           } catch (e) {
             if (context.mounted) {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("Check your internet connection.")));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(appLocalizations.networkError),
+                ),
+              );
             }
           }
         }
         return true;
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text("Configure Profile")),
+        appBar: AppBar(title: Text(appLocalizations.configureProfile)),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -112,7 +117,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
               ),
               Field(
                 icon: const Icon(Icons.person),
-                title: "Display Name",
+                title: appLocalizations.displayName,
                 initialText: displayName,
                 onChanged: (value) {
                   displayName = value;
@@ -121,7 +126,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
                 maxLength: 40,
               ),
               Field(
-                title: "User Info",
+                title: appLocalizations.userInfo,
                 icon: const Icon(Icons.info),
                 initialText: newUserData.info,
                 onChanged: (value) {
@@ -129,20 +134,20 @@ class _ProfileConfigState extends State<ProfileConfig> {
                 },
                 maxLength: 200,
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 12.5, bottom: 12.5),
+              Padding(
+                padding: const EdgeInsets.only(top: 12.5, bottom: 12.5),
                 child: Column(
                   children: [
                     Text(
-                      'Training Information',
+                      appLocalizations.trainingInformation,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     Text(
-                      'Only the gym staff will see this, in order to deliver an appropriate training routine.',
+                      appLocalizations.tIDetails,
                       textAlign: TextAlign.center,
                     )
                   ],
@@ -174,7 +179,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
               ),
               const AdaptiveDivider(),
               Field(
-                title: 'History',
+                title: appLocalizations.history,
                 initialText: newUserData.injuries,
                 icon: const Icon(Icons.personal_injury),
                 onChanged: (value) {
@@ -182,8 +187,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
                 },
                 maxLines: 6,
                 maxLength: 4000,
-                hintText:
-                    'Previous injuries that make certain exercises painful or dangerous.',
+                hintText: appLocalizations.historyDetails,
               )
             ],
           ),

@@ -7,6 +7,7 @@ import 'package:gymapp/functions/alertsnackbar.dart';
 import 'package:gymapp/functions/showwarningdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/userdetails.dart';
 import 'package:gymapp/widgets/icontext.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void showUserOptionsMenu({
   required BuildContext context,
@@ -18,6 +19,7 @@ void showUserOptionsMenu({
   required GymData gymData,
   required UserData userData,
 }) {
+  final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
   bool? coach = membership?.coach;
   bool? admin = membership?.admin;
   showMenu(
@@ -37,14 +39,16 @@ void showUserOptionsMenu({
           child: IconText(
             icon: const Icon(Icons.fitness_center),
             text: coach != null
-                ? (coach ? 'Remove Coach Role' : 'Make Coach')
+                ? (coach
+                    ? appLocalizations.removeCoach
+                    : appLocalizations.makeCoach)
                 : 'Loading...',
           ),
           onTap: () {
             applicationState.modifyMembership({'coach': !coach!}, membership!);
             showAlertSnackbar(
                 context: context,
-                text: 'Role Changed Succesfully!',
+                text: appLocalizations.roleChangedSuccesfully,
                 duration: const Duration(seconds: 1));
           },
         ),
@@ -57,22 +61,23 @@ void showUserOptionsMenu({
           child: IconText(
             icon: const Icon(Icons.shield),
             text: admin != null
-                ? (admin ? 'Remove Admin. Role' : 'Make Administrator')
+                ? (admin
+                    ? appLocalizations.removeAdmin
+                    : appLocalizations.makeAdmin)
                 : 'Loading...',
           ),
           onTap: () {
             if (admin == false) {
               showWarningDialog(
-                title: 'Warning',
-                description:
-                    'Doing this will turn the user into an admin. Are you sure?',
+                title: appLocalizations.warning,
+                description: appLocalizations.adminWarning,
                 context: context,
                 yes: () {
                   applicationState
                       .modifyMembership({'admin': !admin!}, membership!);
                   showAlertSnackbar(
                       context: context,
-                      text: 'Role Changed Successfully!',
+                      text: appLocalizations.roleChangedSuccesfully,
                       duration: const Duration(seconds: 1));
                 },
               );
@@ -81,7 +86,7 @@ void showUserOptionsMenu({
                   .modifyMembership({'admin': !admin!}, membership!);
               showAlertSnackbar(
                   context: context,
-                  text: 'Role Changed Successfully!',
+                  text: appLocalizations.roleChangedSuccesfully,
                   duration: const Duration(seconds: 1));
             }
           },
@@ -90,13 +95,13 @@ void showUserOptionsMenu({
               localMembershipData.admin && !(admin ?? true)) &&
           gymData.ownerId != membership!.userId)
         PopupMenuItem(
-          child: const IconText(
-            icon: Icon(Icons.do_not_disturb),
-            text: 'Kick Out',
+          child: IconText(
+            icon: const Icon(Icons.do_not_disturb),
+            text: appLocalizations.kickOut,
           ),
           onTap: () {
             showWarningDialog(
-              title: 'Are you sure?',
+              title: appLocalizations.areYouSure,
               context: context,
               yes: () {
                 applicationState.kickUser(gymData.id!, userData.userId);
@@ -105,9 +110,9 @@ void showUserOptionsMenu({
           },
         ),
       PopupMenuItem(
-        child: const IconText(
-          icon: Icon(Icons.remove_red_eye),
-          text: 'View Details',
+        child: IconText(
+          icon: const Icon(Icons.remove_red_eye),
+          text: appLocalizations.viewDetails,
         ),
         onTap: () {
           Navigator.push(

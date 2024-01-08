@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Help extends StatefulWidget {
   const Help({super.key});
@@ -11,10 +12,11 @@ class Help extends StatefulWidget {
 class _HelpState extends State<Help> {
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
-        title: const Text('Help'),
+        title: Text(appLocalizations.help),
       ),
       body: const Column(
         children: [

@@ -120,7 +120,7 @@ class _CreateGymState extends State<CreateGym> {
               if (!_formKey.currentState!.validate()) {
                 return;
               }
-              showProgressDialog("Creating Gym...", context);
+              showProgressDialog(appLocalizations.savingChanges, context);
               try {
                 if (editGym == null) {
                   String id = generateRandomString(28);
@@ -165,8 +165,8 @@ class _CreateGymState extends State<CreateGym> {
                 }
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Gym saved successfully!"),
+                    SnackBar(
+                      content: Text(appLocalizations.gymSavedSuccess),
                     ),
                   );
                   Navigator.pop(context);
@@ -175,8 +175,8 @@ class _CreateGymState extends State<CreateGym> {
               } catch (e) {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Error"),
+                    SnackBar(
+                      content: Text(appLocalizations.generalError),
                     ),
                   );
                 }

@@ -1,1 +1,10 @@
-{}
+{
+  "es": [
+    "pickCodeLength"
+  ],
+
+  "pt": [
+    "pickCodeLength",
+    "alreadyUsed"
+  ]
+}

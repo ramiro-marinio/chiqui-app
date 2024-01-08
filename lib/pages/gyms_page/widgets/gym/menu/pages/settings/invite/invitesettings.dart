@@ -9,6 +9,7 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/invite/le
 import 'package:gymapp/functions/random_string.dart';
 import 'package:gymapp/widgets/infobutton.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InviteSettings extends StatefulWidget {
   final GymData gymData;
@@ -37,17 +38,18 @@ class _InviteSettingsState extends State<InviteSettings> {
   @override
   Widget build(BuildContext context) {
     ApplicationState applicationState = Provider.of<ApplicationState>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
     bool canChange = applicationState.user!.uid == widget.gymData.ownerId ||
         membershipData?.admin == true;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Invite Code'),
-        actions: const [
+        title: Text(appLocalizations.inviteCode),
+        actions: [
           InfoButton(
-            icon: Icon(Icons.warning),
-            title: 'Warning',
-            description:
-                'It is recommended that you change this code periodically and avoid sharing it excessively, as it could result in your gym being raided by malicious users.',
+            icon: const Icon(Icons.warning),
+            title: appLocalizations.warning,
+            description: appLocalizations.inviteCodeWarningDetails,
           )
         ],
       ),
@@ -55,16 +57,16 @@ class _InviteSettingsState extends State<InviteSettings> {
           future: inviteData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              InviteData? inviteData = snapshot.data;
+              InviteData? result = snapshot.data;
               return Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 24.0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24.0),
                     child: SizedBox(
                       width: double.infinity,
                       child: Text(
-                        'Invite code:',
-                        style: TextStyle(fontSize: 30),
+                        appLocalizations.inviteCode,
+                        style: const TextStyle(fontSize: 30),
                         textAlign: TextAlign.center,
                         maxLines: 1,
                       ),
@@ -76,7 +78,7 @@ class _InviteSettingsState extends State<InviteSettings> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AutoSizeText(
-                          inviteData?.code ?? 'Error',
+                          result?.code ?? 'Error',
                           style: const TextStyle(fontSize: 20),
                           maxLines: 1,
                         ),
@@ -84,12 +86,11 @@ class _InviteSettingsState extends State<InviteSettings> {
                     ),
                   ),
                   Visibility(
-                    visible: inviteData?.code.contains(' ') ?? false,
-                    child: const InfoButton(
-                      icon: Icon(Icons.warning),
-                      title: 'Warning',
-                      description:
-                          'This code contains spaces, which can lead to confusion when your users enter the code. Try changing the code to not include spaces.',
+                    visible: result?.code.contains(' ') ?? false,
+                    child: InfoButton(
+                      icon: const Icon(Icons.warning),
+                      title: appLocalizations.warning,
+                      description: appLocalizations.codeWithSpaces,
                     ),
                   ),
                   ElevatedButton.icon(
@@ -109,14 +110,17 @@ class _InviteSettingsState extends State<InviteSettings> {
                                   if (context.mounted) {
                                     Navigator.pop(context);
                                   }
-                                  setState(() {});
+                                  setState(() {
+                                    inviteData = applicationState
+                                        .getInviteData(widget.gymData.id!);
+                                  });
                                 },
                               ),
                             );
                           }
                         : null,
                     icon: const Icon(Icons.question_mark),
-                    label: const Text('Randomize'),
+                    label: Text(appLocalizations.randomizeInviteCode),
                   ),
                   ElevatedButton.icon(
                     onPressed: canChange
@@ -126,12 +130,16 @@ class _InviteSettingsState extends State<InviteSettings> {
                               builder: (context) => ChooseValueDialog(
                                 gymData: widget.gymData,
                                 setState: setState,
+                                whenComplete: () {
+                                  inviteData = applicationState
+                                      .getInviteData(widget.gymData.id!);
+                                },
                               ),
                             );
                           }
                         : null,
                     icon: const Icon(Icons.edit),
-                    label: const Text('Pick Manually'),
+                    label: Text(appLocalizations.pickManually),
                   ),
                 ],
               );

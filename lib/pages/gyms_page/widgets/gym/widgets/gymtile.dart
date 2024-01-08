@@ -119,8 +119,10 @@ class _GymTileState extends State<GymTile> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                ViewRatingPage(gymData: widget.gymData)),
+                          builder: (context) => ViewRatingPage(
+                            gymData: widget.gymData,
+                          ),
+                        ),
                       );
                     },
                     leaveGym:

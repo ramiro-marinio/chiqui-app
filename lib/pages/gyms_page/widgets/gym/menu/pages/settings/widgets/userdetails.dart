@@ -1,16 +1,17 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/functions/calcage.dart';
 import 'package:gymapp/functions/imperial_system/stature.dart';
 import 'package:gymapp/local_settings/local_settings_state.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserDetails extends StatelessWidget {
   final UserData userData;
   const UserDetails({super.key, required this.userData});
-
   @override
   Widget build(BuildContext context) {
     LocalSettingsState localSettingsState =
@@ -35,10 +36,19 @@ class UserDetails extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(
+              width: double.infinity,
+              child: AutoSizeText(
+                '${appLocalizations.birthday} ${DateFormat.yMMMd(localSettingsState.language.languageCode).format(userData.birthDay)}',
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '${calculateAge(userData.birthDay)} years old',
+                appLocalizations.age(calculateAge(userData.birthDay)),
                 style: const TextStyle(fontSize: 35),
               ),
             ),
@@ -60,7 +70,9 @@ class UserDetails extends StatelessWidget {
                           ),
                   ),
                   Text(
-                    userData.sex ? 'Female' : 'Male',
+                    userData.sex
+                        ? appLocalizations.female
+                        : appLocalizations.male,
                     style: const TextStyle(fontSize: 25),
                   )
                 ],
@@ -69,7 +81,7 @@ class UserDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                'Personal Information: \n${userData.info}',
+                '${appLocalizations.personalInfo} \n${userData.info}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 20),
               ),
@@ -79,25 +91,27 @@ class UserDetails extends StatelessWidget {
               child: ZoomAvatar(photoURL: userData.photoURL, radius: 120),
             ),
             Text(
-              'Stature: ${localSettingsState.metricUnit ? userData.stature.toInt() : statureImperialSystem(userData.stature)} ${localSettingsState.metricUnit ? 'cm.' : ''}',
+              '${appLocalizations.stature} ${localSettingsState.metricUnit ? userData.stature.toInt() : statureImperialSystem(userData.stature)} ${localSettingsState.metricUnit ? 'cm.' : ''}',
               style: const TextStyle(fontSize: 25),
             ),
             Text(
-              'Weight: ${localSettingsState.metricUnit ? userData.weight.toInt() : weightImperialSystem(userData.weight)} ${localSettingsState.metricUnit ? 'kg.' : 'lb.'}',
+              '${appLocalizations.weight} ${localSettingsState.metricUnit ? userData.weight.toInt() : weightImperialSystem(userData.weight)} ${localSettingsState.metricUnit ? 'kg.' : 'lb.'}',
               style: const TextStyle(fontSize: 25),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 8),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
               child: Text(
-                'History:',
+                appLocalizations.history,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25),
+                style: const TextStyle(fontSize: 25),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                userData.injuries.isEmpty ? 'No Injuries' : userData.injuries,
+                userData.injuries.isEmpty
+                    ? appLocalizations.noInjuries
+                    : userData.injuries,
                 style: const TextStyle(fontSize: 18),
               ),
             ),

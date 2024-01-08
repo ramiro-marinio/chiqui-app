@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SwitchField extends StatefulWidget {
   final String? title;
@@ -30,6 +31,7 @@ class _SwitchFieldState extends State<SwitchField> {
   bool? val;
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     val ??= widget.value;
     return Column(
       children: [
@@ -44,7 +46,7 @@ class _SwitchFieldState extends State<SwitchField> {
                   ),
             ),
             Text(
-              widget.title ?? 'Biological Sex',
+              widget.title ?? appLocalizations.biologicalSex,
               style: const TextStyle(fontSize: 20),
             ),
           ],
@@ -52,7 +54,7 @@ class _SwitchFieldState extends State<SwitchField> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(widget.valA ?? 'Male'),
+            Text(widget.valA ?? appLocalizations.male),
             Switch(
               value: val!,
               onChanged: (value) {
@@ -74,7 +76,7 @@ class _SwitchFieldState extends State<SwitchField> {
                             const Color.fromARGB(255, 103, 52, 100), context)),
               ),
             ),
-            Text(widget.valB ?? 'Female'),
+            Text(widget.valB ?? appLocalizations.female),
           ],
         )
       ],

@@ -3,12 +3,17 @@ import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/gyms/invitedata.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChooseValueDialog extends StatefulWidget {
   final GymData gymData;
   final Function(Function()) setState;
+  final VoidCallback whenComplete;
   const ChooseValueDialog(
-      {super.key, required this.gymData, required this.setState});
+      {super.key,
+      required this.gymData,
+      required this.setState,
+      required this.whenComplete});
 
   @override
   State<ChooseValueDialog> createState() => _ChooseValueDialogState();
@@ -23,8 +28,9 @@ class _ChooseValueDialogState extends State<ChooseValueDialog> {
   Widget build(BuildContext context) {
     final ApplicationState applicationState =
         Provider.of<ApplicationState>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: const Text('Type the desired code'),
+      title: Text(appLocalizations.desiredCode),
       content: Form(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -43,7 +49,7 @@ class _ChooseValueDialogState extends State<ChooseValueDialog> {
                     ? () async {
                         if (controller.text.length < 7) {
                           setState(() {
-                            error = 'Code must be at least 7 characters long.';
+                            error = appLocalizations.notLongEnough;
                             return;
                           });
                         } else {
@@ -54,7 +60,7 @@ class _ChooseValueDialogState extends State<ChooseValueDialog> {
                               .verifyInvite(controller.text);
                           if (!approved) {
                             setState(() {
-                              error = 'Code is already used by another gym.';
+                              error = appLocalizations.alreadyUsed;
                               setState(() {
                                 working = false;
                               });
@@ -68,13 +74,15 @@ class _ChooseValueDialogState extends State<ChooseValueDialog> {
                             if (context.mounted) {
                               Navigator.pop(context);
                             }
-                            widget.setState(() {});
+                            widget.setState(() {
+                              widget.whenComplete();
+                            });
                           }
                         }
                       }
                     : null,
                 child: !working
-                    ? const Text('Submit')
+                    ? Text(appLocalizations.submit)
                     : const SizedBox(
                         width: 20,
                         height: 20,

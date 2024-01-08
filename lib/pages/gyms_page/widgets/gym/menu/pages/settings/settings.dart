@@ -13,6 +13,7 @@ import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/u
 import 'package:gymapp/pages/gyms_page/widgets/create_gym/creategym.dart';
 import 'package:gymapp/widgets/filterbar.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   final GymData gymData;
@@ -32,6 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final ApplicationState applicationState =
         Provider.of<ApplicationState>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
     localMembershipSubscription ??= FirebaseFirestore.instance
         .collection('memberships')
         .where('gymId', isEqualTo: widget.gymData.id!)
@@ -49,13 +51,13 @@ class _SettingsPageState extends State<SettingsPage> {
           List<UserData> processedUsers =
               processUserSettings(snapshot.data!, context);
           return Scaffold(
-            appBar: AppBar(title: const Text('Settings')),
+            appBar: AppBar(title: Text(appLocalizations.settings)),
             body: SingleChildScrollView(
               child: Column(
                 children: [
                   Option(
                     icon: const Icon(Icons.group_add),
-                    text: 'Invite Code',
+                    text: appLocalizations.inviteCode,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -69,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   Option(
                     icon: const Icon(Icons.edit),
-                    text: 'Edit Gym Info',
+                    text: appLocalizations.editGymInfo,
                     onTap: localMembershipData?.admin == true ||
                             applicationState.user!.uid == widget.gymData.ownerId
                         ? () {

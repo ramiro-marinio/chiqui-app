@@ -5,6 +5,7 @@ import 'package:gymapp/pages/gyms_page/widgets/rating/rate_gym.dart';
 import 'package:gymapp/pages/gyms_page/widgets/rating/viewpage/ratingsview.dart';
 import 'package:gymapp/widgets/crawl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ViewRatingPage extends StatefulWidget {
   final GymData gymData;
@@ -27,22 +28,30 @@ class _ViewRatingPageState extends State<ViewRatingPage> {
   @override
   Widget build(BuildContext context) {
     final GymData gymData = widget.gymData;
+    final appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Crawl(child: Text("${gymData.name} ratings")),
+        title: Crawl(
+          child: Text(
+            appLocalizations.ratings(widget.gymData.name),
+          ),
+        ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RateGym(
-                    gymData: widget.gymData,
+          Tooltip(
+            message: appLocalizations.writeReview,
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RateGym(
+                      gymData: widget.gymData,
+                    ),
                   ),
-                ),
-              );
-            },
-            icon: const Icon(Icons.add),
+                );
+              },
+              icon: const Icon(Icons.add),
+            ),
           )
         ],
       ),

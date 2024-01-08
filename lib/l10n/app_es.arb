@@ -9,11 +9,41 @@
     "no":"No",
     "search":"Buscar",
     "missingValue":"Por Favor Completa este Campo.",
+    "savingChanges":"Guardando Cambios...",
+    "networkError":"Comprueba tu conexión a Internet.",
+    "successful":"Guardado con Éxito!",
+    "willNotBeSaved":"Esto No Será Guardado.",
+
+    "yourAccount":"Tu Cuenta",
+    "logOut":"Cerrar Sesión",
+    "longTapMoreOptions":"Toque Largo Para Más Opciones",
+    "noAccount":"Sin Cuenta",
+    "tapToLogIn":"Tocar para Iniciar Sesión (O Registrarse)",
+
+    "configureProfile":"Configurar Perfil",
+    "displayName":"Nombre de Usuario",
+    "userInfo":"Información",
+    "trainingInformation":"Información de Entrenamiento",
+    "tIDetails":"Esta Información solo será vista por el equipo del gimnasio, para que puedan proveer una rutina personalizada.",
+    "biologicalSex":"Sexo Biológico",
+    "male":"G. Masculino",
+    "female":"G. Femenino",
+    "birthdayHeader":"F. de Nacimiento (Tap para cambiar)",
+    "statureAndWeight":"Estatura y Peso",
+    "historyHeader":"Historial",
+    "historyDetails":"Heridas Previas que hacen a ciertos ejercicios difíciles, dolorosos o directamente imposibles.",
+    "noInjuries":"No hay lesiones.",
+
     "homePage":"Página Principal",
     "welcome":"Bienvenido a BetterTraining",
     "recentNews":"Noticias Recientes",
     "source":"Fuente:",
     "details":"Detalles",
+    "personalInfo":"Información Personal:",
+    "birthday":"Fecha de Nacimiento:",
+    "stature":"Estatura:",
+    "weight":"Peso:",
+    "history":"Registro:",
 
     "myGyms":"Mis Gimnasios",
     "ownedByYou":"Tu Gimnasio",
@@ -30,7 +60,15 @@
     "correctGym":"Es este el gimnasio correcto?",
     "alreadyJoined":"Ya Estás Unido",
     "alrJnDetails":"Ya te has unido a este gimnasio!",
+
+    "writeReview":"Escribir Reseña",
+    "ratings":"Reseñas de \"{gym}\"",
+    "@ratings":{"placeholders": {
+        "gym":{"type": "String"}
+    }},
+
     "createGym":"Crear un Gimnasio",
+    "gymSavedSuccess":"Gimnasio Guardado Exitosamente!",
     "editGym":"Editar Gimnasio",
     "gymName":"Nombre del Gimnasio",
     "gymDescription":"Descripción",
@@ -41,6 +79,9 @@
     "gymInfo":"Info.",
     "owner":"Dueño:",
     "buildDemo":"Crear una Demostración",
+    "createDemoPrompt":"Crear Demostración?",
+    "saveDemoPrompt":"Guardar Demostración??",
+    "demoPromptDetails":"Asegurate de haber insertado los datos correctos!",
     "exercisesInfo":"Demostraciones",
 
     "addDemonstration":"Añadir Demostración",
@@ -89,6 +130,44 @@
     "sendSuggestionButton":"Enviar Sugerencia",
     "suggestionSent":"Sugerencia Enviada Exitosamente!",
     
+    "editGymInfo":"Editar Info. del Gimnasio",
+    "age":"{age} Años",
+    "@age":{
+        "placeholders": {
+            "age":{
+                "type": "int"
+            }
+        }
+    },
+    "makeCoach":"Hacer Entrenador",
+    "removeCoach":"Deshacer Entrenador",
+    "makeAdmin":"Hacer Admin.",
+    "removeAdmin":"Deshacer Admin.",
+    "kickOut":"Expulsar",
+    "viewDetails":"Ver Detalles",
+    "randomizeInviteCode":"Elegir al Azar",
+    "pickManually":"Elegir Manualmente",
+    "warning":"Advertencia",
+    "adminWarning":"Hacer esto va a convertir al usuario en administrador. Estás Seguro?",
+    "areYouSure":"Estás Seguro?",
+    "roleChangedSuccesfully":"Función Alterada Con Éxito!",
+    "inviteCodeWarningDetails":"Se recomienda que cambies este código periódicamente y evites compartirlo, ya que podría resultar en que usuarios maliciosos invadan tu gimnasio.",
+    "codeWithSpaces":"Este código contiene espacios, lo cual puede llevar a confusiones a la hora de ingresar el código. Intenta modificar el código para que no contenga espacios.",
+    "characters":"{chars} carácteres",
+    "@characters":{
+        "placeholders": {
+            "chars":{
+                "type": "int"
+            }
+        }
+    },
+    "cancel":"Cancelar",
+    "choose":"Elegir",
+    "desiredCode":"Elija el Código Deseado",
+    "notLongEnough":"Debe tener al menos 7 carácteres.",
+    "alreadyUsed":"Ya está en uso por otro gimnasio.",
+    "submit":"Elegir",
+
     "settings":"Ajustes",
     "theme":"Tema:",
     "sameAsOS":"Igual al Sistema",

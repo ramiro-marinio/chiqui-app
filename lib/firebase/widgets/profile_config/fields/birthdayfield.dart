@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BirthDayField extends StatefulWidget {
   final Function(DateTime dateTime) onChangeDatetime;
@@ -13,9 +14,9 @@ class BirthDayField extends StatefulWidget {
 
 class _BirthDayFieldState extends State<BirthDayField> {
   DateTime? displayDateTime;
-
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     displayDateTime ??= widget.dateTime;
     return InkWell(
       onTap: () async {
@@ -33,18 +34,22 @@ class _BirthDayFieldState extends State<BirthDayField> {
       },
       child: Column(
         children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.cake),
-              ),
-              Text(
-                "Birthday (Tap to modify)",
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
+          RichText(
+            text: TextSpan(
+              children: [
+                const WidgetSpan(
+                    alignment: PlaceholderAlignment.bottom,
+                    child: Icon(Icons.cake),
+                    baseline: TextBaseline.ideographic),
+                TextSpan(
+                  text: appLocalizations.birthdayHeader,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'SansSerif',
+                      textBaseline: TextBaseline.alphabetic),
+                )
+              ],
+            ),
           ),
           Card(
             child: Padding(

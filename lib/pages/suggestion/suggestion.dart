@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
+import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -48,7 +49,9 @@ class _SuggestionState extends State<Suggestion> {
                     TextSpan(
                       children: [
                         TextSpan(
-                            style: const TextStyle(color: Colors.black),
+                            style: TextStyle(
+                                color: adaptiveColor(
+                                    Colors.black, Colors.white, context)),
                             text: appLocalizations.suggestionDetails),
                         TextSpan(
                           text: 'ramiro.marinho0@gmail.com',

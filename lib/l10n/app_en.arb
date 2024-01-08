@@ -9,11 +9,36 @@
     "no":"No",
     "search":"Search",
     "missingValue":"Please fill out this field.",
+    "savingChanges":"Saving Changes...",
+    "networkError":"Check your internet connection.",
+    "successful":"Saved Successfully!",
+    "willNotBeSaved":"This Will Not Be Saved.",
+
+
+    "yourAccount":"Your Account",
+    "logOut":"Log Out",
+    "longTapMoreOptions":"Long Tap For More Options",
+    "noAccount":"No Account",
+    "tapToLogIn":"Tap to Log In (Or Register)",
+
+    "configureProfile":"Configure Profile",
+    "displayName":"Display Name",
+    "userInfo":"User Info",
+    "trainingInformation":"Training Information",
+    "tIDetails":"Only the Gym Staff will see this, in order to deliver a tailored training routine",
+    "biologicalSex":"Biological Sex",
+    "male":"Male",
+    "female":"Female",
+    "birthdayHeader":"Birthday",
+    "statureAndWeight":"Stature and Weight",
+    "historyHeader":"History",
+    "historyDetails":"Previous Injuries that make certain exercises difficult, painful or outright impossible.",
+    "noInjuries":"No injuries.",
+
     "homePage":"Home Page",
     "welcome":"Welcome to BetterTraining",
     "recentNews":"Recent News",
     "source":"Source:",
-    "details":"Details",
 
     "myGyms":"My Gyms",
     "ownedByYou":"Owned By You",
@@ -22,6 +47,7 @@
     "leave":"Leave",
     "leavePrompt":"Leave?",
     "cantLeave":"You cannot leave this gym, you are the owner.",
+
     "joinGym":"Join Gym",
     "inviteCode":"Invite Code",
     "joinButton":"Join Gym",
@@ -30,7 +56,15 @@
     "correctGym":"Is this the correct gym?",
     "alreadyJoined":"Already Joined",
     "alrJnDetails":"You have already joined this gym!",
+
+    "writeReview":"Write Review",
+    "ratings":"\"{gym}\" Ratings",
+    "@ratings":{"placeholders": {
+        "gym":{"type": "String"}
+    }},
+
     "createGym":"Create a Gym",
+    "gymSavedSuccess":"Gym Saved Successfully!",
     "editGym":"Edit Gym",
     "gymName":"Gym Name",
     "gymDescription":"Description",
@@ -41,6 +75,9 @@
     "gymInfo":"Gym Info",
     "owner":"Owner:",
     "buildDemo":"Build a Demonstration",
+    "createDemoPrompt":"Create Demonstration?",
+    "saveDemoPrompt":"Save Demonstration?",
+    "demoPromptDetails":"Make sure you inserted the Correct Data!",
 
     "addDemonstration":"Add Demonstration",
     "exerciseName":"Exercise Name",
@@ -75,6 +112,12 @@
     "unblock":"Unblock",
     "disableNotifications":"Disable Notifications",
     "viewTrainingInfo":"View Training Information",
+    "personalInfo":"Personal Information:",
+    "details":"Details",
+    "birthday":"Birthday:",
+    "stature":"Stature:",
+    "weight":"Weight:",
+    "history":"History:",
 
     "help":"Help",
 
@@ -88,6 +131,46 @@
     "sbHint":"Your Suggestion",
     "sendSuggestionButton":"Send Suggestion",
     "suggestionSent":"Suggestion Sent Successfully!",
+
+    "editGymInfo":"Edit Gym Info",
+    "age":"{age} Years Old",
+    "@age":{
+        "placeholders": {
+            "age":{
+                "type": "int"
+            }
+        }
+    },
+    "makeCoach":"Make Coach",
+    "removeCoach":"Remove Coach Role",
+    "makeAdmin":"Make Admin",
+    "removeAdmin":"Remove Admin Role",
+    "kickOut":"Kick Out",
+    "viewDetails":"View Details",
+    "randomizeInviteCode":"Randomize",
+    "pickManually":"Pick Manually",
+    "warning":"Warning",
+    "adminWarning":"Doing this will turn the user into an administrator. Are you sure?",
+    "areYouSure":"Are you sure?",
+    "roleChangedSuccesfully":"Role Changed Successfully!",
+
+    "inviteCodeWarningDetails":"It is recommended that you change this code periodically and avoid excessively sharing it, as it could result in malicious users invading your gym.",
+    "codeWithSpaces":"This code contains spaces, which can lead to confusion when your users enter the code. Try changing the code to not include spaces.",
+    "pickCodeLength":"Pick a Code Length",
+    "characters":"{chars} chars",
+    "@characters":{
+        "placeholders": {
+            "chars":{
+                "type": "int"
+            }
+        }
+    },
+    "cancel":"Cancel",
+    "choose":"Choose",
+    "desiredCode":"Type the Desired Code",
+    "notLongEnough":"Must be at least 7 characters long.",
+    "alreadyUsed":"Already used by another Gym.",
+    "submit":"Submit",
 
     "settings":"Settings",
     "theme":"Theme:",
