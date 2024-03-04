@@ -25,7 +25,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -44,38 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCuIqqonudDkand4SH176pD9Sy98DBPXLw',
-    appId: '1:444146579674:web:af0cb916898e0477b1cde3',
-    messagingSenderId: '444146579674',
-    projectId: 'gym-app-b5c64',
-    authDomain: 'gym-app-b5c64.firebaseapp.com',
-    storageBucket: 'gym-app-b5c64.appspot.com',
-    measurementId: 'G-KBNVEFTC4L',
+    apiKey: 'AIzaSyAIlDWDKtFsKC96nCrAb4mCHbbWib1aW70',
+    appId: '1:347973756253:web:bb97a09fe715e42bf0f4b4',
+    messagingSenderId: '347973756253',
+    projectId: 'better-training-6a48a',
+    authDomain: 'better-training-6a48a.firebaseapp.com',
+    storageBucket: 'better-training-6a48a.appspot.com',
+    measurementId: 'G-4XL1TEB4XJ',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB-RPqGANgKqXfvOJ-0CUhDRWjGHsNZ7eI',
-    appId: '1:444146579674:android:b1a593c7bcfa0434b1cde3',
-    messagingSenderId: '444146579674',
-    projectId: 'gym-app-b5c64',
-    storageBucket: 'gym-app-b5c64.appspot.com',
+    apiKey: 'AIzaSyCZw5LV0qF4mCc7vvtpKbVssbUBngscahY',
+    appId: '1:347973756253:android:95842691578261b4f0f4b4',
+    messagingSenderId: '347973756253',
+    projectId: 'better-training-6a48a',
+    storageBucket: 'better-training-6a48a.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDYNtSuaRX77OUz5WJYntOuGYYDN8WnyLY',
-    appId: '1:444146579674:ios:5ee35f4ea7c70798b1cde3',
-    messagingSenderId: '444146579674',
-    projectId: 'gym-app-b5c64',
-    storageBucket: 'gym-app-b5c64.appspot.com',
-    iosBundleId: 'com.example.gymapp',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDYNtSuaRX77OUz5WJYntOuGYYDN8WnyLY',
-    appId: '1:444146579674:ios:8080c3753097b932b1cde3',
-    messagingSenderId: '444146579674',
-    projectId: 'gym-app-b5c64',
-    storageBucket: 'gym-app-b5c64.appspot.com',
-    iosBundleId: 'com.example.gymapp.RunnerTests',
+    apiKey: 'AIzaSyDSfmjBle9uvyiTa1anGVvRv2dlbNGUjSM',
+    appId: '1:347973756253:ios:524177d9b3c188fcf0f4b4',
+    messagingSenderId: '347973756253',
+    projectId: 'better-training-6a48a',
+    storageBucket: 'better-training-6a48a.appspot.com',
+    iosBundleId: 'com.example.bettertraining',
   );
 }

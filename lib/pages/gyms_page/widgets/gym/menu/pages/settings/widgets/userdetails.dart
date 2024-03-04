@@ -39,7 +39,7 @@ class UserDetails extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: AutoSizeText(
-                '${appLocalizations.birthday} ${DateFormat.yMMMd(localSettingsState.language.languageCode).format(userData.birthDay)}',
+                '${appLocalizations.birthday} ${DateFormat.yMMMd(localSettingsState.language.languageCode).format(userData.birthday)}',
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: const TextStyle(fontSize: 20),
@@ -48,7 +48,7 @@ class UserDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                appLocalizations.age(calculateAge(userData.birthDay)),
+                appLocalizations.age(calculateAge(userData.birthday)),
                 style: const TextStyle(fontSize: 35),
               ),
             ),
@@ -88,7 +88,11 @@ class UserDetails extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ZoomAvatar(photoURL: userData.photoURL, radius: 120),
+              child: ZoomAvatar(
+                photoURL: userData.photoURL,
+                radius: 120,
+                gymImage: false,
+              ),
             ),
             Text(
               '${appLocalizations.stature} ${localSettingsState.metricUnit ? userData.stature.toInt() : statureImperialSystem(userData.stature)} ${localSettingsState.metricUnit ? 'cm.' : ''}',

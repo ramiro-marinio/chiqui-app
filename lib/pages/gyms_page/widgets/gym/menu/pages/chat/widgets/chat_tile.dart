@@ -41,6 +41,7 @@ class ChatTile extends StatelessWidget {
               photoURL: userData?.photoURL,
               radius: 20,
               tag: UniqueKey().toString(),
+              gymImage: false,
             ),
       subtitle: membershipData != null
           ? FutureBuilder(

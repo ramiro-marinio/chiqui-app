@@ -31,7 +31,11 @@ class BodyField extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.man),
+                const Icon(Icons.balance),
+                const Padding(
+                  padding: EdgeInsets.only(right: 8),
+                  child: Icon(Icons.man),
+                ),
                 Text(
                   appLocalizations.statureAndWeight,
                   style: const TextStyle(fontSize: 20),
@@ -57,7 +61,7 @@ class BodyField extends StatelessWidget {
                   width: 100,
                   child: Text(
                     localSettingsState.metricUnit
-                        ? '${stature.toInt()} cm'
+                        ? '${stature.toInt()} cm.'
                         : statureImperialSystem(stature),
                     style: const TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
@@ -86,8 +90,8 @@ class BodyField extends StatelessWidget {
                     fit: BoxFit.scaleDown,
                     child: Text(
                       localSettingsState.metricUnit
-                          ? '${weight.toInt()} kg'
-                          : '${weightImperialSystem(weight)} lb',
+                          ? '${weight.toInt()} kg.'
+                          : '${weightImperialSystem(weight)} lb.',
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 20),
                     ),

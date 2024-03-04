@@ -6,6 +6,10 @@ import 'package:gymapp/functions/handlemessage.dart';
 import 'package:gymapp/main.dart';
 import 'package:provider/provider.dart';
 
+Future<void> initialMessageHandle(RemoteMessage message) async {
+  handleMessage(message, globalKeyNavState);
+}
+
 void initNotifications() async {
   FirebaseMessaging.instance.requestPermission();
   FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -21,9 +25,7 @@ void initNotifications() async {
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
     handleMessage(event, globalKeyNavState);
   });
-  FirebaseMessaging.onBackgroundMessage((message) async {
-    handleMessage(message, globalKeyNavState);
-  });
+  FirebaseMessaging.onBackgroundMessage(initialMessageHandle);
   initLocalNotifications();
 }
 

@@ -1,62 +1,157 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gymapp/firebase/app_state.dart';
-import 'package:gymapp/firebase/auth/userdata.dart';
-import 'package:gymapp/firebase/widgets/profile_config/profileconfig.dart';
-import 'package:provider/provider.dart';
+import 'package:gymapp/firebase/auth/continuewithgoogle.dart';
+import 'package:gymapp/functions/geterrorcodes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final globalKeyFormState = GlobalKey<FormState>();
+  String errorMessage = '';
+  String email = '';
+  String password = '';
+
+  @override
   Widget build(BuildContext context) {
-    ApplicationState applicationState = Provider.of<ApplicationState>(context);
-    return SignInScreen(
-      actions: [
-        AuthStateChangeAction(
-          (context, state) {
-            User? user;
-            if (state.runtimeType == SignedIn) {
-              user = (state as SignedIn).user;
-              Navigator.pop(context);
-              //TODO: Do something with email verification
-            } else if (state.runtimeType == UserCreated) {
-              user = (state as UserCreated).credential.user;
-              user!.updateDisplayName('New User');
-              user.updatePhotoURL(null);
-              applicationState.createUserData(
-                  UserData(
-                    userId: user.uid,
-                    info: 'At the gym.',
-                    sex: true,
-                    birthDay: DateTime.now(),
-                    staff: false,
-                    displayName: 'New User',
-                    photoURL: null,
-                    stature: 170,
-                    weight: 70,
-                    injuries: '',
-                  ).toMap(),
-                  context);
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProfileConfig(),
+    final errorCodes = getErrorCodes(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    //ApplicationState applicationState = Provider.of<ApplicationState>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(appLocalizations.logIn),
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: globalKeyFormState,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    hintText: appLocalizations.email,
+                  ),
+                  onChanged: (value) {
+                    email = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return appLocalizations.missingValue;
+                    }
+                    if (!RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(value)) {
+                      return appLocalizations.invalidemail;
+                    }
+                    return null;
+                  },
                 ),
-              );
-            }
-          },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  obscureText: true,
+                  autocorrect: false,
+                  onChanged: (value) {
+                    password = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return appLocalizations.missingValue;
+                    }
+                    if (value.length < 8) {
+                      return appLocalizations.invalidPassword;
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    hintText: appLocalizations.password,
+                  ),
+                ),
+              ),
+              Text(
+                errorMessage,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+                textAlign: TextAlign.center,
+              ),
+              GestureDetector(
+                onTap: () {
+                  context.push('/register');
+                },
+                child: Text(
+                  appLocalizations.notHaveAccount,
+                  style: const TextStyle(color: Colors.blue),
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (!globalKeyFormState.currentState!.validate()) {
+                        return;
+                      }
+                      try {
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                            email: email, password: password);
+                        if (context.mounted) {
+                          context.go('/');
+                        }
+                      } catch (error) {
+                        if (context.mounted) {
+                          final e = error as FirebaseAuthException;
+                          setState(() {
+                            errorMessage = errorCodes[
+                                    e.code.replaceAll(RegExp(r'-'), '')] ??
+                                appLocalizations.generalError;
+                          });
+                        }
+                      }
+                    },
+                    child: Text(appLocalizations.logIn),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  appLocalizations.otherOptions,
+                  style: const TextStyle(
+                      fontSize: 32, fontWeight: FontWeight.bold),
+                ),
+              ),
+              ContinueWithGoogle(
+                onTap: () async {
+                  try {
+                    await FirebaseAuth.instance
+                        .signInWithProvider(GoogleAuthProvider());
+                    if (context.mounted) {
+                      context.go('/');
+                    }
+                  } catch (error) {
+                    final e = error as FirebaseAuthException;
+                    setState(() {
+                      errorMessage =
+                          errorCodes[e.code.replaceAll(RegExp(r'-'), '')] ?? '';
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
         ),
-        ForgotPasswordAction(
-          (context, email) => context.push(Uri(
-            path: '/sign-in/forgot-password',
-            queryParameters: {'email': email},
-          ).toString()),
-        ),
-      ],
+      ),
     );
   }
 }

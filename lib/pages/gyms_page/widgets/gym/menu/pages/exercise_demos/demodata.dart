@@ -21,6 +21,7 @@ class DemonstrationData {
         gymId = json['gymId'];
   DemonstrationData({
     required this.exerciseName,
+    this.resourceName,
     required this.repUnit,
     this.description,
     required this.workAreas,

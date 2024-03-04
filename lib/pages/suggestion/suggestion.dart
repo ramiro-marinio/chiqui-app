@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -18,15 +19,24 @@ class Suggestion extends StatefulWidget {
 }
 
 class _SuggestionState extends State<Suggestion> {
+  late TextEditingController titleController;
+  late TextEditingController contactsController;
+  late TextEditingController bodyController;
+  @override
+  void initState() {
+    super.initState();
+    final ApplicationState applicationState =
+        Provider.of<ApplicationState>(context, listen: false);
+    titleController = TextEditingController();
+    contactsController =
+        TextEditingController(text: applicationState.user!.email);
+    bodyController = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ApplicationState applicationState =
-        Provider.of<ApplicationState>(context);
     final appLocalizations = AppLocalizations.of(context)!;
-    final titleController = TextEditingController();
-    final contactsController =
-        TextEditingController(text: applicationState.user!.email);
-    final bodyController = TextEditingController();
+    ApplicationState applicationState = Provider.of<ApplicationState>(context);
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
@@ -44,7 +54,7 @@ class _SuggestionState extends State<Suggestion> {
                     const WidgetSpan(
                         child: Padding(
                       padding: EdgeInsets.only(right: 8),
-                      child: Icon(Icons.info),
+                      child: Icon(CupertinoIcons.info),
                     )),
                     TextSpan(
                       children: [
@@ -52,9 +62,11 @@ class _SuggestionState extends State<Suggestion> {
                             style: TextStyle(
                                 color: adaptiveColor(
                                     Colors.black, Colors.white, context)),
-                            text: appLocalizations.suggestionDetails),
+                            text: appLocalizations.suggestionDetails(
+                              'trainguru.online@gmail.com',
+                            )),
                         TextSpan(
-                          text: 'ramiro.marinho0@gmail.com',
+                          text: 'trainguru.online@gmail.com',
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               launchUrl(
@@ -76,14 +88,21 @@ class _SuggestionState extends State<Suggestion> {
               indent: 8,
               thickness: 0.2,
             ),
-            Text(
-              appLocalizations.suggestionBody,
-              style: const TextStyle(fontSize: 25),
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                appLocalizations.suggestionTitle,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 25),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: titleController,
+                onChanged: (value) {
+                  setState(() {});
+                },
                 maxLines: 1,
                 decoration: InputDecoration(
                   hintText: appLocalizations.stHint,
@@ -93,9 +112,13 @@ class _SuggestionState extends State<Suggestion> {
                 ),
               ),
             ),
-            Text(
-              appLocalizations.communicationMediums,
-              style: const TextStyle(fontSize: 25),
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                appLocalizations.communicationMediums,
+                style: const TextStyle(fontSize: 25),
+                textAlign: TextAlign.center,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -110,9 +133,13 @@ class _SuggestionState extends State<Suggestion> {
                 ),
               ),
             ),
-            Text(
-              appLocalizations.suggestionBody,
-              style: const TextStyle(fontSize: 25),
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                appLocalizations.suggestionBody,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 25),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -131,31 +158,33 @@ class _SuggestionState extends State<Suggestion> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  ),
-                );
-                FirebaseFirestore.instance.collection('suggestions').add(
-                  {
-                    'title': titleController.text,
-                    'contacts': contactsController.text,
-                    'review': bodyController.text,
-                    'userID': applicationState.user!.uid,
-                    'email': applicationState.user!.email,
-                  },
-                ).then((value) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(appLocalizations.suggestionSent),
-                    ),
-                  );
-                  context.go('/');
-                });
-              },
+              onPressed: titleController.text.isNotEmpty
+                  ? () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        ),
+                      );
+                      FirebaseFirestore.instance.collection('suggestions').add(
+                        {
+                          'title': titleController.text,
+                          'contacts': contactsController.text,
+                          'review': bodyController.text,
+                          'userID': applicationState.user!.uid,
+                          'email': applicationState.user!.email,
+                        },
+                      ).then((value) {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(appLocalizations.suggestionSent),
+                          ),
+                        );
+                        context.go('/');
+                      });
+                    }
+                  : null,
               child: Text(appLocalizations.sendSuggestionButton),
             )
           ],

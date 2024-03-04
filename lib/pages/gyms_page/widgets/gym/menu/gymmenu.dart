@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
@@ -43,27 +44,35 @@ class GymMenuState extends State<GymMenu> {
                     child: ZoomAvatar(
                       radius: 20,
                       photoURL: widget.gymData.photoURL,
+                      gymImage: true,
                     ),
                   ),
                   Expanded(
-                    child: Crawl(
-                      child: Text(widget.gymData.name),
-                    ),
+                    child: Crawl(child: Text(widget.gymData.name)),
                   )
                 ]),
                 bottom: TabBar(
                   tabs: [
                     Tab(
-                      icon: const Icon(Icons.info),
-                      text: appLocalizations.gymInfo,
-                    ),
-                    const Tab(
-                      icon: Icon(Icons.chat),
-                      text: 'Chat',
+                      icon: const Icon(CupertinoIcons.info),
+                      child: Crawl(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        child: Text(appLocalizations.gymInfo),
+                      ),
                     ),
                     Tab(
-                      icon: const Icon(Icons.fitness_center),
-                      text: appLocalizations.exercisesInfo,
+                      icon: const Icon(CupertinoIcons.chat_bubble),
+                      child: Crawl(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        child: Text(appLocalizations.chat),
+                      ),
+                    ),
+                    Tab(
+                      icon: const Icon(CupertinoIcons.list_bullet),
+                      child: Crawl(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        child: Text(appLocalizations.exercisesInfo),
+                      ),
                     ),
                   ],
                 ),
@@ -84,7 +93,7 @@ class GymMenuState extends State<GymMenu> {
                           ),
                         );
                       },
-                      icon: const Icon(Icons.settings),
+                      icon: const Icon(CupertinoIcons.settings_solid),
                     ),
                   )
                 ],

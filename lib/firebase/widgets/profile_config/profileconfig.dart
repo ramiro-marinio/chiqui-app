@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
@@ -10,6 +11,7 @@ import 'package:gymapp/firebase/widgets/profile_config/fields/field.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/genderfield.dart';
 import 'package:gymapp/firebase/widgets/profile_config/fields/profilepicpicker.dart';
 import 'package:gymapp/firebase/widgets/profile_config/bodyfield.dart';
+import 'package:gymapp/firebase/widgets/profile_config/verifybutton.dart';
 import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -27,7 +29,6 @@ class _ProfileConfigState extends State<ProfileConfig> {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     ApplicationState applicationState = context.read<ApplicationState>();
     User? user = applicationState.user;
-    String? displayName = user?.displayName;
     UserData? userData = applicationState.userData;
     if (user == null) {
       return const MustBeLoggedIn();
@@ -45,7 +46,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
       userId: user.uid,
       info: userData.info,
       sex: userData.sex,
-      birthDay: userData.birthDay,
+      birthday: userData.birthday,
       staff: userData.staff,
       displayName: userData.displayName,
       photoURL: userData.photoURL,
@@ -55,8 +56,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
     );
     return WillPopScope(
       onWillPop: () async {
-        if (!mapEquals(userData.toMap(), newUserData.toMap()) ||
-            displayName != user.displayName) {
+        if (!mapEquals(userData.toMap(), newUserData.toMap())) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -73,8 +73,9 @@ class _ProfileConfigState extends State<ProfileConfig> {
             },
           );
           try {
-            await user.updateDisplayName(displayName);
             await applicationState.updateUserData(newUserData.toMap());
+            await applicationState.user!
+                .updateDisplayName(newUserData.displayName);
             if (context.mounted) {
               Navigator.pop(context);
               Navigator.pop(context);
@@ -111,23 +112,27 @@ class _ProfileConfigState extends State<ProfileConfig> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              Visibility(
+                visible: applicationState.user!.emailVerified == false,
+                child: const VerifyButton(),
+              ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [ProfilePicPicker()],
               ),
               Field(
-                icon: const Icon(Icons.person),
+                icon: const Icon(CupertinoIcons.person),
                 title: appLocalizations.displayName,
-                initialText: displayName,
+                initialText: newUserData.displayName,
                 onChanged: (value) {
-                  displayName = value;
+                  newUserData.displayName = value;
                   newUserData.displayName = value;
                 },
                 maxLength: 40,
               ),
               Field(
                 title: appLocalizations.userInfo,
-                icon: const Icon(Icons.info),
+                icon: const Icon(CupertinoIcons.info),
                 initialText: newUserData.info,
                 onChanged: (value) {
                   newUserData.info = value;
@@ -135,7 +140,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
                 maxLength: 200,
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 12.5, bottom: 12.5),
+                padding: const EdgeInsets.all(12.5),
                 child: Column(
                   children: [
                     Text(
@@ -161,9 +166,9 @@ class _ProfileConfigState extends State<ProfileConfig> {
               ),
               const AdaptiveDivider(),
               BirthDayField(
-                dateTime: newUserData.birthDay,
+                dateTime: newUserData.birthday,
                 onChangeDatetime: (dateTime) {
-                  newUserData.birthDay = dateTime;
+                  newUserData.birthday = dateTime;
                 },
               ),
               const AdaptiveDivider(),
@@ -181,7 +186,7 @@ class _ProfileConfigState extends State<ProfileConfig> {
               Field(
                 title: appLocalizations.history,
                 initialText: newUserData.injuries,
-                icon: const Icon(Icons.personal_injury),
+                icon: const Icon(CupertinoIcons.bandage),
                 onChanged: (value) {
                   newUserData.injuries = value;
                 },

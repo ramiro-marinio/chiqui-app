@@ -3,6 +3,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymapp/firebase/auth/loginscreen.dart';
+import 'package:gymapp/firebase/auth/register.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/main.dart';
 import 'package:gymapp/navigation/widgets/icongoroute.dart';
@@ -38,6 +39,10 @@ final List<GoRoute> routes = [
           ),
         ],
       ),
+      GoRoute(
+        path: 'register',
+        builder: (context, state) => const Register(),
+      ),
     ],
   ),
   IconGoRoute(
@@ -55,7 +60,6 @@ final List<GoRoute> routes = [
                 gymId: extra['gymId'],
                 otherUser: extra['otherUser'],
                 users: extra['users'],
-                publicChat: extra['publicChat'],
               );
             },
           ),
@@ -87,10 +91,6 @@ final List<GoRoute> routes = [
     icon: const Icon(Icons.settings),
     mustBeLoggedIn: false,
     name: 'settings',
-  ),
-  GoRoute(
-    path: '/no-connection',
-    builder: (context, state) => const NoConnection(),
   ),
 ];
 

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gymapp/functions/adaptive_color.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -36,18 +38,21 @@ class _BirthDayFieldState extends State<BirthDayField> {
         children: [
           RichText(
             text: TextSpan(
+              style: TextStyle(
+                color: adaptiveColor(Colors.black, Colors.white, context),
+                fontSize: 20,
+                fontFamily: 'SansSerif',
+                textBaseline: TextBaseline.alphabetic,
+              ),
               children: [
                 const WidgetSpan(
                     alignment: PlaceholderAlignment.bottom,
-                    child: Icon(Icons.cake),
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 8.0),
+                      child: Icon(CupertinoIcons.calendar),
+                    ),
                     baseline: TextBaseline.ideographic),
-                TextSpan(
-                  text: appLocalizations.birthdayHeader,
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'SansSerif',
-                      textBaseline: TextBaseline.alphabetic),
-                )
+                TextSpan(text: appLocalizations.birthdayHeader),
               ],
             ),
           ),

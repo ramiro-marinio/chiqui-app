@@ -39,6 +39,7 @@ class _GymInfoState extends State<GymInfo> {
                     photoURL: widget.gymData.photoURL,
                     radius: 72,
                     tag: 'InfoPic',
+                    gymImage: true,
                   ),
                 ),
                 Padding(

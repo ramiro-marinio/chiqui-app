@@ -23,6 +23,7 @@ import 'package:http/http.dart' as http;
 
 class ApplicationState extends ChangeNotifier {
   StreamSubscription? gymsSubscription;
+  StreamSubscription? userDataSubscription;
   ApplicationState() {
     init();
   }
@@ -41,22 +42,41 @@ class ApplicationState extends ChangeNotifier {
   void init() async {
     FirebaseAuth.instance.userChanges().listen(
       (userUpdate) async {
-        _loading = false;
-        _loggedIn = userUpdate != null;
-        _user = userUpdate;
-        updateNotificationToken();
-        Map<String, dynamic>? map = (await FirebaseFirestore.instance
-                .collection("userData")
-                .doc(user?.uid)
-                .get())
-            .data();
-        if (map != null) {
-          if (map.isNotEmpty) {
-            _userData = UserData.fromJson(map);
-          }
-        }
+        userDataSubscription?.cancel();
+        userDataSubscription = null;
+        gymsSubscription?.cancel();
+        gymsSubscription = null;
         if (userUpdate != null) {
-          gymsSubscription?.cancel();
+          userDataSubscription = FirebaseFirestore.instance
+              .collection('userData')
+              .doc(userUpdate.uid)
+              .snapshots()
+              .listen((event) {
+            if (event.data() == null) {
+              FirebaseFirestore.instance
+                  .collection('userData')
+                  .doc(userUpdate.uid)
+                  .set(
+                    UserData(
+                      userId: userUpdate.uid,
+                      info: 'At The Gym.',
+                      sex: false,
+                      birthday: DateTime.now(),
+                      staff: false,
+                      displayName: 'New User',
+                      weight: 70,
+                      stature: 175,
+                      injuries: '',
+                      photoURL: userUpdate.photoURL,
+                    ).toMap(),
+                  );
+            }
+            if (event.data() != null) {
+              _userData = UserData.fromJson(event.data()!);
+            }
+            notifyListeners();
+          });
+          updateNotificationToken(true);
           gymsSubscription = FirebaseFirestore.instance
               .collection('memberships')
               .where('userId', isEqualTo: user?.uid)
@@ -73,9 +93,16 @@ class ApplicationState extends ChangeNotifier {
                 _gyms.add(gymData);
               }
             }
-            notifyListeners();
           });
+        } else {
+          userDataSubscription?.cancel();
+          _userData = null;
+          notifyListeners();
         }
+        _loading = false;
+        _loggedIn = userUpdate != null;
+        _user = userUpdate;
+        notifyListeners();
       },
     );
     //MEMBERSHIPS LISTENER
@@ -86,8 +113,14 @@ class ApplicationState extends ChangeNotifier {
     // FirebaseFirestore.instance.collection('userData').snapshots();
   }
 
-  void signOut() async {
-    FirebaseAuth.instance.signOut();
+  void signOut() {
+    FirebaseFirestore.instance
+        .collection('tokens')
+        .doc(user!.uid)
+        .delete()
+        .then((_) {
+      FirebaseAuth.instance.signOut();
+    });
   }
 
   Future<String?> changeUserImage(String? filePath) async {
@@ -154,14 +187,18 @@ class ApplicationState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> joinGym(DocumentReference documentReference) async {
-    FirebaseFirestore.instance.collection('memberships').add(
+  Future<void> joinGym(DocumentReference documentReference, bool owner) async {
+    FirebaseFirestore.instance
+        .collection('memberships')
+        .doc('${user!.uid}${documentReference.id}')
+        .set(
           MembershipData(
-                  userId: user!.uid,
-                  gymId: documentReference.id,
-                  admin: false,
-                  coach: false)
-              .toJson(),
+            userId: user!.uid,
+            gymId: documentReference.id,
+            admin: false,
+            coach: false,
+            accepted: owner,
+          ).toJson(),
         );
   }
 
@@ -209,8 +246,7 @@ class ApplicationState extends ChangeNotifier {
     Reference referenceRoot = FirebaseStorage.instance.ref();
     Reference ppFolder = referenceRoot.child('gym-profile-pics');
     String extension = file.path.split('.').last;
-    String name =
-        !picturePath.contains('.') ? '$gymId.$extension' : picturePath;
+    String name = '$gymId.$extension';
     Reference pic = ppFolder.child(name);
     await pic.putFile(file);
     return pic.getDownloadURL();
@@ -238,6 +274,7 @@ class ApplicationState extends ChangeNotifier {
         await FirebaseFirestore.instance
             .collection('memberships')
             .where('gymId', isEqualTo: gymId)
+            .where('accepted', isEqualTo: true)
             .get();
     List<String> userIds =
         List.generate(membershipsQuerySnapshot.docs.length, (index) {
@@ -261,8 +298,8 @@ class ApplicationState extends ChangeNotifier {
     return List.generate(docs.length, (index) => docs[index].data());
   }
 
-  Future<String?> modifyDemoVideo(
-      String designatedId, File? videoFile, String? extension) async {
+  Future<String?> modifyDemoVideo(String designatedId, File? videoFile,
+      {final String? deleteAddress}) async {
     Reference referenceRoot = FirebaseStorage.instance.ref();
     Reference ppFolder = referenceRoot.child('demo-vids');
     if (videoFile != null) {
@@ -275,7 +312,7 @@ class ApplicationState extends ChangeNotifier {
       await video.putFile(videoFile);
       return await video.getDownloadURL();
     } else {
-      Reference video = ppFolder.child('$designatedId.$extension');
+      Reference video = ppFolder.child(deleteAddress!);
       await video.delete();
     }
     return null;
@@ -286,7 +323,7 @@ class ApplicationState extends ChangeNotifier {
     if (video != null) {
       String id = generateRandomString(28);
       String extension = video.path.split('.').last;
-      String videoURL = (await modifyDemoVideo(id, video, null))!;
+      String videoURL = (await modifyDemoVideo(id, video))!;
       demonstrationData.resourceName = '$id.$extension';
       demonstrationData.resourceURL = videoURL;
     }
@@ -300,28 +337,30 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> editDemonstration(DemonstrationData demonstrationData,
-      String? videoPath, bool touchVideo) async {
-    if (touchVideo) {
+      String? videoPath, bool videoUntouched) async {
+    print('THE VIDEO WAS ${videoUntouched ? 'UNTOUCHED' : 'TAMPERED WITH'}');
+    if (!videoUntouched) {
+      print('THE VIDEO WAS ${videoUntouched ? 'UNTOUCHED' : 'TAMPERED WITH'}');
       if (videoPath != null && videoPath != demonstrationData.resourceURL) {
         File video = File(videoPath);
-        String id = generateRandomString(28);
-        //Extension value will only be used if there was no resource before
+        String id = demonstrationData.id;
         String extension = video.path.split('.').last;
         String videoURL = (await modifyDemoVideo(
-            demonstrationData.resourceName ?? '$id.$extension', video, null))!;
+          demonstrationData.resourceName ?? '$id.$extension',
+          video,
+        ))!;
         demonstrationData.resourceName ??= '$id.$extension';
         demonstrationData.resourceURL = videoURL;
       } else if (videoPath == null && demonstrationData.resourceURL != null) {
-        String extension = demonstrationData.resourceName!.split('.').last;
-        await modifyDemoVideo(
-          demonstrationData.resourceName!,
-          null,
-          extension,
-        );
+        print('landmark A');
+        await modifyDemoVideo(demonstrationData.resourceName!, null,
+            deleteAddress: demonstrationData.resourceName!);
+        print('landmark B');
         demonstrationData.resourceName = null;
         demonstrationData.resourceURL = null;
       }
     }
+    print(demonstrationData.toJson());
     await FirebaseFirestore.instance
         .collection('demonstrations')
         .doc(demonstrationData.id)
@@ -374,7 +413,8 @@ class ApplicationState extends ChangeNotifier {
   Future<void> addInviteData(String gymId) async {
     await FirebaseFirestore.instance
         .collection('invites')
-        .add(InviteData(code: generateRandomString(7), gymId: gymId).toJson());
+        .doc(gymId)
+        .set(InviteData(code: generateRandomString(7), gymId: gymId).toJson());
   }
 
   Future<void> updateInviteData(InviteData data) async {
@@ -397,10 +437,15 @@ class ApplicationState extends ChangeNotifier {
     return false;
   }
 
-  Future<void> sendMessage(MessageData messageData) async {
-    await FirebaseFirestore.instance
-        .collection('messages')
-        .add(messageData.toJson());
+  Future<void> sendMessage(MessageData messageData, String gymId) async {
+    http.post(Uri.parse('https://sendmessage-e2zma6cdba-uc.a.run.app'), body: {
+      'message': messageData.message,
+      'senderId': messageData.senderId,
+      'senderUser': jsonEncode(userData!.toMap()),
+      'receiverId': messageData.receiverId ?? '',
+      'gymId': gymId,
+      'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+    }).then((value) {});
   }
 
   Future<void> sendNotification(
@@ -413,7 +458,7 @@ class ApplicationState extends ChangeNotifier {
     }
     UserData? userData = await getUserInfo(user!.uid);
     await http.post(
-      Uri.parse('https://sendmessagenotification-xg2n2l3ccq-uc.a.run.app'),
+      Uri.parse('https://sendmessagenotification-e2zma6cdba-uc.a.run.app'),
       body: jsonEncode({
         'displayName': displayName,
         'gymId': gymId,
@@ -472,7 +517,7 @@ class ApplicationState extends ChangeNotifier {
         .collection('ratings')
         .where('gymId', isEqualTo: gymId)
         .orderBy('timestamp', descending: true)
-        .limit(100)
+        .limit(10)
         .get();
     if (querySnapshot.docs.isEmpty) {
       return null;
@@ -488,15 +533,9 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatStream(
-      {required String gymId, String? senderId, String? receiverId}) {
-    if (receiverId == null || senderId == null) {
-      return FirebaseFirestore.instance
-          .collection('messages')
-          .where('receiverId', isEqualTo: null)
-          .where('gymId', isEqualTo: gymId)
-          .orderBy('timestamp', descending: false)
-          .snapshots();
-    }
+      {required String gymId,
+      required String senderId,
+      required String receiverId}) {
     return FirebaseFirestore.instance
         .collection('messages')
         .where('gymId', isEqualTo: gymId)
@@ -506,8 +545,7 @@ class ApplicationState extends ChangeNotifier {
         .snapshots();
   }
 
-  Future<void> updateNotificationToken() async {
-    bool signedIn = user != null;
+  Future<void> updateNotificationToken(bool signedIn) async {
     FirebaseFirestore.instance.collection('tokens').doc(user!.uid).set({
       'userId': user!.uid,
       'token': signedIn ? await FirebaseMessaging.instance.getToken() : null,
@@ -541,7 +579,7 @@ class ApplicationState extends ChangeNotifier {
     await http
         .get(
       Uri.parse(
-        'https://getlocalnews-xg2n2l3ccq-uc.a.run.app?language=$language',
+        'https://getlocalnews-e2zma6cdba-uc.a.run.app?language=$language',
       ),
     )
         .then((res) {
@@ -553,5 +591,20 @@ class ApplicationState extends ChangeNotifier {
       list = news;
     });
     return list;
+  }
+
+  Future<void> changeRestrictions(
+      String userId, bool block, bool notifications) async {
+    await http
+        .post(
+          Uri.parse('https://restrictuser-e2zma6cdba-uc.a.run.app'),
+          body: jsonEncode({
+            'userA': user!.uid,
+            'userB': userId,
+            'block': block,
+            'disableNotifications': notifications,
+          }),
+        )
+        .then((value) {});
   }
 }

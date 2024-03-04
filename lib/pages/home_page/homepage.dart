@@ -1,7 +1,7 @@
-import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/news/newsdata.dart';
+import 'package:gymapp/local_settings/local_settings_state.dart';
 import 'package:gymapp/navigation/widgets/navigationdrawer.dart';
 import 'package:gymapp/pages/home_page/widgets/article.dart';
 import 'package:provider/provider.dart';
@@ -19,20 +19,13 @@ late Future<String?> currentLocale;
 class _HomePageState extends State<HomePage> {
   Future<List<NewsData>?>? getNews;
   @override
-  void initState() {
-    super.initState();
-    ApplicationState applicationState = context.read<ApplicationState>();
-    currentLocale = Devicelocale.currentLocale;
-    currentLocale.then((value) {
-      setState(() {
-        getNews = applicationState.getNews(value?.substring(0, 2) ?? 'en');
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    ApplicationState applicationState = context.read<ApplicationState>();
+    LocalSettingsState localSettings = context.watch<LocalSettingsState>();
+    Locale currentLocale = localSettings.language;
+    getNews = applicationState.getNews(currentLocale.languageCode);
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(

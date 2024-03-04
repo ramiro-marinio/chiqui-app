@@ -77,7 +77,7 @@ class _ViewRatingPageState extends State<ViewRatingPage> {
                       });
                     },
                     itemBuilder: (context, index) =>
-                        RatingsView(gymData: gymData, page: index + 1),
+                        RatingsPageView(gymData: gymData, page: index + 1),
                     itemCount: pages,
                   ),
                 ),
@@ -99,7 +99,7 @@ class _ViewRatingPageState extends State<ViewRatingPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: IconButton(
-                        onPressed: (page + 1 != pages)
+                        onPressed: page + 1 != pages
                             ? () {
                                 pageController.nextPage(
                                   duration: const Duration(milliseconds: 400),

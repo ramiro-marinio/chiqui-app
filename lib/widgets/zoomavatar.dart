@@ -5,8 +5,13 @@ class ZoomAvatar extends StatelessWidget {
   final double radius;
   final String? photoURL;
   final String? tag;
+  final bool gymImage;
   const ZoomAvatar(
-      {super.key, required this.photoURL, required this.radius, this.tag});
+      {super.key,
+      required this.photoURL,
+      required this.radius,
+      this.tag,
+      required this.gymImage});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +34,7 @@ class ZoomAvatar extends StatelessWidget {
                     builder: (context) => ViewImage(
                       imageUrl: photoURL,
                       tag: tag ?? 'Pic',
+                      gymImage: gymImage,
                     ),
                   ),
                 );
@@ -39,8 +45,9 @@ class ZoomAvatar extends StatelessWidget {
                   image: DecorationImage(
                     image: photoURL != null
                         ? NetworkImage(photoURL!)
-                        : const AssetImage('assets/no_image.jpg')
-                            as ImageProvider,
+                        : AssetImage(gymImage
+                            ? 'assets/no_image_gym.jpg'
+                            : 'assets/no_image.jpg') as ImageProvider,
                     fit: BoxFit.cover,
                     alignment: FractionalOffset.center,
                   ),

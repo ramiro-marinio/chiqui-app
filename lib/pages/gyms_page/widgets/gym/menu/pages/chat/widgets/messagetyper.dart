@@ -26,24 +26,28 @@ class _MessageTyperState extends State<MessageTyper> {
           child: Row(
             children: [
               Expanded(
-                child: TextFormField(
-                  controller: _controller,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(500),
-                  ],
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Cannot send an empty message.';
-                    }
-                    return null;
-                  },
-                  onFieldSubmitted: (value) {
-                    if (!_formKey.currentState!.validate()) {
-                      return;
-                    }
-                    widget.onSubmit(_controller.text);
-                    _controller.clear();
-                  },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: TextFormField(
+                    controller: _controller,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(500),
+                    ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Cannot send an empty message.';
+                      }
+                      return null;
+                    },
+                    onFieldSubmitted: (value) {
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+                      widget.onSubmit(_controller.text);
+                      _controller.clear();
+                    },
+                  ),
                 ),
               ),
               IconButton(

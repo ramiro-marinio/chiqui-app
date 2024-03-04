@@ -3,7 +3,6 @@ import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/functions/processconvodocs.dart';
-import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/chat_tile.dart';
 import 'package:gymapp/widgets/filterbar.dart';
 import 'package:provider/provider.dart';
 
@@ -41,15 +40,6 @@ class _MyChatsState extends State<MyChats> {
                             search = value;
                           });
                         },
-                      ),
-                      Visibility(
-                        visible: search.isEmpty,
-                        child: ChatTile(
-                          userData: null,
-                          gymData: widget.gymData,
-                          users: users,
-                          publicChat: true,
-                        ),
                       ),
                       ...processConversations(
                         users,

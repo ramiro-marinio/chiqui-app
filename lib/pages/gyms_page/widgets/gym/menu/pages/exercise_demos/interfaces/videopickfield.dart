@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/functions/showwarningdialog.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/exercise_demos/interfaces/widgets/videoprogressbar.dart';
@@ -19,6 +20,7 @@ class VideoPickField extends StatefulWidget {
 
 class _VideoPickFieldState extends State<VideoPickField> {
   String? videoPath;
+  String error = '';
   late VideoPlayerController _controller;
   double aspectRatio = 1;
   @override
@@ -50,7 +52,7 @@ class _VideoPickFieldState extends State<VideoPickField> {
             children: [
               const Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.video_call),
+                child: Icon(CupertinoIcons.video_camera),
               ),
               Text(
                 appLocalizations.demonstrationVideo,
@@ -84,6 +86,7 @@ class _VideoPickFieldState extends State<VideoPickField> {
             }
           },
         ),
+        error.isNotEmpty ? Text(error) : Container(),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -91,7 +94,7 @@ class _VideoPickFieldState extends State<VideoPickField> {
             children: [
               Visibility(
                   child: IconButton(
-                icon: const Icon(Icons.delete),
+                icon: const Icon(CupertinoIcons.delete),
                 onPressed: videoPath?.isEmpty ?? true
                     ? null
                     : () {
@@ -99,6 +102,7 @@ class _VideoPickFieldState extends State<VideoPickField> {
                           title: 'Delete Video?',
                           context: context,
                           yes: () {
+                            error = '';
                             widget.chooseVideo(null);
                             setState(() {
                               _controller.pause();
@@ -143,13 +147,19 @@ class _VideoPickFieldState extends State<VideoPickField> {
                       preferredCameraDevice: CameraDevice.rear);
                   _controller.dispose();
 
-                  setState(() {
-                    if (xfile != null) {
-                      videoPath = xfile.path;
+                  if (xfile != null) {
+                    if (await xfile.length() < 1024 * 1024 * 30) {
+                      setState(() {
+                        error = '';
+                        videoPath = xfile.path;
+                        widget.chooseVideo(videoPath);
+                      });
+                    } else {
+                      setState(() {
+                        error = appLocalizations.tooBig(30);
+                      });
                     }
-                  });
-
-                  widget.chooseVideo(videoPath);
+                  }
                 },
                 child: Text(appLocalizations.pickVideo),
               ),

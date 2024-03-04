@@ -5,16 +5,16 @@ import 'package:gymapp/pages/gyms_page/widgets/rating/data/ratingdata.dart';
 import 'package:gymapp/pages/gyms_page/widgets/rating/widgets/rating.dart';
 import 'package:provider/provider.dart';
 
-class RatingsView extends StatefulWidget {
+class RatingsPageView extends StatefulWidget {
   final GymData gymData;
   final int page;
-  const RatingsView({super.key, required this.gymData, required this.page});
+  const RatingsPageView({super.key, required this.gymData, required this.page});
 
   @override
-  State<RatingsView> createState() => _RatingsViewState();
+  State<RatingsPageView> createState() => _RatingsPageViewState();
 }
 
-class _RatingsViewState extends State<RatingsView> {
+class _RatingsPageViewState extends State<RatingsPageView> {
   late ApplicationState applicationState;
   late Future<List<RatingData>> getRatingData;
   @override
@@ -32,8 +32,9 @@ class _RatingsViewState extends State<RatingsView> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           final List<RatingData> data = snapshot.data!;
+
           if (data.length > 30) {
-            data.removeRange(0, ((widget.page - 1) * 30) - 1);
+            data.removeRange(0, ((widget.page - 1) * 30) + 1);
           }
           return ListView(
             children: List.generate(

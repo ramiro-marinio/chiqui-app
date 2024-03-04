@@ -17,7 +17,8 @@ List<Widget> processConversations(
     if (userData != null && userData.userId != applicationState.user!.uid) {
       result += [
         Visibility(
-          visible: userData.displayName.contains(search),
+          visible:
+              userData.displayName.toLowerCase().contains(search.toLowerCase()),
           child: ChatTile(
             userData: userData,
             gymData: gymData,

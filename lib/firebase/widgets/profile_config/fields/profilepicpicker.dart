@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePicPicker extends StatefulWidget {
   const ProfilePicPicker({super.key});
@@ -14,16 +16,21 @@ class ProfilePicPicker extends StatefulWidget {
 class _ProfilePicPickerState extends State<ProfilePicPicker> {
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     return Consumer<ApplicationState>(
       builder: (context, applicationState, child) {
-        String? photoURL = applicationState.user?.photoURL;
+        String? photoURL = applicationState.userData?.photoURL;
         return Padding(
           padding: const EdgeInsets.all(12.0),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                ZoomAvatar(photoURL: photoURL, radius: 80),
+                ZoomAvatar(
+                  photoURL: photoURL,
+                  radius: 80,
+                  gymImage: false,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -38,13 +45,13 @@ class _ProfilePicPickerState extends State<ProfilePicPicker> {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     title:
-                                        const Text("Delete profile picture?"),
+                                        Text(appLocalizations.deletePPPrompt),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        child: const Text("No"),
+                                        child: Text(appLocalizations.no),
                                       ),
                                       TextButton(
                                         onPressed: () {
@@ -52,13 +59,13 @@ class _ProfilePicPickerState extends State<ProfilePicPicker> {
                                               .changeUserImage(null);
                                           Navigator.pop(context);
                                         },
-                                        child: const Text("yes"),
+                                        child: Text(appLocalizations.yes),
                                       ),
                                     ],
                                   ),
                                 );
                               },
-                        icon: const Icon(Icons.delete),
+                        icon: const Icon(CupertinoIcons.delete),
                       ),
                     ),
                     //CREATE PIC
@@ -72,21 +79,21 @@ class _ProfilePicPickerState extends State<ProfilePicPicker> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: const Text("Choose a Source"),
+                                title: Text(appLocalizations.chooseSource),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
                                       imageSource = ImageSource.camera;
                                       Navigator.pop(context);
                                     },
-                                    child: const Text("Camera"),
+                                    child: Text(appLocalizations.camera),
                                   ),
                                   TextButton(
                                     onPressed: () {
                                       imageSource = ImageSource.gallery;
                                       Navigator.pop(context);
                                     },
-                                    child: const Text("Gallery"),
+                                    child: Text(appLocalizations.gallery),
                                   ),
                                 ],
                               );
@@ -105,7 +112,7 @@ class _ProfilePicPickerState extends State<ProfilePicPicker> {
                           photoURL = null;
                           await applicationState.changeUserImage(xfile.path);
                         },
-                        icon: const Icon(Icons.add_a_photo),
+                        icon: const Icon(CupertinoIcons.photo),
                       ),
                     )
                   ],

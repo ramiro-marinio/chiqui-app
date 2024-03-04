@@ -54,6 +54,7 @@ class _GymJoinSheetState extends State<GymJoinSheet> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Crawl(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       child: Text(
                         gymData?.name ?? appLocalizations.generalError,
                         style: const TextStyle(
@@ -63,31 +64,45 @@ class _GymJoinSheetState extends State<GymJoinSheet> {
                       ),
                     ),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      if (!applicationState.checkMembership(gymData!.id!)) {
-                        applicationState.joinGym(FirebaseFirestore.instance
-                            .collection('gyms')
-                            .doc(gymData.id));
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      } else {
-                        showInfoDialog(
-                          title: appLocalizations.alreadyJoined,
-                          description: appLocalizations.alrJnDetails,
-                          context: context,
-                        );
-                      }
-                    },
-                    icon: const Icon(Icons.check),
-                    label: Text(appLocalizations.yes.toUpperCase()),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          if (!applicationState.checkMembership(gymData!.id!)) {
+                            applicationState.joinGym(
+                                FirebaseFirestore.instance
+                                    .collection('gyms')
+                                    .doc(gymData.id),
+                                false);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          } else {
+                            showInfoDialog(
+                              title: appLocalizations.alreadyJoined,
+                              description: appLocalizations.alrJnDetails,
+                              context: context,
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.check),
+                        label: Text(appLocalizations.yes.toUpperCase()),
+                      ),
+                    ),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.close),
-                    label: Text(appLocalizations.no.toUpperCase()),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.close),
+                        label: Text(appLocalizations.no.toUpperCase()),
+                      ),
+                    ),
                   ),
                 ],
               );

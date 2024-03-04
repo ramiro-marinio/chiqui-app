@@ -84,17 +84,6 @@ class ExerciseDemo extends StatelessWidget {
                 ),
               );
             },
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                demoData.repUnit
-                    ? const Icon(Icons.fitness_center)
-                    : const Icon(Icons.timer),
-                Text(demoData.repUnit
-                    ? appLocalizations.reppedExercise
-                    : appLocalizations.timedExercise)
-              ],
-            ),
           ),
           const AdaptiveDivider(
             thickness: 0.2,

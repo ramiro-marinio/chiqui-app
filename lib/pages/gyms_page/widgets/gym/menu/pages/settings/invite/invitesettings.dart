@@ -60,30 +60,30 @@ class _InviteSettingsState extends State<InviteSettings> {
               InviteData? result = snapshot.data;
               return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 24.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        appLocalizations.inviteCode,
-                        style: const TextStyle(fontSize: 30),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AutoSizeText(
-                          result?.code ?? 'Error',
-                          style: const TextStyle(fontSize: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          appLocalizations.inviteCode,
+                          style: const TextStyle(fontSize: 30),
+                          textAlign: TextAlign.center,
                           maxLines: 1,
                         ),
-                      ],
-                    ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AutoSizeText(
+                            result?.code ?? 'Error',
+                            style: const TextStyle(fontSize: 20),
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                   Visibility(
                     visible: result?.code.contains(' ') ?? false,
@@ -93,54 +93,66 @@ class _InviteSettingsState extends State<InviteSettings> {
                       description: appLocalizations.codeWithSpaces,
                     ),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: canChange
-                        ? () async {
-                            await showDialog(
-                              context: context,
-                              builder: (context) => LengthInputDialog(
-                                chars: 7,
-                                onComplete: (val) async {
-                                  await applicationState.updateInviteData(
-                                    InviteData(
-                                      code: generateRandomString(val),
-                                      gymId: widget.gymData.id!,
-                                    ),
-                                  );
-                                  if (context.mounted) {
-                                    Navigator.pop(context);
-                                  }
-                                  setState(() {
-                                    inviteData = applicationState
-                                        .getInviteData(widget.gymData.id!);
-                                  });
-                                },
-                              ),
-                            );
-                          }
-                        : null,
-                    icon: const Icon(Icons.question_mark),
-                    label: Text(appLocalizations.randomizeInviteCode),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: ElevatedButton.icon(
+                        onPressed: canChange
+                            ? () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) => LengthInputDialog(
+                                    chars: 7,
+                                    onComplete: (val) async {
+                                      await applicationState.updateInviteData(
+                                        InviteData(
+                                          code: generateRandomString(val),
+                                          gymId: widget.gymData.id!,
+                                        ),
+                                      );
+                                      if (context.mounted) {
+                                        Navigator.pop(context);
+                                      }
+                                      setState(() {
+                                        inviteData = applicationState
+                                            .getInviteData(widget.gymData.id!);
+                                      });
+                                    },
+                                  ),
+                                );
+                              }
+                            : null,
+                        icon: const Icon(Icons.question_mark),
+                        label: Text(appLocalizations.randomizeInviteCode),
+                      ),
+                    ),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: canChange
-                        ? () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => ChooseValueDialog(
-                                gymData: widget.gymData,
-                                setState: setState,
-                                whenComplete: () {
-                                  inviteData = applicationState
-                                      .getInviteData(widget.gymData.id!);
-                                },
-                              ),
-                            );
-                          }
-                        : null,
-                    icon: const Icon(Icons.edit),
-                    label: Text(appLocalizations.pickManually),
-                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: ElevatedButton.icon(
+                        onPressed: canChange
+                            ? () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => ChooseValueDialog(
+                                    gymData: widget.gymData,
+                                    setState: setState,
+                                    whenComplete: () {
+                                      inviteData = applicationState
+                                          .getInviteData(widget.gymData.id!);
+                                    },
+                                  ),
+                                );
+                              }
+                            : null,
+                        icon: const Icon(Icons.edit),
+                        label: Text(appLocalizations.pickManually),
+                      ),
+                    ),
+                  )
                 ],
               );
             } else {

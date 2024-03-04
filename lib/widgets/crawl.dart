@@ -2,22 +2,30 @@ import 'package:flutter/material.dart';
 
 class Crawl extends StatefulWidget {
   final Widget child;
-  const Crawl({required this.child, super.key});
+  final MainAxisAlignment? mainAxisAlignment;
+  const Crawl({required this.child, super.key, this.mainAxisAlignment});
 
   @override
   State<Crawl> createState() => _CrawlState();
 }
 
 class _CrawlState extends State<Crawl> {
+  bool noScrollMode = false;
   final _controller = ScrollController();
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (_controller.positions.isNotEmpty) {
-        double maxExtent = _controller.position.maxScrollExtent;
-        double minExtent = _controller.position.minScrollExtent;
-        autoSlide(maxExtent, minExtent, maxExtent);
+      if (_controller.position.maxScrollExtent > 0) {
+        if (_controller.positions.isNotEmpty) {
+          double maxExtent = _controller.position.maxScrollExtent;
+          double minExtent = _controller.position.minScrollExtent;
+          autoSlide(maxExtent, minExtent, maxExtent);
+        }
+      } else {
+        setState(() {
+          noScrollMode = true;
+        });
       }
     });
   }
@@ -47,11 +55,18 @@ class _CrawlState extends State<Crawl> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        controller: _controller,
-        physics: const NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        child: widget.child);
+    return !noScrollMode
+        ? SingleChildScrollView(
+            controller: _controller,
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            child: widget.child,
+          )
+        : Row(
+            mainAxisAlignment:
+                widget.mainAxisAlignment ?? MainAxisAlignment.start,
+            children: [widget.child],
+          );
   }
 
   @override

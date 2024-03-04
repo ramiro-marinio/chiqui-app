@@ -3,6 +3,8 @@ import 'package:gymapp/firebase/auth/userdata.dart';
 import 'package:gymapp/firebase/gyms/membershipdata.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/restrict/blockuser.dart';
+import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/chat/widgets/restrict/disablenotifs.dart';
 import 'package:gymapp/pages/gyms_page/widgets/gym/menu/pages/settings/widgets/userdetails.dart';
 import 'package:gymapp/widgets/zoomavatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -52,6 +54,7 @@ class _ChatOptionsState extends State<ChatOptions> {
                             photoURL: widget.userData?.photoURL,
                             radius: 80,
                             tag: 'Chat-Pic',
+                            gymImage: false,
                           ),
                           Text(
                             widget.userData?.displayName ?? 'Public Chat',
@@ -90,22 +93,24 @@ class _ChatOptionsState extends State<ChatOptions> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                TextButton.icon(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return UserDetails(
-                                            userData: widget.userData!,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.fitness_center),
-                                  label: Text(
-                                    appLocalizations.viewTrainingInfo,
+                                Expanded(
+                                  child: TextButton.icon(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return UserDetails(
+                                              userData: widget.userData!,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.fitness_center),
+                                    label: Text(
+                                      appLocalizations.viewTrainingInfo,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -117,28 +122,12 @@ class _ChatOptionsState extends State<ChatOptions> {
                           const SizedBox(
                             height: 12,
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.do_not_disturb),
-                            title: Text(appLocalizations.block),
-                            iconColor: Colors.red,
-                            textColor: Colors.red,
-                            tileColor: const Color.fromARGB(56, 244, 67, 54),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            onTap: () {},
-                          ),
+                          BlockUser(userId: widget.userData!.userId),
                           const SizedBox(
                             height: 12,
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.message),
-                            title: Text(appLocalizations.disableNotifications),
-                            iconColor: Colors.red,
-                            textColor: Colors.red,
-                            tileColor: const Color.fromARGB(56, 244, 67, 54),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            onTap: () {},
+                          DisableNotifications(
+                            userId: widget.userData!.userId,
                           ),
                         ],
                       ),

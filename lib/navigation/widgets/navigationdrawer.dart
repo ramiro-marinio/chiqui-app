@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
 import 'package:gymapp/firebase/widgets/profile.dart';
@@ -17,13 +18,13 @@ class NavDrawer extends StatelessWidget {
         mustBeLoggedIn: false,
         title: appLocalizations.homePage,
         path: '/',
-        icon: const Icon(Icons.home),
+        icon: const Icon(CupertinoIcons.home),
       ),
       NavTile(
         mustBeLoggedIn: true,
         title: appLocalizations.myGyms,
         path: '/my-gyms',
-        icon: const Icon(Icons.fitness_center),
+        icon: const Icon(CupertinoIcons.list_bullet),
       ),
       // NavTile(
       //   mustBeLoggedIn: false,
@@ -35,13 +36,13 @@ class NavDrawer extends StatelessWidget {
         mustBeLoggedIn: true,
         title: appLocalizations.sendSuggestion,
         path: '/suggestion',
-        icon: const Icon(Icons.lightbulb),
+        icon: const Icon(CupertinoIcons.lightbulb),
       ),
       NavTile(
         mustBeLoggedIn: false,
         title: appLocalizations.settings,
         path: '/settings',
-        icon: const Icon(Icons.settings),
+        icon: const Icon(CupertinoIcons.settings_solid),
       ),
     ];
     return Drawer(

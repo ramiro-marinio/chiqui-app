@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,7 +42,10 @@ class GymPicPicker extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.photo),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(CupertinoIcons.photo),
+                  ),
                   AutoSizeText(
                     appLocalizations.gymPicture,
                     style: const TextStyle(
@@ -67,26 +71,26 @@ class GymPicPicker extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: const Text("Delete photo?"),
+                                title: Text(appLocalizations.deletePPPrompt),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: const Text("No"),
+                                    child: Text(appLocalizations.no),
                                   ),
                                   TextButton(
                                     onPressed: () {
                                       deletePhoto();
                                       Navigator.pop(context);
                                     },
-                                    child: const Text("yes"),
+                                    child: Text(appLocalizations.yes),
                                   ),
                                 ],
                               ),
                             );
                           },
-                    icon: const Icon(Icons.delete),
+                    icon: const Icon(CupertinoIcons.delete),
                   ),
                 ),
                 //CREATE PIC
@@ -132,7 +136,7 @@ class GymPicPicker extends StatelessWidget {
                       }
                       pickPhoto(xFile);
                     },
-                    icon: const Icon(Icons.add_a_photo),
+                    icon: const Icon(CupertinoIcons.camera),
                   ),
                 )
               ],

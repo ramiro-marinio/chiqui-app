@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NoConnection extends StatefulWidget {
   const NoConnection({super.key});
@@ -12,26 +13,30 @@ class _NoConnectionState extends State<NoConnection> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: const Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'No Connection!',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-              textAlign: TextAlign.center,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Please look for wifi before using the app.',
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            )
-          ],
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.noConnection,
+                style:
+                    const TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
+                textAlign: TextAlign.center,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.noConnectionDetails,
+                    style: const TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -4,7 +4,7 @@ class UserData {
   String displayName;
   String? photoURL;
   bool sex;
-  DateTime birthDay;
+  DateTime birthday;
   double stature;
   double weight;
   String injuries;
@@ -15,18 +15,18 @@ class UserData {
         displayName = map['displayName'] as String,
         photoURL = map['photoURL'] as String?,
         sex = map['sex'] as bool,
-        birthDay = DateTime.fromMillisecondsSinceEpoch(
-          map['birthDay'] as int,
+        birthday = DateTime.fromMillisecondsSinceEpoch(
+          (map['birthday'] as num?)?.toInt() ?? 0,
         ),
-        stature = (map['stature'] as double?) ?? 175,
-        weight = (map['weight'] as double?) ?? 70,
+        stature = (map['stature'] as num?)?.toDouble() ?? 175,
+        weight = (map['weight'] as num?)?.toDouble() ?? 70,
         staff = map['staff'] as bool,
         injuries = (map['injuries'] as String?) ?? '';
   UserData({
     required this.userId,
     required this.info,
     required this.sex,
-    required this.birthDay,
+    required this.birthday,
     required this.staff,
     required this.displayName,
     required this.weight,
@@ -39,9 +39,9 @@ class UserData {
       'userId': userId,
       'info': info,
       'sex': sex,
-      'birthDay': birthDay.millisecondsSinceEpoch,
+      'birthday': birthday.millisecondsSinceEpoch,
       'staff': staff,
-      'displayName': displayName,
+      'displayName': displayName.trim().isNotEmpty ? displayName : 'New User',
       'photoURL': photoURL,
       'stature': stature,
       'weight': weight,

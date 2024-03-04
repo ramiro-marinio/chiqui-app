@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/gyms/gymdata.dart';
@@ -46,7 +47,9 @@ class _CreateGymState extends State<CreateGym> {
           context: context,
           builder: (context) => AlertDialog(
             title: Text(appLocalizations.leavePrompt),
-            content: Text(appLocalizations.leaveCrationDetails),
+            content: Text(widget.editGym != null
+                ? appLocalizations.leaveEditionDetails
+                : appLocalizations.leaveCreationDetails),
             actions: [
               TextButton(
                 onPressed: () {
@@ -70,14 +73,16 @@ class _CreateGymState extends State<CreateGym> {
         key: _formKey,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(appLocalizations.createGym),
+            title: Text(widget.editGym != null
+                ? appLocalizations.editGym
+                : appLocalizations.createGym),
           ),
           body: SingleChildScrollView(
             child: Column(
               children: [
                 const AdaptiveDivider(),
                 ControllerField(
-                  icon: const Icon(Icons.edit),
+                  icon: const Icon(CupertinoIcons.pencil),
                   title: appLocalizations.gymName,
                   controller: nameController,
                   maxLength: 100,
@@ -95,7 +100,7 @@ class _CreateGymState extends State<CreateGym> {
                   title: appLocalizations.gymDescription,
                   maxLines: 6,
                   maxLength: 1500,
-                  icon: const Icon(Icons.info),
+                  icon: const Icon(CupertinoIcons.info),
                 ),
                 const AdaptiveDivider(),
                 GymPicPicker(
@@ -139,7 +144,7 @@ class _CreateGymState extends State<CreateGym> {
                   DocumentReference gymReference =
                       await applicationState.createGym(startingData, id);
                   await applicationState.addInviteData(id);
-                  await applicationState.joinGym(gymReference);
+                  await applicationState.joinGym(gymReference, true);
                 } else {
                   String id = editGym!.id!;
                   GymData newData = GymData(
@@ -154,7 +159,8 @@ class _CreateGymState extends State<CreateGym> {
                     String photoURL =
                         (await applicationState.saveGymPic(id, photoPath!));
                     newData.photoURL = photoURL;
-                  } else {
+                  } else if (photoPath == null &&
+                      photoPath != editGym!.photoURL) {
                     if (newData.photoName != null) {
                       await applicationState.deleteGymPic(newData.photoName!);
                       newData.photoURL = null;

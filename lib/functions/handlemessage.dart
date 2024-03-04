@@ -39,9 +39,6 @@ void handleMessage(
             gymId: gymId,
             otherUser: sender,
             users: [user],
-            publicChat: false,
-            /*There can never be notifications for the public chat, therefore we assume that this value (publicChat) will alyways
-            be false.*/
           ),
         ));
       }

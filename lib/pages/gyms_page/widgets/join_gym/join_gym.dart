@@ -40,39 +40,45 @@ class _JoinGymState extends State<JoinGym> {
               maxLength: 25,
             ),
           ),
-          ElevatedButton(
-            onPressed: code.isNotEmpty && !working
-                ? () async {
-                    setState(() {
-                      working = true;
-                    });
-                    InviteData? inviteData =
-                        await applicationState.getInviteDataByCode(code);
-                    setState(() {
-                      working = false;
-                    });
-                    if (context.mounted) {
-                      if (inviteData == null) {
-                        await showInfoDialog(
-                            title: appLocalizations.notFound,
-                            description: appLocalizations.nfDetails,
-                            context: context);
-                      } else {
-                        await showModalBottomSheet(
-                            context: context,
-                            builder: (context) =>
-                                GymJoinSheet(inviteData: inviteData));
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: code.isNotEmpty && !working
+                    ? () async {
+                        setState(() {
+                          working = true;
+                        });
+                        InviteData? inviteData =
+                            await applicationState.getInviteDataByCode(code);
+                        setState(() {
+                          working = false;
+                        });
+                        if (context.mounted) {
+                          if (inviteData == null) {
+                            await showInfoDialog(
+                                title: appLocalizations.notFound,
+                                description: appLocalizations.nfDetails,
+                                context: context);
+                          } else {
+                            await showModalBottomSheet(
+                                context: context,
+                                builder: (context) =>
+                                    GymJoinSheet(inviteData: inviteData));
+                          }
+                        }
                       }
-                    }
-                  }
-                : null,
-            child: working
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator.adaptive(),
-                  )
-                : Text(appLocalizations.joinButton),
+                    : null,
+                child: working
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator.adaptive(),
+                      )
+                    : Text(appLocalizations.joinButton),
+              ),
+            ),
           ),
         ],
       ),

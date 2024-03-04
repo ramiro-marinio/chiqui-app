@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/widgets/icontext.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,6 +13,7 @@ class OptionsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return PopupMenuButton(
+      icon: const Icon(CupertinoIcons.ellipsis_vertical),
       itemBuilder: (context) {
         return [
           PopupMenuItem(
@@ -29,7 +31,8 @@ class OptionsButton extends StatelessWidget {
                   }
                 : null,
             child: IconText(
-                icon: const Icon(Icons.close), text: appLocalizations.leave),
+                icon: const Icon(CupertinoIcons.multiply),
+                text: appLocalizations.leave),
           ),
         ];
       },

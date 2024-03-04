@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymapp/firebase/app_state.dart';
 import 'package:gymapp/firebase/widgets/profile_config/adaptivedivider.dart';
@@ -32,9 +33,8 @@ class _DemoMakerState extends State<DemoMaker> {
   bool? unit;
   final _formKey = GlobalKey<FormState>();
   @override
-  Widget build(BuildContext context) {
-    unit ??= widget.editData?.repUnit ?? true;
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+  void initState() {
+    super.initState();
     DemonstrationData? editData = widget.editData;
     if (editData != null) {
       nameController.text = editData.exerciseName;
@@ -42,8 +42,15 @@ class _DemoMakerState extends State<DemoMaker> {
       workAreas = editData.workAreas;
       adviceController.text = editData.advice ?? '';
       videoPath = editData.resourceURL;
+      unit = editData.repUnit;
     }
-    print(videoPath);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    unit ??= widget.editData?.repUnit ?? true;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    DemonstrationData? editData = widget.editData;
     return WillPopScope(
       onWillPop: () async {
         bool exit = false;
@@ -69,7 +76,7 @@ class _DemoMakerState extends State<DemoMaker> {
                 ControllerField(
                   controller: nameController,
                   title: appLocalizations.exerciseName,
-                  icon: const Icon(Icons.fitness_center),
+                  icon: Container(),
                   maxLength: 100,
                   showMaxlength: true,
                   validator: (value) {
@@ -86,7 +93,7 @@ class _DemoMakerState extends State<DemoMaker> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.fitness_center),
-                        Icon(Icons.timer)
+                        Icon(CupertinoIcons.timer)
                       ]),
                   title: appLocalizations.exerciseUnit,
                   valA: appLocalizations.time,
@@ -109,7 +116,7 @@ class _DemoMakerState extends State<DemoMaker> {
                 ControllerField(
                   controller: descriptionController,
                   title: appLocalizations.exerciseDescription,
-                  icon: const Icon(Icons.info),
+                  icon: const Icon(CupertinoIcons.info),
                   maxLength: 1000,
                   maxLines: 6,
                 ),
@@ -143,58 +150,57 @@ class _DemoMakerState extends State<DemoMaker> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            if (!_formKey.currentState!.validate()) {
-              return;
-            }
-            showWarningDialog(
-              title: editData == null
-                  ? appLocalizations.createDemoPrompt
-                  : appLocalizations.saveDemoPrompt,
-              description: appLocalizations.demoPromptDetails,
-              context: context,
-              yes: () {
-                DemonstrationData demonstrationData = DemonstrationData(
-                  exerciseName: nameController.text,
-                  repUnit: unit!,
-                  advice: adviceController.text,
-                  workAreas: workAreas,
-                  description: descriptionController.text,
-                  gymId: widget.gymId,
-                  id: editData?.id ?? generateRandomString(28),
-                );
-                if (context.mounted) {
-                  if (editData == null) {
-                    context.read<ApplicationState>().addDemonstration(
+            onPressed: () {
+              if (!_formKey.currentState!.validate()) {
+                return;
+              }
+              showWarningDialog(
+                title: editData == null
+                    ? appLocalizations.createDemoPrompt
+                    : appLocalizations.saveDemoPrompt,
+                description: appLocalizations.demoPromptDetails,
+                context: context,
+                yes: () {
+                  DemonstrationData demonstrationData = DemonstrationData(
+                    exerciseName: nameController.text,
+                    repUnit: unit!,
+                    advice: adviceController.text,
+                    workAreas: workAreas,
+                    description: descriptionController.text,
+                    gymId: widget.gymId,
+                    id: editData?.id ?? generateRandomString(28),
+                    resourceURL: editData?.resourceURL,
+                    resourceName: editData?.resourceName,
+                  );
+                  if (context.mounted) {
+                    if (editData == null) {
+                      context.read<ApplicationState>().addDemonstration(
+                            demonstrationData,
+                            videoPath != null ? File(videoPath!) : null,
+                          );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(appLocalizations.successful),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    } else {
+                      context.read<ApplicationState>().editDemonstration(
                           demonstrationData,
-                          videoPath != null ? File(videoPath!) : null,
-                        );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(appLocalizations.successful),
-                      ),
-                    );
-                    Navigator.pop(context);
-                  } else {
-                    context.read<ApplicationState>().editDemonstration(
-                        demonstrationData,
-                        videoPath,
-                        videoPath != editData.resourceURL);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(appLocalizations.successful),
-                      ),
-                    );
-                    Navigator.pop(context);
+                          videoPath,
+                          videoPath == editData.resourceURL);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(appLocalizations.successful),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    }
                   }
-                }
-              },
-            );
-          },
-          child: editData != null
-              ? const Icon(Icons.save)
-              : const Icon(Icons.check),
-        ),
+                },
+              );
+            },
+            child: const Icon(Icons.check)),
       ),
     );
   }

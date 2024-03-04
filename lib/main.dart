@@ -12,6 +12,7 @@ import 'package:gymapp/l10n/l10n.dart';
 import 'package:gymapp/local_settings/local_settings_state.dart';
 import 'package:gymapp/navigation/gorouter.dart';
 import 'package:gymapp/pages/other/function/handlewifi.dart';
+import 'package:gymapp/pages/other/noconncetion.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -35,7 +36,6 @@ void main() async {
       ),
     ),
   );
-  wifiHandler = Connectivity().onConnectivityChanged.listen(handleWifi);
   FirebaseMessaging.instance.requestPermission();
   initNotifications();
 }
@@ -43,7 +43,6 @@ void main() async {
 class App extends StatefulWidget {
   final GoRouter goRouter;
   const App({super.key, required this.goRouter});
-
   @override
   State<App> createState() => _AppState();
 }
@@ -63,28 +62,69 @@ class _AppState extends State<App> {
       case 2:
         brightness = Brightness.dark;
     }
-    return MaterialApp.router(
-      supportedLocales: L10n.all,
-      locale: localSettingsState.language,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      routerConfig: widget.goRouter,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: brightness,
-        useMaterial3: true,
-        sliderTheme: const SliderThemeData(
-          showValueIndicator: ShowValueIndicator.always,
-        ),
-        fontFamily: 'SansSerif',
-        appBarTheme: const AppBarTheme(
-          surfaceTintColor: Colors.transparent,
-        ),
-      ),
-    );
+    return StreamBuilder<ConnectivityResult>(
+        stream: Connectivity().onConnectivityChanged,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return MaterialApp(
+              theme: ThemeData(brightness: brightness),
+              home: const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+              ),
+            );
+          }
+          final noWifi = snapshot.data! == ConnectivityResult.none;
+          return noWifi
+              ? const NoConnection()
+              : MaterialApp.router(
+                  supportedLocales: L10n.all,
+                  locale: localSettingsState.language,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  builder: (context, child) {
+                    final mediaQueryData = MediaQuery.of(context);
+                    final scale = mediaQueryData.textScaler
+                        .clamp(minScaleFactor: 1.0, maxScaleFactor: 1.3);
+                    return MediaQuery(
+                      data: MediaQuery.of(context).copyWith(textScaler: scale),
+                      child: child!,
+                    );
+                  },
+                  routerConfig: widget.goRouter,
+                  debugShowCheckedModeBanner: false,
+                  theme: ThemeData(
+                    brightness: brightness,
+                    useMaterial3: true,
+                    sliderTheme: const SliderThemeData(
+                      showValueIndicator: ShowValueIndicator.always,
+                    ),
+                    fontFamily: 'Inter',
+                    elevatedButtonTheme: ElevatedButtonThemeData(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        splashFactory: NoSplash.splashFactory,
+                      ),
+                    ),
+                    iconButtonTheme: IconButtonThemeData(
+                      style: IconButton.styleFrom(
+                        alignment: Alignment.center,
+                        fixedSize: const Size(50, 50),
+                        splashFactory: NoSplash.splashFactory,
+                      ),
+                    ),
+                    splashFactory: NoSplash.splashFactory,
+                    appBarTheme: const AppBarTheme(
+                      surfaceTintColor: Colors.transparent,
+                    ),
+                  ),
+                );
+        });
   }
 }
